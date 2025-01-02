@@ -49,7 +49,7 @@ import ReactHotToast from 'src/@core/styles/libs/react-hot-toast'
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
 import { ApolloProvider } from '@apollo/client'
-import apollo from 'src/graphql/apollo'
+
 // ** Prismjs Styles
 import 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
@@ -132,7 +132,7 @@ const App = (props: ExtendedAppProps) => {
         </Head>
 
         <AuthProvider>
-          <ApolloProvider client={apollo}>
+          {/* <ApolloProvider client={apollo}> */}
             <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
               <SettingsConsumer>
                 {({ settings }) => {
@@ -151,7 +151,7 @@ const App = (props: ExtendedAppProps) => {
                 }}
               </SettingsConsumer>
             </SettingsProvider>
-          </ApolloProvider>
+          {/* </ApolloProvider> */}
         </AuthProvider>
       </CacheProvider>
     </Provider>

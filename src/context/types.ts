@@ -6,14 +6,6 @@ export type LoginParams = {
   rememberMe?: boolean
 }
 
-export type RegisterParams = {
-  firstName: string
-  lastName: string
-  username: string
-  email: string
-  password: string
-}
-
 export type UserDataType = {
   id: number
   role: string
@@ -21,7 +13,7 @@ export type UserDataType = {
   fullName: string
   username: string
   password: string
-  avatarUrl?: string | null
+  avatar?: string | null
 }
 
 export type AuthValuesType = {
@@ -31,5 +23,4 @@ export type AuthValuesType = {
   setLoading: (value: boolean) => void
   setUser: (value: UserDataType | null) => void
   login: (params: LoginParams, errorCallback?: ErrCallbackType) => void
-  loginGoogle: (token: string) => void
 }

@@ -95,7 +95,7 @@ const auth = useAuth()
       >
         <Avatar
           alt={auth.user?.fullName}
-          src={auth.user?.avatarUrl ?? '/images/avatars/1.png'}
+          src={'/images/avatars/1.png'}
           onClick={handleDropdownOpen}
           sx={{ width: 40, height: 40 }}
         />
@@ -120,7 +120,7 @@ const auth = useAuth()
             >
               <Avatar
                 alt={auth.user?.fullName}
-                src={auth.user?.avatarUrl  ?? '/images/avatars/1.png'}
+                src={'/images/avatars/1.png'}
                 sx={{ width: '2.5rem', height: '2.5rem' }}
               />
             </Badge>

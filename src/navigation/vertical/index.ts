@@ -20,7 +20,7 @@ const navigation = (): VerticalNavItemsType => {
         {
           title: 'Nạp tài sản',
           icon: 'bx:send',
-          path: '/trade-now/deposit-asset'
+          path: '/make-transaction/deposit-asset'
         },
         {
           title: 'Chuyển tài sản ',
@@ -30,7 +30,7 @@ const navigation = (): VerticalNavItemsType => {
         {
           title: 'Rút tài sản',
           icon: 'bx:asset',
-          path: '/trade-now/withdraw-asset'
+          path: '/make-transaction/withdraw-asset'
         }
       ]
     },

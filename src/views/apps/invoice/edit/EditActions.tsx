@@ -51,7 +51,7 @@ const EditActions = ({ id, toggleSendInvoiceDrawer, toggleAddPaymentDrawer }: Pr
                 component={Link}
                 color='secondary'
                 variant='outlined'
-                href={`/trade-now/transfer-asset/preview/${id}`}
+                href={`/make-transaction/transfer-asset/preview/${id}`}
               >
                 Preview
               </Button>

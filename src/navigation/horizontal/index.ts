@@ -7,38 +7,70 @@ const navigation = (): HorizontalNavItemsType => {
     {
       icon: 'bx:home-circle',
       title: 'Trang chủ',
-      path: '/home'
+      path: '/dashboard'
     },
     {
       icon: 'bx:customize',
-      title: 'Giao dịch ngay',
+      title: 'Giao dịch nhanh',
       children: [
         {
-          title: 'Danh mục lưu trữ',
-          icon: 'bx:envelope',
-          path: '/trade-now/portfolio/personal-portfolio'
+          title: 'Chuyển tài sản',
+          icon: 'bx:transfer',
+          path: '/make-transaction/transfer-asset'
         },
         {
           title: 'Nạp tài sản',
           icon: 'bx:send',
-          path: '/trade-now/deposit-asset'
-        },
-        {
-          title: 'Chuyển tài sản ',
-          icon: 'bx:transfer',
-          path: '/trade-now/transfer-asset'
+          path: '/make-transaction/deposit-asset'
         },
         {
           title: 'Rút tài sản',
           icon: 'bx:asset',
-          path: '/trade-now/withdraw-asset'
+          path: '/make-transaction/withdraw-asset'
         }
       ]
     },
     {
+      icon: 'bx:customize',
+      title: 'Gửi tiết kiệm',
+      children: [
+        {
+          title: 'Danh sách sổ tiết kiệm',
+          icon: 'bx:envelope',
+          path: '/saving/my-portfolios'
+        },
+        {
+          title: 'Gửi tiền tiết kiệm',
+          icon: 'bx:send',
+          path: '/saving/add-saving-asset'
+        },
+        // {
+        //   title: 'Tiền gửi rút gốc',
+        //   icon: 'bx:transfer',
+        //   path: '/saving/transfer-asset'
+        // },
+        // {
+        //   title: 'Tiền gửi cho con',
+        //   icon: 'bx:asset',
+        //   path: '/saving/withdraw-asset'
+        // },
+        // {
+        //   title: 'Tiền gửi cho con',
+        //   icon: 'bx:asset',
+        //   path: '/saving/open-saving'
+        // }
+      ]
+    },
+    {
       icon: 'bx:collection',
-      title: 'Lịch sử giao dịch',
+      title: 'Tra cứu giao dịch',
       path: '/transaction-history'
+    },
+
+    {
+      icon: 'bx:collection',
+      title: 'Thẻ tín dụng',
+      path: '/credit-card'
     },
     {
       icon: 'bx:grid-alt',
@@ -50,7 +82,7 @@ const navigation = (): HorizontalNavItemsType => {
        },
 
        {
-        title: 'Danh mục lưu trữ',
+        title: 'Danh sách sổ tiết kiệm',
         path: '/user-profile/account'
 
        },
@@ -73,11 +105,6 @@ const navigation = (): HorizontalNavItemsType => {
       icon: 'bx:palette',
       title: 'Về chúng tôi',
       path: '/about-us'
-    },
-    {
-      title: 'Khác ',
-      icon: 'bx:dots-horizontal-rounded',
-      path: '/others'
     }
   ]
 }

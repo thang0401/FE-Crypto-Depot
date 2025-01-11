@@ -1,53 +1,22 @@
-// ** MUI Imports
-import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
-import Grid from '@mui/material/Grid'
-// import Avatar from '@mui/material/Avatar'
-// import Tooltip from '@mui/material/Tooltip'
-import { styled } from '@mui/material/styles'
-// import TimelineDot from '@mui/lab/TimelineDot'
-// import TimelineItem from '@mui/lab/TimelineItem'
-// import CardHeader from '@mui/material/CardHeader'
-// import Typography from '@mui/material/Typography'
-// import AvatarGroup from '@mui/material/AvatarGroup'
-// import CardContent from '@mui/material/CardContent'
-// import TimelineContent from '@mui/lab/TimelineContent'
-// import TimelineSeparator from '@mui/lab/TimelineSeparator'
-// import TimelineConnector from '@mui/lab/TimelineConnector'
-import MuiTimeline, { TimelineProps } from '@mui/lab/Timeline'
+import React from 'react'
+import { Grid, Card, Button, TextField, Box, Autocomplete, IconButton } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import RefreshIcon from '@mui/icons-material/Refresh'
+import TableBasic from 'src/views/table/data-grid/TableBasic'
+import { signal } from '@preact/signals-react'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import Send from '@mui/icons-material/Send'
 import router from 'next/router'
-
-// ** Types
-import { InvoiceType } from 'src/types/apps/invoiceTypes'
-
-// ** Demo Component Imports
-//import UsersInvoiceListTable from './UsersInvoiceListTable'
-import UsersProjectListTable from './UsersProjectListTable'
-import { Autocomplete, Button, IconButton, TextField } from '@mui/material'
-import { DataGrid, GridColDef } from '@mui/x-data-grid'
-import React from 'react'
-
-interface Props {
-  invoiceData: InvoiceType[]
+// import AddPortfolio from './add-portfolio'
+export const dialogTypes = signal<'add' | 'update'>('add')
+const colorActive = {
+  backgroundColor: '#025061'
 }
-
-// Styled Timeline component
-const Timeline = styled(MuiTimeline)<TimelineProps>(({ theme }) => ({
-  margin: 0,
-  padding: 0,
-  marginLeft: theme.spacing(0.75),
-  '& .MuiTimelineItem-root': {
-    '&:before': {
-      display: 'none'
-    },
-    '&:last-child': {
-      minHeight: 60
-    }
-  }
-}))
 export const rows = [
   {
     id: 1,
@@ -172,7 +141,8 @@ export const rows = [
   }
 ]
 
-const UserViewOverview = ({ invoiceData }: Props) => {
+export default function Withdraw() {
+  //const getUser: string[] = ['Nguyễn Cao Thăng', 'Nguyễn Văn A']
   const getCommodities: string[] = ['Portfolio1', 'Portfolio2', 'Portfolio3', 'Portfolio4', 'Portfolio5']
   const getCommodityGroup: string[] = ['Pf0001', 'Pf0002', 'Pf0003', 'Pf0004', 'Pf0005']
   const [open, setOpen] = React.useState(false)
@@ -188,14 +158,14 @@ const UserViewOverview = ({ invoiceData }: Props) => {
     {
       flex: 0.1,
       field: 'id',
-      minWidth: 120,
+      minWidth: 80,
       headerName: 'STT'
     },
     {
       flex: 0.1,
       field: 'portfolioID',
       minWidth: 180,
-      headerName: 'Mã danh mục'
+      headerName: 'Mã sổ tiết kiệm'
     },
     {
       flex: 0.25,
@@ -203,32 +173,32 @@ const UserViewOverview = ({ invoiceData }: Props) => {
       field: 'portfolio',
       headerName: 'Tên danh mục'
     },
-    // {
-    //   flex: 0.25,
-    //   minWidth: 150,
-    //   field: 'full_name',
-    //   headerName: 'Thời hạn'
-    // },
-    // {
-    //   flex: 0.25,
-    //   minWidth: 150,
-    //   field: 'start_date',
-    //   headerName: 'Ngày bắt đầu',
-    //   valueGetter: params => {
-    //     const date = new Date(params.value)
-    //     return date.toISOString().split('T')[0] // This will return 'YYYY-MM-DD'
-    //   }
-    // },
-    // {
-    //   flex: 0.15,
-    //   minWidth: 150,
-    //   headerName: 'Ngày kết thúc',
-    //   field: 'end_date',
-    //   valueGetter: params => {
-    //     const date = new Date(params.value)
-    //     return date.toISOString().split('T')[0] // This will return 'YYYY-MM-DD'
-    //   }
-    // },
+    {
+      flex: 0.25,
+      minWidth: 150,
+      field: 'full_name',
+      headerName: 'Thời hạn'
+    },
+    {
+      flex: 0.25,
+      minWidth: 150,
+      field: 'start_date',
+      headerName: 'Ngày bắt đầu',
+      valueGetter: params => {
+        const date = new Date(params.value)
+        return date.toISOString().split('T')[0] // This will return 'YYYY-MM-DD'
+      }
+    },
+    {
+      flex: 0.15,
+      minWidth: 150,
+      headerName: 'Ngày kết thúc',
+      field: 'end_date',
+      valueGetter: params => {
+        const date = new Date(params.value)
+        return date.toISOString().split('T')[0] // This will return 'YYYY-MM-DD'
+      }
+    },
     {
       flex: 0.15,
       minWidth: 180,
@@ -255,15 +225,72 @@ const UserViewOverview = ({ invoiceData }: Props) => {
     router.push('/saving/my-portfolios/detail')
   }
   return (
-    <Grid container spacing={6}>
-      <Grid item xs={12}>
+    <Grid>
+      <Grid container>
+        <Grid item xs={12} marginBottom={5}>
+          <Grid display={'flex'} justifyContent={'space-between'} alignItems={'center'} height={50}>
+          <h2 style={{ textAlign: 'center', textTransform: 'uppercase', marginLeft: 30 }}>Danh sách sổ tiết kiệm</h2>
+            <Grid display={'flex'} width={300} gap={2}>
+              <React.Fragment>
+                <Button variant='outlined' onClick={handleClickOpen}>
+                  Thêm sổ tiết kiệm mới
+                </Button>
+                <Dialog
+                  open={open}
+                  onClose={handleClose}
+                  onSubmit={(event: any) => {
+                    event.preventDefault()
+                    const formData = new FormData(event.currentTarget)
+                    const formJson = Object.fromEntries((formData as any).entries())
+                    const email = formJson.email
+                    console.log(email)
+                    handleClose()
+                  }}
+                >
+                  <DialogTitle>Thêm Danh mục mới</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      It will be automatically generated portfolio with name "Default"
+                    </DialogContentText>
+                    <TextField
+                      autoFocus
+                      required
+                      margin='dense'
+                      id='name'
+                      name='email'
+                      label='Portfolio Name'
+                      type='email'
+                      fullWidth
+                      variant='standard'
+                    />
+                    <TextField
+                      required
+                      margin='dense'
+                      id='name'
+                      name='email'
+                      label='Note'
+                      type='text'
+                      fullWidth
+                      variant='standard'
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose}>Huỷ</Button>
+                    <Button type='submit'>Thêm</Button>
+                  </DialogActions>
+                </Dialog>
+              </React.Fragment>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
       <Card sx={{ padding: 5, height: 100 }}>
         <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }} marginBottom={4}>
           <Grid item xs={3} marginLeft={2}>
             <Autocomplete
               options={getCommodities}
               renderInput={params => (
-                <TextField {...params} label='Tìm bằng tên danh mục' placeholder='Tìm bằng tên danh mục' />
+                <TextField {...params} label='Tìm bằng tên sổ tiết kiệm' placeholder='Tìm bằng tên sổ tiết kiệm' />
               )}
             />
           </Grid>
@@ -271,7 +298,7 @@ const UserViewOverview = ({ invoiceData }: Props) => {
             <Autocomplete
               options={getCommodityGroup}
               renderInput={params => (
-                <TextField {...params} label='Tìm bằng mã danh mục' placeholder='Tìm bằng mã danh mục' />
+                <TextField {...params} label='Tìm bằng mã sổ tiết kiệm' placeholder='Tìm bằng mã sổ tiết kiệm' />
               )}
             />
           </Grid>
@@ -302,10 +329,6 @@ const UserViewOverview = ({ invoiceData }: Props) => {
           </Card>
         </Grid>
       </Grid>
-      </Grid>
-
     </Grid>
   )
 }
-
-export default UserViewOverview

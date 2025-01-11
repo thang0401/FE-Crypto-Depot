@@ -196,7 +196,7 @@ const TransactionHistory = () => {
     }
   ]
   // const handleViewDetail = () => {
-  //   router.push('/trade-now/portfolio/personal-portfolio/detail')
+  //   router.push('/saving/my-portfolios/detail')
   // }
   return (
     <Grid container >

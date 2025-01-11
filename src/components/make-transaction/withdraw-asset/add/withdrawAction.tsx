@@ -10,24 +10,28 @@ import CardContent from '@mui/material/CardContent'
 import Icon from 'src/@core/components/icon'
 
 interface Props {
-  id: string | undefined
+  // id: string | undefined
   toggleAddPaymentDrawer: () => void
   toggleSendInvoiceDrawer: () => void
 }
 
-const PreviewActions = ({ id, toggleSendInvoiceDrawer, toggleAddPaymentDrawer }: Props) => {
+const WithdrawActions = ({
+  // id,
+  toggleSendInvoiceDrawer,
+  toggleAddPaymentDrawer
+}: Props) => {
   return (
     <Card>
       <CardContent>
-        {/* <Button
+        <Button
           fullWidth
           sx={{ mb: 4 }}
           variant='contained'
           onClick={toggleSendInvoiceDrawer}
           startIcon={<Icon icon='bx:paper-plane' />}
         >
-          Send to Gmail
-        </Button> */}
+          Withdraw Here
+        </Button>
         <Button fullWidth sx={{ mb: 4 }} variant='outlined' color='secondary'>
           Download
         </Button>
@@ -38,7 +42,7 @@ const PreviewActions = ({ id, toggleSendInvoiceDrawer, toggleAddPaymentDrawer }:
           component={Link}
           color='secondary'
           variant='outlined'
-          href={`/make-transaction/transfer-asset/print/${id}`}
+          href={`/make-transaction/transfer-asset/print/`}
         >
           Print
         </Button>
@@ -60,4 +64,4 @@ const PreviewActions = ({ id, toggleSendInvoiceDrawer, toggleAddPaymentDrawer }:
   )
 }
 
-export default PreviewActions
+export default WithdrawActions

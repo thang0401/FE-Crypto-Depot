@@ -37,7 +37,7 @@ const AddActions = () => {
               component={Link}
               // color='secondary'
               variant='outlined'
-              href='/trade-now/transfer-asset/preview/4987'
+              href='/make-transaction/transfer-asset/preview/4987'
               startIcon={<Icon icon='bx:paper-plane' />}
             >
               Transfer

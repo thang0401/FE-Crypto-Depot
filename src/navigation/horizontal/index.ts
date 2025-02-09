@@ -7,7 +7,7 @@ const navigation = (): HorizontalNavItemsType => {
     {
       icon: 'bx:home-circle',
       title: 'Trang chủ',
-      path: '/dashboard'
+      path: '/homepage'
     },
     {
       icon: 'bx:customize',

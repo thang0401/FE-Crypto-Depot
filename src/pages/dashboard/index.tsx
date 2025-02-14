@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import { useAuth } from 'src/hooks/useAuth'
-import Dashboard from 'src/components/dashboard/Dashboard'
+import Dashboard from 'src/components/dashboards/dashboards'
 
 
 

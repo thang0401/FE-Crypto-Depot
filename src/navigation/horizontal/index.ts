@@ -43,6 +43,10 @@ const navigation = (): HorizontalNavItemsType => {
           title: 'Gửi tiền tiết kiệm',
           icon: 'bx:send',
           path: '/saving/add-saving-asset'
+        },   {
+          title: 'Tạo danh mục tiết kiệm',
+          icon: 'bx:send',
+          path: '/saving/add-saving-asset/open'
         },
         // {
         //   title: 'Tiền gửi rút gốc',

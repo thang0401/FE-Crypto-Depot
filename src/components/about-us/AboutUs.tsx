@@ -21,44 +21,43 @@ const AboutUs = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
-
   const futureVisions = [
     {
-      icon: <Cpu className="w-16 h-16 text-blue-600 transition-all duration-300 group-hover:text-blue-800 group-hover:scale-110" />,
+      icon: <Cpu className="w-16 h-16 transition-all duration-300 group-hover:scale-110" />,
       title: "AI-Driven Tài Chính",
       description: "Tích hợp trí tuệ nhân tạo để cung cấp tư vấn tài chính cá nhân hóa và quản lý rủi ro thông minh.",
     },
     {
-      icon: <Network className="w-16 h-16 text-blue-600 transition-all duration-300 group-hover:text-blue-800 group-hover:scale-110" />,
+      icon: <Network className="w-16 h-16 transition-all duration-300 group-hover:scale-110" />,
       title: "Hệ Sinh Thái DeFi Toàn Diện",
       description:
         "Xây dựng một hệ sinh thái tài chính phi tập trung hoàn chỉnh, kết nối mọi dịch vụ tài chính trên blockchain.",
     },
     {
-      icon: <Leaf className="w-16 h-16 text-blue-600 transition-all duration-300 group-hover:text-blue-800 group-hover:scale-110" />,
+      icon: <Leaf className="w-16 h-16 transition-all duration-300 group-hover:scale-110" />,
       title: "Tài Chính Xanh",
       description:
         "Phát triển các sản phẩm tài chính bền vững và thân thiện với môi trường, hỗ trợ các dự án xanh toàn cầu.",
     },
     {
-      icon: <Shield className="w-16 h-16 text-blue-600 transition-all duration-300 group-hover:text-blue-800 group-hover:scale-110" />,
+      icon: <Shield className="w-16 h-16 transition-all duration-300 group-hover:scale-110" />,
       title: "Bảo Mật Lượng Tử",
       description:
         "Áp dụng công nghệ mã hóa lượng tử để bảo vệ tài sản số của khách hàng trước các mối đe dọa trong tương lai.",
     },
   ]
   return (
-    <Box sx={{ bgcolor: "#f0f4f8" }}>
-         {/* Hero Section */}
-      <Box sx={{ pt: 16, pb: 12, background: "linear-gradient(135deg, #f6f0fd 0%, #e2ecfe 100%)" }}>
+    <Box>
+      {/* Hero Section */}
+      <Box sx={{ pt: 16, pb: 12 }}>
         <Container maxWidth="lg">
           <Grid container spacing={6} alignItems="center">
             <Grid item xs={12} md={6}>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: "bold", color: "#1a237e" }}>
+                <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: "bold" }}>
                   Về CryptoBank
                 </Typography>
-                <Typography variant="h5" sx={{ color: "text.secondary", mb: 4 }}>
+                <Typography variant="h5" sx={{ mb: 4 }}>
                   Chúng tôi đang định hình tương lai của ngân hàng với công nghệ blockchain và tiền điện tử.
                 </Typography>
               </motion.div>
@@ -69,7 +68,7 @@ const AboutUs = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8 }}
               >
-                <Box
+                {/* <Box
                   component="img"
                   src=""
                   alt="CryptoBank Vision"
@@ -77,9 +76,9 @@ const AboutUs = () => {
                     width: "100%",
                     height: "auto",
                     borderRadius: "20px",
-                    boxShadow: "0 20px 80px 0 rgba(63,81,181,0.3)",
+                    boxShadow: "0 20px 80px 0 rgba(0,0,0,0.3)",
                   }}
-                />
+                /> */}
               </motion.div>
             </Grid>
           </Grid>
@@ -87,7 +86,7 @@ const AboutUs = () => {
       </Box>
 
       {/* Mission Section */}
-      <Box sx={{ py: 12, bgcolor: "#ffffff" }}>
+      <Box sx={{ py: 12 }}>
         <Container maxWidth="lg">
           <Grid container spacing={6} alignItems="center">
             <Grid item xs={12} md={6}>
@@ -96,15 +95,15 @@ const AboutUs = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
               >
-                <Typography variant="h3" component="h2" gutterBottom sx={{ fontWeight: "bold", color: "#1a237e" }}>
+                <Typography variant="h3" component="h2" gutterBottom sx={{ fontWeight: "bold" }}>
                   Sứ mệnh của chúng tôi
                 </Typography>
-                <Typography variant="body1" sx={{ color: "text.secondary", mb: 4 }}>
+                <Typography variant="body1" sx={{ mb: 4 }}>
                   CryptoBank cam kết mang đến một hệ thống tài chính toàn diện và dễ tiếp cận cho mọi người thông qua
                   việc tận dụng sức mạnh của công nghệ blockchain và tiền điện tử. Chúng tôi tin rằng tương lai của tài
                   chính là phi tập trung, an toàn và minh bạch.
                 </Typography>
-                <Typography variant="body1" sx={{ color: "text.secondary", mb: 4 }}>
+                <Typography variant="body1" sx={{ mb: 4 }}>
                   Chúng tôi cũng đặt mục tiêu giáo dục và trao quyền cho người dùng về tài chính số, giúp họ đưa ra
                   quyết định tài chính thông minh và tự tin trong thời đại kỹ thuật số này.
                 </Typography>
@@ -124,7 +123,6 @@ const AboutUs = () => {
                         <Box
                           sx={{
                             p: 1,
-                            bgcolor: "primary.light",
                             borderRadius: "50%",
                             display: "flex",
                             alignItems: "center",
@@ -147,15 +145,14 @@ const AboutUs = () => {
       </Box>
 
       {/* Future Vision Section */}
-    {/* Future Vision Section with enhanced styling */}
-    <Box sx={{ py: 12, bgcolor: "#f0f4f8" }}>
+      <Box sx={{ py: 12 }}>
         <Container maxWidth="lg">
           <Typography
             variant="h3"
             component="h2"
             align="center"
             gutterBottom
-            sx={{ mb: 8, fontWeight: "bold", color: "#1a237e" }}
+            sx={{ mb: 8, fontWeight: "bold" }}
           >
             TẦM NHÌN TƯƠNG LAI
           </Typography>
@@ -177,10 +174,6 @@ const AboutUs = () => {
                       "&:hover": {
                         transform: "translateY(-8px)",
                         boxShadow: "0 12px 30px 0 rgba(0,0,0,0.15)",
-                        "& .MuiTypography-h6": {
-                          color: "primary.main",
-                        },
-                        bgcolor: "#ffffff",
                       }
                     }}
                   >
@@ -202,7 +195,6 @@ const AboutUs = () => {
                           mb: 3,
                           p: 2,
                           borderRadius: "50%",
-                          bgcolor: "rgba(63, 81, 181, 0.05)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -217,7 +209,7 @@ const AboutUs = () => {
                         sx={{ 
                           fontWeight: "bold", 
                           textAlign: "center",
-                          transition: "color 0.3s ease-in-out",
+                          transition: "all 0.3s ease-in-out",
                           mb: 2
                         }}
                       >
@@ -225,10 +217,9 @@ const AboutUs = () => {
                       </Typography>
                       <Typography 
                         variant="body2" 
-                        color="text.secondary" 
                         align="center"
                         sx={{
-                          transition: "color 0.3s ease-in-out",
+                          transition: "all 0.3s ease-in-out",
                         }}
                       >
                         {vision.description}
@@ -243,7 +234,7 @@ const AboutUs = () => {
       </Box>
 
       {/* New Innovative CTA Section */}
-      <Box sx={{ py: 12, bgcolor: "#3f51b5", position: "relative", overflow: "hidden" }}>
+      <Box sx={{ py: 12, position: "relative", overflow: "hidden" }}>
         <Container maxWidth="lg">
           <Grid container spacing={4} alignItems="center" position="relative" zIndex={1}>
             <Grid item xs={12} md={7}>
@@ -252,10 +243,10 @@ const AboutUs = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
               >
-                <Typography variant="h3" component="h2" gutterBottom sx={{ fontWeight: "bold", color: "white" }}>
+                <Typography variant="h3" component="h2" gutterBottom sx={{ fontWeight: "bold" }}>
                   Khám Phá Tương Lai Tài Chính
                 </Typography>
-                <Typography variant="h6" sx={{ mb: 4, color: "rgba(255, 255, 255, 0.8)" }}>
+                <Typography variant="h6" sx={{ mb: 4 }}>
                   Tham gia cùng chúng tôi trong cuộc cách mạng tài chính số. Định hình tương lai của bạn với CryptoBank.
                 </Typography>
                 <Button
@@ -263,15 +254,13 @@ const AboutUs = () => {
                   size="large"
                   endIcon={<ArrowRight />}
                   sx={{
-                    bgcolor: "white",
-                    color: "#3f51b5",
-                    "&:hover": { bgcolor: "#e0e0e0" },
+                    "&:hover": { bgcolor: "inherit" },
                     py: 2,
                     px: 4,
                     fontSize: "1.1rem",
                     fontWeight: "bold",
                     borderRadius: "50px",
-                    boxShadow: "0 4px 14px 0 rgba(255,255,255,0.3)",
+                    boxShadow: "0 4px 14px 0 rgba(0,0,0,0.3)",
                   }}
                 >
                   Khởi Động Tương Lai
@@ -292,7 +281,7 @@ const AboutUs = () => {
                     boxShadow: "0 20px 80px 0 rgba(0,0,0,0.3)",
                   }}
                 >
-                  <Box
+                  {/* <Box
                     component="img"
                     src=""
                     alt="Tương Lai Tài Chính"
@@ -301,13 +290,13 @@ const AboutUs = () => {
                       height: "auto",
                       display: "block",
                     }}
-                  />
+                  /> */}
                 </Paper>
               </motion.div>
             </Grid>
           </Grid>
         </Container>
-        {/* Abstract background elements */}
+        {/* Abstract background elements (removed colors, using neutral opacity) */}
         <Box
           sx={{
             position: "absolute",
@@ -315,7 +304,7 @@ const AboutUs = () => {
             left: "-5%",
             width: "120%",
             height: "120%",
-            background: "radial-gradient(circle, rgba(99,102,241,0.2) 0%, rgba(99,102,241,0) 70%)",
+            background: "radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 70%)",
             zIndex: 0,
           }}
         />
@@ -327,7 +316,7 @@ const AboutUs = () => {
             width: "50%",
             height: "50%",
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(129,140,248,0.3) 0%, rgba(129,140,248,0) 70%)",
+            background: "radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 70%)",
             zIndex: 0,
           }}
         />
@@ -337,4 +326,3 @@ const AboutUs = () => {
 }
 
 export default AboutUs
-

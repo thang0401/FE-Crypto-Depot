@@ -131,11 +131,11 @@ export const Step1 = React.memo(({
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <StyledCard>
-                        <Typography variant="h6" gutterBottom sx={{ color: "#1a237e", fontWeight: "bold", p: 2 }}>
-                            Tài khoản nguồn
+                        <Typography variant="h6" gutterBottom sx={{  fontWeight: "bold", p: 2 }}>
+                             Source Account
                         </Typography>
                         <FormControl fullWidth error={errors.sourceAccount} sx={{ px: 2, pb: 2 }}>
-                            <InputLabel>Chọn tài khoản</InputLabel>
+                            <InputLabel>Select account</InputLabel>
                             <Select
                                 value={formData.sourceAccount}
                                 onChange={handleSelectChange("sourceAccount")}
@@ -149,7 +149,7 @@ export const Step1 = React.memo(({
                             </Select>
                             {errors.sourceAccount && (
                                 <Typography color="error" variant="caption" sx={{ mt: 1, ml: 2 }}>
-                                    Vui lòng chọn tài khoản
+                                     Please select an account
                                 </Typography>
                             )}
                         </FormControl>
@@ -157,7 +157,7 @@ export const Step1 = React.memo(({
                             sx={{
                                 px: 2,
                                 pb: 2,
-                                bgcolor: "#e3f2fd",
+                                // bgcolor: "#e3f2fd",
                                 borderRadius: 1,
                                 mx: 2,
                                 mb: 2,
@@ -165,12 +165,12 @@ export const Step1 = React.memo(({
                             }}
                         >
                             <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                                Số dư: {" "}
+                                Balance: {" "}
                                 <Typography
                                     component="span"
                                     sx={{
                                         fontWeight: 700,
-                                        color: "black",
+                                        
                                         fontSize: "14px",
                                     }}
                                 >
@@ -183,14 +183,14 @@ export const Step1 = React.memo(({
 
                 <Grid item xs={12}>
                     <StyledCard>
-                        <Typography variant="h6" gutterBottom sx={{ color: "#1a237e", fontWeight: "bold", p: 2 }}>
-                            Thông tin gửi
+                        <Typography variant="h6" gutterBottom sx={{fontWeight: "bold", p: 2 }}>
+                            Infomation
                         </Typography>
                         <Grid container spacing={3} sx={{ px: 2, pb: 2 }}>
                             <Grid item xs={12}>
                                 <TextField
                                     fullWidth
-                                    label="Số tiền gửi"
+                                    label="Amount"
                                     value={formData.amount}
                                     onChange={handleTextChange("amount")}
                                     onBlur={handleBlur("amount")}
@@ -199,13 +199,13 @@ export const Step1 = React.memo(({
                                 />
                                 {depositAmount > accountBalance && (
                                     <Typography color="error" variant="caption" sx={{ mt: 1 }}>
-                                        Số tiền gửi vượt quá số dư tài khoản
+                                        The deposit amount exceeds the account balance.
                                     </Typography>
                                 )}
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <FormControl fullWidth error={errors.term}>
-                                    <InputLabel>Kỳ hạn</InputLabel>
+                                    <InputLabel>Term</InputLabel>
                                     <Select value={formData.term} onChange={handleSelectChange("term")} label="Kỳ hạn">
                                         {terms.map((term) => (
                                             <MenuItem key={term.value} value={term.value}>
@@ -215,7 +215,7 @@ export const Step1 = React.memo(({
                                     </Select>
                                     {errors.term && (
                                         <Typography color="error" variant="caption" sx={{ mt: 1 }}>
-                                            Vui lòng chọn kỳ hạn
+                                            Please select a term.
                                         </Typography>
                                     )}
                                 </FormControl>
@@ -224,31 +224,31 @@ export const Step1 = React.memo(({
                                 <Paper
                                     sx={{
                                         p: 2,
-                                        bgcolor: "#f0f4f8",
+                                        // bgcolor: "#f0f4f8",
                                         height: "100%",
                                         display: "flex",
                                         alignItems: "center",
                                     }}
                                 >
                                     <Typography>
-                                        Lãi suất: {terms.find((t) => t.value === formData.term)?.interest || "0%"}
+                                    Interest rate: {terms.find((t) => t.value === formData.term)?.interest || "0%"}
                                     </Typography>
                                 </Paper>
                             </Grid>
                             <Grid item xs={12}>
                                 <FormControl fullWidth error={errors.interestPayment}>
-                                    <InputLabel>Hình thức trả lãi</InputLabel>
+                                    <InputLabel>Interest payment method</InputLabel>
                                     <Select
                                         value={formData.interestPayment}
                                         onChange={handleSelectChange("interestPayment")}
-                                        label="Hình thức trả lãi"
+                                        label="Interest payment method"
                                     >
-                                        <MenuItem value="end">Cuối kỳ</MenuItem>
-                                        <MenuItem value="principal">Nhập gốc</MenuItem>
+                                        <MenuItem value="end">End of term</MenuItem>
+                                        <MenuItem value="principal">Principal reinvestment</MenuItem>
                                     </Select>
                                     {errors.interestPayment && (
                                         <Typography color="error" variant="caption" sx={{ mt: 1 }}>
-                                            Vui lòng chọn hình thức trả lãi
+                                            Please select an interest payment method.
                                         </Typography>
                                     )}
                                 </FormControl>
@@ -265,11 +265,11 @@ export const Step1 = React.memo(({
                                 onChange={handleCheckboxChange}
                             />
                         }
-                        label="Tôi đồng ý với điều khoản và điều kiện"
+                        label="I agree to the terms and conditions."
                     />
                     {errors.agreeToTerms && (
                         <Typography color="error" variant="caption" display="block">
-                            Vui lòng đồng ý với điều khoản và điều kiện
+                            Please agree to the terms and conditions.
                         </Typography>
                     )}
                 </Grid>

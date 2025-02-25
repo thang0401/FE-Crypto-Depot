@@ -12,15 +12,15 @@ import { useRouter } from "next/navigation";
 
 // Sample data moved to constants
 const ACCOUNTS = [
-    { id: "1", label: "Tài khoản chính - 123456789", balance: "100 USDC" },
-    { id: "2", label: "Tài khoản phụ - 987654321", balance: "50 USDC" },
+    { id: "1", label: "Main Account - 123456789", balance: "100 USDC" },
+    { id: "2", label: "Sub Account - 987654321", balance: "50 USDC" },
 ]
 
 const TERMS = [
-    { value: "1M", label: "1 tháng", interest: "3.8%" },
-    { value: "3M", label: "3 tháng", interest: "4.0%" },
-    { value: "6M", label: "6 tháng", interest: "4.5%" },
-    { value: "12M", label: "12 tháng", interest: "5.0%" },
+    { value: "1M", label: "1 Month", interest: "3.8%" },
+    { value: "3M", label: "3 Months", interest: "4.0%" },
+    { value: "6M", label: "6 Months", interest: "4.5%" },
+    { value: "12M", label: "12 Months", interest: "5.0%" },
 ]
 
 const SavingsPortfolioForm = () => {
@@ -89,7 +89,7 @@ const SavingsPortfolioForm = () => {
         }
         if (currentStep === 3) {
             // Redirect to HomePage
-            setOpenDialog(true); // 
+            setOpenDialog(true); 
             setTimeout(() => {
                 setOpenDialog(false);
                 router.push("/");
@@ -129,7 +129,6 @@ const SavingsPortfolioForm = () => {
     return (
         <Box
             sx={{
-                bgcolor: "#f0f4f8",
                 minHeight: "100vh",
                 py: 6,
             }}
@@ -140,7 +139,6 @@ const SavingsPortfolioForm = () => {
                     sx={{
                         p: 4,
                         borderRadius: "20px",
-                        background: "linear-gradient(135deg, #f6f0fd 0%, #e2ecfe 100%)",
                         mb: 4,
                     }}
                 >
@@ -151,7 +149,8 @@ const SavingsPortfolioForm = () => {
                                     <Box
                                         component={motion.div}
                                         animate={{
-                                            backgroundColor: currentStep === step ? "#3f51b5" : currentStep > step ? "#4caf50" : "#e0e0e0",
+                                            border: currentStep === step ? "2px solid" : currentStep > step ? "2px solid" : "1px solid",
+                                            opacity: currentStep === step ? 1 : currentStep > step ? 1 : 0.5,
                                         }}
                                         sx={{
                                             width: 40,
@@ -160,7 +159,6 @@ const SavingsPortfolioForm = () => {
                                             display: "flex",
                                             alignItems: "center",
                                             justifyContent: "center",
-                                            color: "white",
                                             transition: "0.3s",
                                         }}
                                     >
@@ -170,7 +168,8 @@ const SavingsPortfolioForm = () => {
                                         <Box
                                             component={motion.div}
                                             animate={{
-                                                backgroundColor: currentStep > step ? "#4caf50" : "#e0e0e0",
+                                                borderBottom: currentStep > step ? "2px solid" : "1px solid",
+                                                opacity: currentStep > step ? 1 : 0.5,
                                             }}
                                             sx={{
                                                 width: "100px",
@@ -183,9 +182,9 @@ const SavingsPortfolioForm = () => {
                             ))}
                         </Box>
                         <Box sx={{ display: "flex", justifyContent: "space-between", px: 2 }}>
-                            <Typography sx={{ color: "text.secondary" }}>Thông tin</Typography>
-                            <Typography sx={{ color: "text.secondary" }}>Xác nhận</Typography>
-                            <Typography sx={{ color: "text.secondary" }}>Xác thực</Typography>
+                            <Typography>Information</Typography>
+                            <Typography>Confirmation</Typography>
+                            <Typography>Verification</Typography>
                         </Box>
                     </Box>
 
@@ -198,15 +197,13 @@ const SavingsPortfolioForm = () => {
                             disabled={currentStep === 1}
                             startIcon={<ArrowLeft />}
                             sx={{
-                                borderColor: "#3f51b5",
-                                color: "#3f51b5",
+                                borderColor: "inherit",
                                 "&:hover": {
-                                    borderColor: "#283593",
-                                    color: "#283593",
+                                    borderColor: "inherit",
                                 },
                             }}
                         >
-                            Quay lại
+                            Back
                         </StyledButton>
 
                         <StyledButton
@@ -214,19 +211,18 @@ const SavingsPortfolioForm = () => {
                             onClick={handleSubmit}
                             endIcon={currentStep !== 3 && <ArrowRight />}
                             sx={{
-                                bgcolor: "#3f51b5",
                                 "&:hover": {
-                                    bgcolor: "#283593",
+                                    bgcolor: "inherit",
                                 },
-                                boxShadow: "0 4px 14px 0 rgba(63,81,181,0.39)",
+                                boxShadow: "none",
                             }}
                         >
-                            {currentStep === 3 ? "Hoàn thành" : "Tiếp tục"}
+                            {currentStep === 3 ? "Complete" : "Continue"}
                         </StyledButton>
                     </Box>
                 </Paper>
             </Container>
-            {/* Sucessfully dialog */}
+            {/* Success dialog */}
             <Dialog
                 open={openDialog}
                 onClose={() => setOpenDialog(false)}
@@ -239,43 +235,26 @@ const SavingsPortfolioForm = () => {
                     },
                 }}
             >
-
-                {/* Success Icon */}
                 <Box sx={{ display: "flex", justifyContent: "center"}}>
-                    <CircleCheckBig size={56} color="#4CAF50" />
+                    <CircleCheckBig size={56} />
                 </Box>
 
-                {/* Tiêu đề */}
-                <DialogTitle sx={{ fontSize: "20px", fontWeight: "bold", color: "#000" }}>
-                    Thành công!
+                <DialogTitle sx={{ fontSize: "20px", fontWeight: "bold" }}>
+                    Success!
                 </DialogTitle>
 
-                {/* Nội dung */}
                 <DialogContent sx={{ px: 2 }}>
-                    <Typography sx={{ fontSize: "15px", color: "#616161" }}>
-                        Tạo danh mục của bạn đã hoàn tất!
+                    <Typography sx={{ fontSize: "15px" }}>
+                        Your portfolio creation is complete!
                     </Typography>
                 </DialogContent>
 
-                {/* Nút hành động */}
                 <DialogActions sx={{ justifyContent: "center", mt: 2 }}>
                     <Button
                         onClick={() => router.push("/")}
                         variant="contained"
-                        sx={{
-                            bgcolor: "#3f51b5",
-                            color: "#FFF",
-                            borderRadius: "8px",
-                            width: "100%",
-                            padding: "10px",
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            "&:hover": {
-                                bgcolor: "#283593",
-                            },
-                        }}
                     >
-                        Về trang chủ
+                        Go to Homepage
                     </Button>
                 </DialogActions>
             </Dialog>

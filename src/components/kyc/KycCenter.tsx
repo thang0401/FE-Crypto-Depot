@@ -46,7 +46,7 @@ const KycCenter: React.FC = () => {
     if (step === 2) {
       // Xử lý hoàn tất KYC (gửi API)
       console.log("KYC Data:", kycData)
-      alert("KYC đã hoàn tất!")
+      alert("KYC is complete. Your profile will be reviewed within 24 hours.!")
       router.push("/")
     } else {
       setStep((prev) => prev + 1)
@@ -85,48 +85,48 @@ const KycCenter: React.FC = () => {
         return (
           <Box sx={{ p: 3 }}>
             <Typography variant="h5" gutterBottom>
-              Step 1: Thông tin cơ bản
+               First information
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   select
                   fullWidth
-                  label="Quốc gia cư trú"
+                  label="Country of Residence"
                   value={kycData.countryOfResidence}
                   onChange={(e) => handleChange("countryOfResidence", e.target.value)}
                   required
                 >
-                  <MenuItem value="VN">Việt Nam</MenuItem>
-                  <MenuItem value="US">Hoa Kỳ</MenuItem>
-                  <MenuItem value="JP">Nhật Bản</MenuItem>
+                  <MenuItem value="VN">Viet Nam</MenuItem>
+                  <MenuItem value="US">USA</MenuItem>
+                  <MenuItem value="JP">Japan</MenuItem>
                 </TextField>
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   select
                   fullWidth
-                  label="Quốc gia/khu vực cấp giấy tờ"
+                  label="Issuing Country/Region"
                   value={kycData.issuingCountry}
                   onChange={(e) => handleChange("issuingCountry", e.target.value)}
                   required
                 >
-                  <MenuItem value="VN">Việt Nam</MenuItem>
-                  <MenuItem value="US">Hoa Kỳ</MenuItem>
-                  <MenuItem value="JP">Nhật Bản</MenuItem>
+                  <MenuItem value="VN">Viet Nam</MenuItem>
+                  <MenuItem value="US">USA</MenuItem>
+                  <MenuItem value="JP">Japan</MenuItem>
                 </TextField>
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   select
                   fullWidth
-                  label="Loại giấy tờ"
+                  label="Document Type"
                   value={kycData.documentType}
                   onChange={(e) => handleChange("documentType", e.target.value)}
                   required
                 >
-                  <MenuItem value="CCCD">Căn cước công dân</MenuItem>
-                  <MenuItem value="DRIVER_LICENSE">Bằng lái xe</MenuItem>
+                  <MenuItem value="CCCD">National ID Card</MenuItem>
+                  <MenuItem value="DRIVER_LICENSE">Driver's license </MenuItem>
                 </TextField>
               </Grid>
             </Grid>
@@ -136,14 +136,14 @@ const KycCenter: React.FC = () => {
                 onClick={handleBack}
                 disabled
               >
-                Quay lại
+                Back
               </Button>
               <Button
                 variant="contained"
                 onClick={handleNext}
                 disabled={!kycData.countryOfResidence || !kycData.issuingCountry || !kycData.documentType}
               >
-                Tiếp tục
+                Continue
               </Button>
             </Box>
           </Box>
@@ -152,7 +152,7 @@ const KycCenter: React.FC = () => {
         return (
           <Box sx={{ p: 3 }}>
             <Typography variant="h5" gutterBottom>
-              Step 2: Tải lên giấy tờ và thông tin cá nhân
+            Upload Documents and Personal Information
             </Typography>
             <Grid container spacing={2}>
               {/* Phần tải lên giấy tờ với layout ngang 2 cột */}
@@ -170,7 +170,7 @@ const KycCenter: React.FC = () => {
                   }}
                 >
                   <Typography variant="h6" sx={{ mb: 2 }}>
-                    Mặt trước của căn cước/bằng lái xe
+                  Front Side of ID Card/Driver's License
                   </Typography>
                   <Box sx={{ width: "100%", position: "relative" }}>
                     {kycData.frontImagePreview && (
@@ -198,7 +198,7 @@ const KycCenter: React.FC = () => {
                         // display: kycData.frontImage ? "block" : "none", // Chỉ hiển thị khi có ảnh
                       }}
                     >
-                      {kycData.frontImage ? "Tải lên lại" : "Tải lên"}
+                      {kycData.frontImage ? "Re-upload" : "Upload"}
                       <input
                         type="file"
                         hidden
@@ -208,7 +208,7 @@ const KycCenter: React.FC = () => {
                     </Button>
                     {!kycData.frontImage && (
                       <Typography variant="caption" sx={{ mt: 10, display: "block", textAlign: "center" , pt: 5}}>
-                        Tải lên 50MB, định dạng .jpg, .png, .pdf
+                        Upload up to 50MB, formats: .jpg, .png, .pdf
                       </Typography>
                     )}
                   </Box>
@@ -228,7 +228,7 @@ const KycCenter: React.FC = () => {
                   }}
                 >
                   <Typography variant="h6" sx={{ mb: 2 }}>
-                    Mặt sau căn cước/bằng lái xe
+                  Back Side of ID Card/Driver's License
                   </Typography>
                   <Box sx={{ width: "100%", position: "relative" }}>
                     {kycData.backImagePreview && (
@@ -256,7 +256,7 @@ const KycCenter: React.FC = () => {
                         // display: kycData.backImage ? "block" : "none", // Chỉ hiển thị khi có ảnh
                       }}
                     >
-                      {kycData.backImage ? "Tải lên lại" : "Tải lên"}
+                      {kycData.backImage ? "Re-upload" : "Upload"}
                       <input
                         type="file"
                         hidden
@@ -266,7 +266,7 @@ const KycCenter: React.FC = () => {
                     </Button>
                     {!kycData.backImage && (
                       <Typography variant="caption" sx={{ mt: 10, display: "block", textAlign: "center", pt: 5 }}>
-                        Tải lên 50MB, định dạng .jpg, .png, .pdf
+                        Upload up to 50MB, formats: .jpg, .png, .pdf
                       </Typography>
                     )}
                   </Box>
@@ -277,7 +277,7 @@ const KycCenter: React.FC = () => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="Họ và tên"
+                  label="Fullname"
                   value={kycData.fullName}
                   onChange={(e) => handleChange("fullName", e.target.value)}
                   required
@@ -286,7 +286,7 @@ const KycCenter: React.FC = () => {
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  label="Tên"
+                  label="First name"
                   value={kycData.firstName}
                   onChange={(e) => handleChange("firstName", e.target.value)}
                   required
@@ -295,7 +295,7 @@ const KycCenter: React.FC = () => {
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  label="Họ"
+                  label="Last name"
                   value={kycData.lastName}
                   onChange={(e) => handleChange("lastName", e.target.value)}
                   required
@@ -305,20 +305,20 @@ const KycCenter: React.FC = () => {
                 <TextField
                   select
                   fullWidth
-                  label="Giới tính"
+                  label="Gender"
                   value={kycData.gender}
                   onChange={(e) => handleChange("gender", e.target.value)}
                   required
                 >
-                  <MenuItem value="male">Nam</MenuItem>
-                  <MenuItem value="female">Nữ</MenuItem>
-                  <MenuItem value="other">Khác</MenuItem>
+                  <MenuItem value="male">Male</MenuItem>
+                  <MenuItem value="female">Female</MenuItem>
+                  <MenuItem value="other">Other</MenuItem>
                 </TextField>
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  label="Số điện thoại"
+                  label="Phone"
                   value={kycData.phone}
                   onChange={(e) => handleChange("phone", e.target.value)}
                   required
@@ -336,7 +336,7 @@ const KycCenter: React.FC = () => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="Ngày sinh"
+                  label="Date of birth"
                   type="date"
                   value={kycData.birthday}
                   onChange={(e) => handleChange("birthday", e.target.value)}
@@ -347,7 +347,7 @@ const KycCenter: React.FC = () => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="Địa chỉ"
+                  label="Address"
                   value={kycData.address}
                   onChange={(e) => handleChange("address", e.target.value)}
                   required
@@ -356,7 +356,7 @@ const KycCenter: React.FC = () => {
               <Grid item xs={4}>
                 <TextField
                   fullWidth
-                  label="Phường/Xã"
+                  label="Ward"
                   value={kycData.ward}
                   onChange={(e) => handleChange("ward", e.target.value)}
                   required
@@ -365,7 +365,7 @@ const KycCenter: React.FC = () => {
               <Grid item xs={4}>
                 <TextField
                   fullWidth
-                  label="Quận/Huyện"
+                  label="District"
                   value={kycData.district}
                   onChange={(e) => handleChange("district", e.target.value)}
                   required
@@ -374,7 +374,7 @@ const KycCenter: React.FC = () => {
               <Grid item xs={4}>
                 <TextField
                   fullWidth
-                  label="Tỉnh/Thành phố"
+                  label="Province"
                   value={kycData.province}
                   onChange={(e) => handleChange("province", e.target.value)}
                   required
@@ -386,7 +386,7 @@ const KycCenter: React.FC = () => {
                 variant="outlined"
                 onClick={handleBack}
               >
-                Quay lại
+                Back
               </Button>
               <Button
                 variant="contained"
@@ -399,7 +399,7 @@ const KycCenter: React.FC = () => {
                   !kycData.district || !kycData.province
                 }
               >
-                Hoàn tất
+                Confirm
               </Button>
             </Box>
           </Box>

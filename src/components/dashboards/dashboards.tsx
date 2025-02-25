@@ -35,12 +35,15 @@ const Dashboard = () => {
   // const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   const router = useRouter()
   const [openKycDialog, setOpenKycDialog] = useState(false)
+
+  // Set kycStatus = false
   const [kycStatus, setKycStatus] = useState(false) // Assuming this status comes from an API
 
 
   // Simulate checking kyc_status on login
   useEffect(() => {
     // Replace with an actual API call to get kyc_status
+    // Set kycStatus = false
     const userKycStatus = false // Mock data from server
     setKycStatus(userKycStatus)
     if (!userKycStatus) {

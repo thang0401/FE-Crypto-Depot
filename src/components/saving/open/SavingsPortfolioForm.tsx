@@ -97,7 +97,7 @@ const SavingsPortfolioForm = () => {
         } else {
             handleNext();
         }
-    }, [currentStep, formData, handleNext, isStep1Valid, validateStep2, validateStep3]);
+    }, [currentStep, handleNext, isStep1Valid, validateStep2, validateStep3, router]); // Added 'router' to dependencies
 
 
     const renderStep = React.useCallback(() => {

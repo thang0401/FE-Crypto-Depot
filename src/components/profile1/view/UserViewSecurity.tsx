@@ -150,20 +150,20 @@ const UserViewSecurity = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
-          <CardHeader title='Đổi mật khẩu' />
+        <CardHeader title='Change Password' />
           <CardContent>
             <Alert icon={false} severity='warning' sx={{ mb: 6 }}>
               <AlertTitle sx={{ fontWeight: 600, mb: theme => `${theme.spacing(1)} !important` }}>
-               Đảm bảo các yêu cầu chúng tôi:
+              Ensure that these requirements are met:
               </AlertTitle>
-              Dài tối thiểu 8 ký tự, viết hoa và ký hiệu
+              Minimum 8 characters long, uppercase and symbols
             </Alert>
 
             <form onSubmit={e => e.preventDefault()}>
               <Grid container spacing={6}>
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
-                    <InputLabel htmlFor='user-view-security-new-password'>Mật khẩu mới</InputLabel>
+                    <InputLabel htmlFor='user-view-security-new-password'>New Password</InputLabel>
                     <OutlinedInput
                       label='New Password'
                       value={values.newPassword}
@@ -188,7 +188,7 @@ const UserViewSecurity = () => {
 
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
-                    <InputLabel htmlFor='user-view-security-confirm-new-password'>Xác nhận mật khẩu mới</InputLabel>
+                    <InputLabel htmlFor='user-view-security-confirm-new-password'>Confirm New Password</InputLabel>
                     <OutlinedInput
                       label='Confirm New Password'
                       value={values.confirmNewPassword}
@@ -213,7 +213,7 @@ const UserViewSecurity = () => {
 
                 <Grid item xs={12}>
                   <Button type='submit' variant='contained'>
-                    Đổi mật khẩu
+                  Change Password
                   </Button>
                 </Grid>
               </Grid>
@@ -225,9 +225,9 @@ const UserViewSecurity = () => {
       <Grid item xs={12}>
         <Card>
           <CardHeader
-            title='Xác thực 2 bước'
+            title='Two-Step Verification'
             titleTypographyProps={{ sx: { mb: 1 } }}
-            subheader='Giữ tài khoản của bạn an toàn với xác thực 2 bước.'
+            subheader='Keep your account secure with two-step verification.'
           />
           <CardContent>
             <Typography sx={{ mb: 2.5, fontWeight: 500 }}>Gmail</Typography>
@@ -259,9 +259,10 @@ const UserViewSecurity = () => {
                 '& a': { color: 'text.secondary', textDecoration: 'none', '&:hover': { color: 'primary.main' } }
               }}
             >
-              Xác thực hai yếu tố bổ sung thêm một lớp bảo mật cho tài khoản của bạn bằng cách yêu cầu nhiều hơn chỉ mật khẩu để đăng nhập.
+              Two factor authentication adds an additional layer of security to your account by requiring more than just a
+              password to log in.
               <Link href='/' onClick={e => e.preventDefault()}>
-              Tìm hiểu thêm
+              Learn more
               </Link>
               .
             </Typography>
@@ -310,7 +311,7 @@ const UserViewSecurity = () => {
 
       <Grid item xs={12}>
         <Card>
-          <CardHeader title='Thiết bị gần đây' />
+          <CardHeader title='Recent Devices' />
 
           <Divider sx={{ m: '0 !important' }} />
 
@@ -320,10 +321,10 @@ const UserViewSecurity = () => {
                 sx={{ backgroundColor: theme => (theme.palette.mode === 'light' ? 'grey.50' : 'background.default') }}
               >
                 <TableRow>
-                  <TableCell>Trình duyệt</TableCell>
-                  <TableCell>Thiết bị</TableCell>
-                  <TableCell>Vị trí</TableCell>
-                  <TableCell>Hoạt động gần đây</TableCell>
+                  <TableCell>Browser</TableCell>
+                  <TableCell>Device</TableCell>
+                  <TableCell>Location</TableCell>
+                  <TableCell>Recent Activity</TableCell>
                 </TableRow>
               </TableHead>
 

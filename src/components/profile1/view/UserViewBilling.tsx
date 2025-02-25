@@ -2,140 +2,140 @@ import { Send } from '@mui/icons-material'
 import { Autocomplete, Button, IconButton, TextField } from '@mui/material'
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import React from 'react'
-import MuiTimeline, { TimelineProps } from '@mui/lab/Timeline'
-import SearchIcon from '@mui/icons-material/Search'
-import RefreshIcon from '@mui/icons-material/Refresh'
 import router from 'next/router'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
+import SearchIcon from '@mui/icons-material/Search'
+import RefreshIcon from '@mui/icons-material/Refresh'
+
 export const rows = [
   {
     id: 1,
-    assetType: 'SOL',
-    trasactionType: 'Nạp tài sản',
+    transactionType: 'Deposit Asset',
+    assetType: 'USDC',
     amount: '83',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
     ID_number: 'xxx-xxx-xxx-123',
-    status: 'Thành công'
+    status: 'Successful'
   },
   {
     id: 2,
-    trasactionType: 'Rút tài sản',
-    assetType: 'LPSFC',
+    transactionType: 'Withdraw Asset',
+    assetType: 'USDC',
     amount: '66',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Thành công'
+    status: 'Successful'
   },
   {
     id: 3,
-    trasactionType: 'Chuyển tài sản',
-    assetType: 'SFC-VND',
+    transactionType: 'Transfer Asset',
+    assetType: 'USDC',
     amount: '17',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Thành công'
+    status: 'Successful'
   },
   {
     id: 4,
-    trasactionType: 'Chuyển tài sản',
-    assetType: 'SOL',
+    transactionType: 'Transfer Asset',
+    assetType: 'USDC',
     amount: '52',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Thành công'
+    status: 'Successful'
   },
   {
     id: 5,
-    trasactionType: 'Nạp tài sản',
-    assetType: 'LPSFC',
+    transactionType: 'Deposit Asset',
+    assetType: 'USDC',
     amount: '16',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Thành công'
+    status: 'Successful'
   },
   {
     id: 6,
-    trasactionType: 'Rút tài sản',
-    assetType: 'SOL',
+    transactionType: 'Withdraw Asset',
+    assetType: 'USDC',
     amount: '85',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Thành công'
+    status: 'Successful'
   },
   {
     id: 7,
-    trasactionType: 'Chuyển tài sản',
-    assetType: 'SFC-VND',
+    transactionType: 'Transfer Asset',
+    assetType: 'USDC',
     amount: '17',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Thành công'
+    status: 'Successful'
   },
   {
     id: 8,
-    trasactionType: 'Chuyển tài sản',
-    assetType: 'LPSFC',
+    transactionType: 'Transfer Asset',
+    assetType: 'USDC',
     amount: '17',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Thành công'
+    status: 'Successful'
   },
   {
     id: 9,
-    trasactionType: 'Nạp tài sản',
-    assetType: 'SOL',
+    transactionType: 'Deposit Asset',
+    assetType: 'USDC',
     amount: '71',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Thành công'
+    status: 'Successful'
   },
   {
     id: 10,
-    trasactionType: 'Rút tài sản',
-    assetType: 'SFC-VND',
+    transactionType: 'Withdraw Asset',
+    assetType: 'USDC',
     amount: '470',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Thành công'
+    status: 'Successful'
   },
   {
     id: 11,
-    trasactionType: 'Nạp tài sản',
-    assetType: 'SOL',
+    transactionType: 'Deposit Asset',
+    assetType: 'USDC',
     amount: '171',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Thành công'
+    status: 'Successful'
   },
   {
     id: 12,
-    trasactionType: 'Nạp tài sản',
-    assetType: 'SFC-VND',
+    transactionType: 'Deposit Asset',
+    assetType: 'USDC',
     amount: '42',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Thành công'
+    status: 'Successful'
   }
 ]
 
 const UserViewBilling = () => {
-  const getCommodities: string[] = ['Nạp tài sản', 'Chuyển tài sản', 'Rút tài sản']
-  const getCommodityGroup: string[] =['Solana', 'Ethereum', 'bitcoin', 'SFC-VND', 'LPSFC']
+  const getTransactionTypes: string[] = ['Deposit Asset', 'Transfer Asset', 'Withdraw Asset']
+  const getAssetTypes: string[] = ['USDC']
 
   const [open, setOpen] = React.useState(false)
 
@@ -146,48 +146,47 @@ const UserViewBilling = () => {
   const handleClose = () => {
     setOpen(false)
   }
+
   const columns: GridColDef[] = [
     {
       flex: 0.1,
       field: 'id',
       minWidth: 120,
-      headerName: 'STT'
-    }
-    ,
+      headerName: 'No.'
+    },
     {
       flex: 0.1,
-      field: 'trasactionType',
+      field: 'transactionType',
       minWidth: 180,
-      headerName: 'Loại giao dịch'
+      headerName: 'Transaction Type'
     },
     {
       flex: 0.1,
       field: 'assetType',
       minWidth: 120,
-      headerName: 'Loại tài sản'
+      headerName: 'Asset Type'
     },
     {
       flex: 0.25,
       minWidth: 100,
       field: 'amount',
-      headerName: 'Số lượng'
+      headerName: 'Amount'
     },
-
     {
       flex: 0.15,
       minWidth: 180,
       field: 'status',
-      headerName: 'Trạng thái'
+      headerName: 'Status'
     },
     {
       flex: 0.25,
       minWidth: 120,
       field: 'button',
-      headerName: 'Xem chi tiết',
+      headerName: 'View Details',
       renderCell: params => {
         return (
           <div className='flex justify-center'>
-            <IconButton title='Xem chi tiết' onClick={handleViewDetail}>
+            <IconButton title='View Details' onClick={handleViewDetail}>
               <Send />
             </IconButton>
           </div>
@@ -195,63 +194,61 @@ const UserViewBilling = () => {
       }
     }
   ]
+
   const handleViewDetail = () => {
     router.push('/saving/my-portfolios/detail')
   }
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-      <Card sx={{ padding: 5, height: 100 }}>
-        <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }} marginBottom={4}>
-          <Grid item xs={3} marginLeft={2}>
-            <Autocomplete
-              options={getCommodities}
-              renderInput={params => (
-                <TextField {...params} label='Tìm bằng Loại Giao dịch' placeholder='Tìm bằng Loại Giao dịch' />
-              )}
-            />
+        <Card sx={{ padding: 5, height: 100 }}>
+          <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }} marginBottom={4}>
+            <Grid item xs={3} marginLeft={2}>
+              <Autocomplete
+                options={getTransactionTypes}
+                renderInput={params => (
+                  <TextField {...params} label='Search by Transaction Type' placeholder='Search by Transaction Type' />
+                )}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <Autocomplete
+                options={getAssetTypes}
+                renderInput={params => (
+                  <TextField {...params} label='Search by Asset Type' placeholder='Search by Asset Type' />
+                )}
+              />
+            </Grid>
+            <Button
+              sx={{ borderRadius: 0 }}
+              variant='contained'
+              style={{ width: 56, height: 56 }}
+            >
+              <SearchIcon/>
+            </Button>
+            <Button
+              sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+              variant='contained'
+              style={{  width: 45, height: 56 }}
+            >
+              <RefreshIcon/>
+            </Button>
           </Grid>
-          <Grid item xs={3}>
-            <Autocomplete
-              options={getCommodityGroup}
-              renderInput={params => (
-                <TextField {...params} label='Tìm bằng loại tài sản' placeholder='Tìm bằng loại tài sản' />
-              )}
-            />
-          </Grid>
-          <Button
-            sx={{ borderRadius: 0 }}
-            variant='contained'
-            style={{ backgroundColor: '#0292B1', width: 56, height: 56 }}
-          >
-            <SearchIcon />
-          </Button>
-          <Button
-            sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
-            variant='contained'
-            style={{ backgroundColor: '#AEB4AB', width: 45, height: 56 }}
-          >
-            <RefreshIcon />
-          </Button>
-        </Grid>
-      </Card>
+        </Card>
 
-      <Grid item xs={12} sx={{ mt: 3 }}>
-        <Grid item xs={12}>
-          <Card>
-            {/* <CardHeader title='MY PORTFOLIOS' /> */}
-            <Box sx={{ height: 500 }}>
-              <DataGrid columns={columns} rows={rows.slice(0, 10)} />
-            </Box>
-          </Card>
+        <Grid item xs={12} sx={{ mt: 3 }}>
+          <Grid item xs={12}>
+            <Card>
+              <Box sx={{ height: 500 }}>
+                <DataGrid columns={columns} rows={rows.slice(0, 10)} />
+              </Box>
+            </Card>
+          </Grid>
         </Grid>
       </Grid>
-      </Grid>
-
     </Grid>
   )
 }
+
 export default UserViewBilling
-
-
-

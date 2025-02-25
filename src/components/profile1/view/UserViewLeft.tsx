@@ -172,11 +172,11 @@ const UserViewLeft = () => {
             </CardContent> */}
 
             <CardContent>
-              <Typography variant='h6'>Thông tin người dùng</Typography>
+              <Typography variant='h6'>User information</Typography>
               <Divider sx={{ mt: theme => `${theme.spacing(1)} !important` }} />
               <Box sx={{ pt: 4, pb: 2 }}>
                 <Box sx={{ display: 'flex', mb: 4 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 700, color: 'text.secondary' }}>Tên đăng nhập:</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 700, color: 'text.secondary' }}>Username:</Typography>
                   <Typography sx={{ color: 'text.secondary' }}>@{data.username}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 4 }}>
@@ -184,7 +184,7 @@ const UserViewLeft = () => {
                   <Typography sx={{ color: 'text.secondary' }}>{data.email}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 4 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 700, color: 'text.secondary' }}>Trạng thái:</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 700, color: 'text.secondary' }}>Status:</Typography>
                   <CustomChip
                     rounded
                     skin='light'
@@ -195,7 +195,7 @@ const UserViewLeft = () => {
                   />
                 </Box>
                 <Box sx={{ display: 'flex', mb: 4 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 700, color: 'text.secondary' }}>Vai trò:</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 700, color: 'text.secondary' }}>Role:</Typography>
                   <Typography sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>{data.role}</Typography>
                 </Box>
                 {/* <Box sx={{ display: 'flex', mb: 4 }}>
@@ -203,15 +203,15 @@ const UserViewLeft = () => {
                   <Typography sx={{ color: 'text.secondary' }}>Tax-8894</Typography>
                 </Box> */}
                 <Box sx={{ display: 'flex', mb: 4 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 700, color: 'text.secondary' }}>Liên hệ:</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 700, color: 'text.secondary' }}>Contact:</Typography>
                   <Typography sx={{ color: 'text.secondary' }}>+84 {data.contact}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 4 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 700, color: 'text.secondary' }}>Địa chỉ:</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 700, color: 'text.secondary' }}>Address:</Typography>
                   <Typography sx={{ color: 'text.secondary' }}>49 Thái Nguyên, phường Phương Xài, tp Nha Trang, tỉnh Khánh Hoà</Typography>
                 </Box>
                 <Box sx={{ display: 'flex' }}>
-                  <Typography sx={{ mr: 2, fontWeight: 700, color: 'text.secondary' }}>Quốc gia:</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 700, color: 'text.secondary' }}>Country:</Typography>
                   <Typography sx={{ color: 'text.secondary' }}>{data.country}</Typography>
                 </Box>
               </Box>
@@ -219,10 +219,10 @@ const UserViewLeft = () => {
 
             <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button variant='contained' sx={{ mr: 2 }} onClick={handleEditClickOpen}>
-                Chỉnh sửa
+              Edit
               </Button>
               <Button color='error' variant='outlined' onClick={() => setSuspendDialogOpen(true)}>
-                Khoá tài khoản
+              Suspend
               </Button>
             </CardActions>
 
@@ -246,7 +246,7 @@ const UserViewLeft = () => {
                   pt: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
                 }}
               >
-                Chỉnh sửa thông tin
+                Edit user information
               </DialogTitle>
               <DialogContent
                 sx={{
@@ -260,15 +260,15 @@ const UserViewLeft = () => {
                 <form>
                   <Grid container spacing={5}>
                     <Grid item xs={12} sm={6}>
-                      <TextField fullWidth label='Họ và tên đệm' defaultValue={data.fullName.split(' ')[0]} />
+                      <TextField fullWidth label='First Name' defaultValue={data.fullName.split(' ')[0]} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <TextField fullWidth label='Tên' defaultValue={data.fullName.split(' ')[1]} />
+                      <TextField fullWidth label='Last Name' defaultValue={data.fullName.split(' ')[1]} />
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
                         fullWidth
-                        label='Tên đăng nhập'
+                        label='Username'
                         defaultValue={data.username}
                         InputProps={{ startAdornment: <InputAdornment position='start'>@</InputAdornment> }}
                       />
@@ -278,7 +278,7 @@ const UserViewLeft = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
-                        <InputLabel id='user-view-status-label'>Trạng thái</InputLabel>
+                        <InputLabel id='user-view-status-label'>Status</InputLabel>
                         <Select
                           label='Status'
                           defaultValue={data.status}
@@ -295,11 +295,11 @@ const UserViewLeft = () => {
                       <TextField fullWidth label='TAX ID' defaultValue='Tax-8894' />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <TextField fullWidth label='Số điện thoại' defaultValue={`+84 ${data.contact}`} />
+                      <TextField fullWidth label='Contact' defaultValue={`+84 ${data.contact}`} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
-                        <InputLabel id='user-view-language-label'>Địa chỉ</InputLabel>
+                        <InputLabel id='user-view-language-label'>Address</InputLabel>
                         <Select
                           label='Language'
                           defaultValue='Vietnam'
@@ -317,7 +317,7 @@ const UserViewLeft = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
-                        <InputLabel id='user-view-country-label'>Quốc gia</InputLabel>
+                        <InputLabel id='user-view-country-label'>Country</InputLabel>
                         <Select
                           label='Quốc gia'
                           defaultValue='Vietnam'

@@ -63,23 +63,23 @@ export const Step2 = React.memo(({
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
       {showValidation && !isFormValid && (
         <Alert severity="error" sx={{ mb: 2 }}>
-          Vui lòng chọn phương thức xác thực
+          Please select a verification method
         </Alert>
       )}
       
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <StyledCard>
-            <Typography variant="h6" gutterBottom sx={{ color: "#1a237e", fontWeight: "bold", p: 2 }}>
-              Xác nhận thông tin
+            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", p: 2 }}>
+              Confirm Information
             </Typography>
             <Grid container spacing={2} sx={{ px: 2, pb: 2 }}>
               {[ 
-                { label: "Tài khoản nguồn", value: accounts.find((a) => a.id === formData.sourceAccount)?.label },
-                { label: "Số tiền gửi", value: `${formData.amount} USDC` },
-                { label: "Kỳ hạn", value: terms.find((t) => t.value === formData.term)?.label },
-                { label: "Lãi suất", value: terms.find((t) => t.value === formData.term)?.interest },
-                { label: "Hình thức trả lãi", value: formData.interestPayment === "end" ? "Cuối kỳ" : "Hàng tháng" },
+                { label: "Source Account", value: accounts.find((a) => a.id === formData.sourceAccount)?.label },
+                { label: "Deposit Amount", value: `${formData.amount} USDC` },
+                { label: "Term", value: terms.find((t) => t.value === formData.term)?.label },
+                { label: "Interest Rate", value: terms.find((t) => t.value === formData.term)?.interest },
+                { label: "Interest Payment Method", value: formData.interestPayment === "end" ? "End of Term" : "Monthly" },
               ].map((item, index) => (
                 <React.Fragment key={index}>
                   <Grid item xs={6}>
@@ -96,23 +96,22 @@ export const Step2 = React.memo(({
 
         <Grid item xs={12}>
           <StyledCard>
-            <Typography variant="h6" gutterBottom sx={{ color: "#1a237e", fontWeight: "bold", p: 2 }}>
-              Phương thức xác thực
+            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", p: 2 }}>
+              Verification Method
             </Typography>
             <FormControl fullWidth error={errors.verificationMethod} sx={{ px: 2, pb: 2 }}>
-              <InputLabel>Chọn phương thức xác thực</InputLabel>
+              <InputLabel>Select Verification Method</InputLabel>
               <Select
                 value={formData.verificationMethod}
                 onChange={handleVerificationMethodChange}
-                label="Chọn phương thức xác thực"
+                label="Select Verification Method"
               >
-                <MenuItem value="password">Mật khẩu đăng nhập</MenuItem>
-                <MenuItem value="sms">OTP điện thoại</MenuItem>
-                <MenuItem value="email">OTP email</MenuItem>
+                {/* <MenuItem value="password">Login Password</MenuItem> */}
+                <MenuItem value="email">Email OTP</MenuItem>
               </Select>
               {errors.verificationMethod && (
                 <Typography color="error" variant="caption" sx={{ mt: 1 }}>
-                  Vui lòng chọn phương thức xác thực
+                  Please select a verification method
                 </Typography>
               )}
             </FormControl>

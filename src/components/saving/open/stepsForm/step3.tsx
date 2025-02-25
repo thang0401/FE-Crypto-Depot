@@ -38,24 +38,25 @@ export const Step3 = React.memo(({ formData, accounts, terms, onFieldChange, sho
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <StyledCard>
-            <Typography variant="h6" gutterBottom sx={{ color: "#1a237e", fontWeight: "bold", p: 2 }}>
-              Xác thực giao dịch
+            <Typography variant="h6" gutterBottom sx={{ 
+              fontWeight: "bold", p: 2 }}>
+              Transaction Verification
             </Typography>
             <Grid container spacing={2} sx={{ px: 2, pb: 2 }}>
               <Grid item xs={12}>
                 <TextField 
                   fullWidth 
-                  label="Nhập mã OTP" 
+                  label="Enter OTP Code" 
                   value={formData.otp} 
                   onChange={handleOtpChange} 
                   error={showValidation && !formData.otp} 
-                  helperText={showValidation && !formData.otp ? "Vui lòng nhập mã OTP" : ""}
+                  helperText={showValidation && !formData.otp ? "Please enter the password or OTP code" : ""}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Alert severity="info" icon={<AlertCircle />}>
-                  <AlertTitle>Thông báo</AlertTitle>
-                  Mã OTP đã được gửi đến {formData.verificationMethod === "sms" ? "điện thoại" : "email"} của bạn
+                  <AlertTitle>Notification</AlertTitle>
+                  The OTP code has been sent to your {formData.verificationMethod === "sms" ? "phone" : "email"}
                 </Alert>
               </Grid>
             </Grid>
@@ -64,22 +65,23 @@ export const Step3 = React.memo(({ formData, accounts, terms, onFieldChange, sho
 
         <Grid item xs={12}>
           <StyledCard>
-            <Typography variant="h6" gutterBottom sx={{ color: "#1a237e", fontWeight: "bold", p: 2 }}>
-              Thông tin giao dịch
+            <Typography variant="h6" gutterBottom sx={{ 
+              fontWeight: "bold", p: 2 }}>
+              Transaction Information
             </Typography>
             <Grid container spacing={2} sx={{ px: 2, pb: 2 }}>
               {[{
-                label: "Tài khoản nguồn",
+                label: "Source Account",
                 value: accounts.find((a) => a.id === formData.sourceAccount)?.label
               }, {
-                label: "Số tiền gửi",
+                label: "Deposit Amount",
                 value: `${formData.amount} USDC`,
                 style: { fontWeight: "bold", color: "red", fontSize: 14 }
               }, {
-                label: "Kỳ hạn",
+                label: "Term",
                 value: terms.find((t) => t.value === formData.term)?.label
               }, {
-                label: "Lãi suất",
+                label: "Interest Rate",
                 value: terms.find((t) => t.value === formData.term)?.interest
               }].map((item, index) => (
                 <React.Fragment key={index}>

@@ -6,60 +6,66 @@ const navigation = (): HorizontalNavItemsType => {
   return [
     {
       icon: 'bx:home-circle',
-      title: 'Trang chủ',
+      title: 'Home',
       path: '/dashboard'
     },
     {
       icon: 'bx:customize',
-      title: 'Giao dịch nhanh',
+      title: 'Quick Transactions',
       children: [
         {
-          title: 'Chuyển tài sản',
+          title: 'Transfer Asset',
           icon: 'bx:transfer',
           path: '/make-transaction/transfer-asset'
         },
         {
-          title: 'Nạp tài sản',
+          title: 'Deposit Asset',
           icon: 'bx:send',
           path: '/make-transaction/deposit-asset'
         },
         {
-          title: 'Rút tài sản',
+          title: 'Withdraw Asset',
           icon: 'bx:asset',
           path: '/make-transaction/withdraw-asset'
+        },
+        {
+          title: 'Transfer Debit',
+          icon: 'bx:asset',
+          path: '/make-transaction/transfer-debit'
         }
       ]
     },
     {
       icon: 'bx:customize',
-      title: 'Gửi tiết kiệm',
+      title: 'Savings',
       children: [
         {
-          title: 'Danh sách sổ tiết kiệm',
+          title: 'My Savings Portfolios',
           icon: 'bx:envelope',
           path: '/saving/my-portfolios'
         },
         {
-          title: 'Gửi tiền tiết kiệm',
+          title: 'Add Savings Asset',
           icon: 'bx:send',
           path: '/saving/add-saving-asset'
-        },   {
-          title: 'Tạo danh mục tiết kiệm',
+        },
+        {
+          title: 'Create Savings Portfolio',
           icon: 'bx:send',
           path: '/saving/add-saving-asset/open'
         },
         // {
-        //   title: 'Tiền gửi rút gốc',
+        //   title: 'Principal Withdrawal',
         //   icon: 'bx:transfer',
         //   path: '/saving/transfer-asset'
         // },
         // {
-        //   title: 'Tiền gửi cho con',
+        //   title: 'Child Savings',
         //   icon: 'bx:asset',
         //   path: '/saving/withdraw-asset'
         // },
         // {
-        //   title: 'Tiền gửi cho con',
+        //   title: 'Child Savings',
         //   icon: 'bx:asset',
         //   path: '/saving/open-saving'
         // }
@@ -67,38 +73,36 @@ const navigation = (): HorizontalNavItemsType => {
     },
     {
       icon: 'bx:collection',
-      title: 'Tra cứu giao dịch',
+      title: 'Transaction History',
       path: '/transaction-history'
     },
 
     {
       icon: 'bx:collection',
-      title: 'Thẻ tín dụng',
+      title: 'Credit Card',
       path: '/credit-card'
     },
     {
       icon: 'bx:grid-alt',
-      title: 'Trang cá nhân',
-     children: [
-      {
-        title: 'Bảo mật',
-         path: '/user-profile/security'
-       },
-
-       {
-        title: 'Danh sách sổ tiết kiệm',
-        path: '/user-profile/account'
-
-       },
-       {
-        title: 'Lịch sử giao dịch',
-         path: '/user-profile/billing-plan/'
-       },
-       {
-        title: 'Thông tin',
-         path: '/user-profile/notification/'
-       }
-     ]
+      title: 'Personal Page',
+      children: [
+        {
+          title: 'Security',
+          path: '/user-profile/security'
+        },
+        {
+          title: 'Account',
+          path: '/user-profile/account'
+        },
+        {
+          title: 'Billing History',
+          path: '/user-profile/billing-plan/'
+        },
+        {
+          title: 'Notifications',
+          path: '/user-profile/notification/'
+        }
+      ]
     },
     {
       title: 'Blog',
@@ -107,7 +111,7 @@ const navigation = (): HorizontalNavItemsType => {
     },
     {
       icon: 'bx:palette',
-      title: 'Về chúng tôi',
+      title: 'About Us',
       path: '/about-us'
     }
   ]

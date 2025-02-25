@@ -24,26 +24,26 @@ const AboutUs = () => {
   const futureVisions = [
     {
       icon: <Cpu className="w-16 h-16 transition-all duration-300 group-hover:scale-110" />,
-      title: "AI-Driven Tài Chính",
-      description: "Tích hợp trí tuệ nhân tạo để cung cấp tư vấn tài chính cá nhân hóa và quản lý rủi ro thông minh.",
+      title: "AI-Driven Finance",
+      description: "Integrating artificial intelligence to provide personalized financial advice and smart risk management.",
     },
     {
       icon: <Network className="w-16 h-16 transition-all duration-300 group-hover:scale-110" />,
-      title: "Hệ Sinh Thái DeFi Toàn Diện",
+      title: "Comprehensive DeFi Ecosystem",
       description:
-        "Xây dựng một hệ sinh thái tài chính phi tập trung hoàn chỉnh, kết nối mọi dịch vụ tài chính trên blockchain.",
+        "Building a complete decentralized finance ecosystem, connecting all financial services on the blockchain.",
     },
     {
       icon: <Leaf className="w-16 h-16 transition-all duration-300 group-hover:scale-110" />,
-      title: "Tài Chính Xanh",
+      title: "Green Finance",
       description:
-        "Phát triển các sản phẩm tài chính bền vững và thân thiện với môi trường, hỗ trợ các dự án xanh toàn cầu.",
+        "Developing sustainable and environmentally friendly financial products, supporting global green projects.",
     },
     {
       icon: <Shield className="w-16 h-16 transition-all duration-300 group-hover:scale-110" />,
-      title: "Bảo Mật Lượng Tử",
+      title: "Quantum Security",
       description:
-        "Áp dụng công nghệ mã hóa lượng tử để bảo vệ tài sản số của khách hàng trước các mối đe dọa trong tương lai.",
+        "Applying quantum encryption technology to protect customers' digital assets from future threats.",
     },
   ]
   return (
@@ -55,10 +55,10 @@ const AboutUs = () => {
             <Grid item xs={12} md={6}>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
                 <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: "bold" }}>
-                  Về CryptoBank
+                  About CryptoBank
                 </Typography>
                 <Typography variant="h5" sx={{ mb: 4 }}>
-                  Chúng tôi đang định hình tương lai của ngân hàng với công nghệ blockchain và tiền điện tử.
+                  We are shaping the future of banking with blockchain and cryptocurrency technology.
                 </Typography>
               </motion.div>
             </Grid>
@@ -96,26 +96,26 @@ const AboutUs = () => {
                 transition={{ duration: 0.8 }}
               >
                 <Typography variant="h3" component="h2" gutterBottom sx={{ fontWeight: "bold" }}>
-                  Sứ mệnh của chúng tôi
+                  Our Mission
                 </Typography>
                 <Typography variant="body1" sx={{ mb: 4 }}>
-                  CryptoBank cam kết mang đến một hệ thống tài chính toàn diện và dễ tiếp cận cho mọi người thông qua
-                  việc tận dụng sức mạnh của công nghệ blockchain và tiền điện tử. Chúng tôi tin rằng tương lai của tài
-                  chính là phi tập trung, an toàn và minh bạch.
+                  CryptoBank is committed to providing a comprehensive and accessible financial system for everyone by
+                  leveraging the power of blockchain and cryptocurrency technology. We believe that the future of finance
+                  is decentralized, secure, and transparent.
                 </Typography>
                 <Typography variant="body1" sx={{ mb: 4 }}>
-                  Chúng tôi cũng đặt mục tiêu giáo dục và trao quyền cho người dùng về tài chính số, giúp họ đưa ra
-                  quyết định tài chính thông minh và tự tin trong thời đại kỹ thuật số này.
+                  We also aim to educate and empower users about digital finance, helping them make smart and confident
+                  financial decisions in this digital era.
                 </Typography>
               </motion.div>
             </Grid>
             <Grid item xs={12} md={6}>
               <Grid container spacing={2}>
                 {[
-                  { icon: <Users className="w-6 h-6" />, text: "Phục vụ hơn 10000+ khách hàng" },
-                  { icon: <Target className="w-6 h-6" />, text: "Hoạt động tại 15+ quốc gia" },
-                  { icon: <Zap className="w-6 h-6" />, text: "Xử lý 2000+ giao dịch mỗi giây" },
-                  { icon: <Shield className="w-6 h-6" />, text: "Bảo mật 24/7 cho tài sản của bạn" },
+                  { icon: <Users className="w-6 h-6" />, text: "Serving over 10,000+ customers" },
+                  { icon: <Target className="w-6 h-6" />, text: "Operating in 15+ countries" },
+                  { icon: <Zap className="w-6 h-6" />, text: "Processing 2,000+ transactions per second" },
+                  { icon: <Shield className="w-6 h-6" />, text: "24/7 security for your assets" },
                 ].map((item, index) => (
                   <Grid item xs={12} sm={6} key={index}>
                     <Card sx={{ height: "100%", borderRadius: "16px", boxShadow: "0 4px 20px 0 rgba(0,0,0,0.1)" }}>
@@ -154,7 +154,7 @@ const AboutUs = () => {
             gutterBottom
             sx={{ mb: 8, fontWeight: "bold" }}
           >
-            TẦM NHÌN TƯƠNG LAI
+            FUTURE VISION
           </Typography>
           <Grid container spacing={4}>
             {futureVisions.map((vision, index) => (
@@ -244,10 +244,10 @@ const AboutUs = () => {
                 transition={{ duration: 0.8 }}
               >
                 <Typography variant="h3" component="h2" gutterBottom sx={{ fontWeight: "bold" }}>
-                  Khám Phá Tương Lai Tài Chính
+                  Discover the Future of Finance
                 </Typography>
                 <Typography variant="h6" sx={{ mb: 4 }}>
-                  Tham gia cùng chúng tôi trong cuộc cách mạng tài chính số. Định hình tương lai của bạn với CryptoBank.
+                  Join us in the financial digital revolution. Shape your future with CryptoBank.
                 </Typography>
                 <Button
                   variant="contained"
@@ -263,7 +263,7 @@ const AboutUs = () => {
                     boxShadow: "0 4px 14px 0 rgba(0,0,0,0.3)",
                   }}
                 >
-                  Khởi Động Tương Lai
+                  Start the Future
                 </Button>
               </motion.div>
             </Grid>
@@ -284,7 +284,7 @@ const AboutUs = () => {
                   {/* <Box
                     component="img"
                     src=""
-                    alt="Tương Lai Tài Chính"
+                    alt="Future of Finance"
                     sx={{
                       width: "100%",
                       height: "auto",

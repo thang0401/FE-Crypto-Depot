@@ -1,7 +1,8 @@
 "use client"
 
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
+import { useRouter } from "next/navigation"
 import { Wallet, Shield, ArrowRight, Lock, Activity, CreditCard, ScrollText, Rocket } from "lucide-react"
 import {
   Button,
@@ -21,13 +22,41 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 
 const Dashboard = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false)
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+  // const theme = useTheme()
+  // const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+  const router = useRouter()
+  const [openKycDialog, setOpenKycDialog] = useState(false)
+  const [kycStatus, setKycStatus] = useState(false) // Assuming this status comes from an API
+
+
+  // Simulate checking kyc_status on login
+  useEffect(() => {
+    // Replace with an actual API call to get kyc_status
+    const userKycStatus = false // Mock data from server
+    setKycStatus(userKycStatus)
+    if (!userKycStatus) {
+      setOpenKycDialog(true)
+    }
+  }, [])
+
+  const handleConfirmKyc = () => {
+    setOpenKycDialog(false)
+    router.push("/kyc-center")
+  }
+
+  const handleSkipKyc = () => {
+    setOpenKycDialog(false)
+  }
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
@@ -46,7 +75,7 @@ const Dashboard = () => {
   )
 
   return (
-    <Box sx={{ bgcolor: "#f0f4f8" }}>
+    <Box>
       <Drawer
         variant="temporary"
         anchor="right"
@@ -60,16 +89,16 @@ const Dashboard = () => {
       </Drawer>
 
       {/* Hero Section */}
-      <Box sx={{ pt: 16, pb: 12, background: "linear-gradient(135deg, #f6f0fd 0%, #e2ecfe 100%)" }}>
+      <Box sx={{ pt: 16, pb: 12 }}>
         <Container maxWidth="lg">
           <Grid container spacing={6} alignItems="center">
             <Grid item xs={12} md={6}>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: "bold", color: "#1a237e" }}>
-                  CryptoBank is <span style={{ color: "#3f51b5" }}>FUTURE</span>
+                <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: "bold" }}>
+                  CryptoBank is <span style={{ color: "inherit" }}>FUTURE</span>
                 </Typography>
-                <Typography variant="h5" sx={{ color: "text.secondary", mb: 4 }}>
-                Experience seamless banking services powered by cryptocurrency. Secure, fast, and built for the modern era.
+                <Typography variant="h5" sx={{ mb: 4 }}>
+                  Experience seamless banking services powered by cryptocurrency. Secure, fast, and built for the modern era.
                 </Typography>
                 <Box sx={{ display: "flex", gap: 2 }}>
                   <Button
@@ -77,9 +106,7 @@ const Dashboard = () => {
                     size="large"
                     endIcon={<ArrowRight />}
                     sx={{
-                      bgcolor: "#3f51b5",
-                      "&:hover": { bgcolor: "#283593" },
-                      boxShadow: "0 4px 14px 0 rgba(63,81,181,0.39)",
+                      "&:hover": { bgcolor: "inherit" },
                     }}
                   >
                     Get started now
@@ -88,9 +115,7 @@ const Dashboard = () => {
                     variant="outlined"
                     size="large"
                     sx={{
-                      borderColor: "#3f51b5",
-                      color: "#3f51b5",
-                      "&:hover": { borderColor: "#283593", color: "#283593" },
+                      "&:hover": { borderColor: "inherit", color: "inherit" },
                     }}
                   >
                     Learn more
@@ -109,8 +134,6 @@ const Dashboard = () => {
                     sx={{
                       position: "absolute",
                       inset: "-10%",
-                      background: "linear-gradient(135deg, #3f51b5 0%, #5c6bc0 100%)",
-                      borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
                       opacity: 0.1,
                       filter: "blur(40px)",
                     }}
@@ -121,7 +144,6 @@ const Dashboard = () => {
                       position: "relative",
                       borderRadius: "20px",
                       overflow: "hidden",
-                      boxShadow: "0 20px 80px 0 rgba(63,81,181,0.3)",
                     }}
                   >
                     {/* 1st Image dashboard */}
@@ -139,31 +161,31 @@ const Dashboard = () => {
       </Box>
 
       {/* Features Section */}
-      <Box sx={{ py: 12, bgcolor: "#ffffff" }}>
+      <Box sx={{ py: 12 }}>
         <Container maxWidth="lg">
           <Typography
             variant="h3"
             component="h2"
             align="center"
             gutterBottom
-            sx={{ mb: 8, fontWeight: "bold", color: "#1a237e" }}
+            sx={{ mb: 8, fontWeight: "bold" }}
           >
             MỌI THỨ BẠN CẦN, CHỈ CẦN MỘT CHẠM
           </Typography>
           <Grid container spacing={4}>
             {[
               {
-                icon: <Wallet className="w-12 h-12 text-blue-600" />,
+                icon: <Wallet className="w-12 h-12" />,
                 title: "Crypto wallet",
                 description: "Securely store your cryptocurrency with real-time tracking and management.",
               },
               {
-                icon: <Activity className="w-12 h-12 text-blue-600" />,
+                icon: <Activity className="w-12 h-12" />,
                 title: "Instant transactions",
                 description: "Execute transactions instantly with competitive rates and minimal fees.",
               },
               {
-                icon: <Shield className="w-12 h-12 text-blue-600" />,
+                icon: <Shield className="w-12 h-12" />,
                 title: "High Security",
                 description: "Your assets are safeguarded with top-tier security and multi-factor authentication.",
               },
@@ -180,7 +202,6 @@ const Dashboard = () => {
                       transition: "0.3s",
                       "&:hover": { transform: "translateY(-8px)" },
                       borderRadius: "16px",
-                      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.1)",
                     }}
                   >
                     <CardContent sx={{ p: 4 }}>
@@ -188,11 +209,11 @@ const Dashboard = () => {
                       <Typography
                         variant="h5"
                         gutterBottom
-                        sx={{ fontWeight: "bold", textAlign: "center", color: "#1a237e" }}
+                        sx={{ fontWeight: "bold", textAlign: "center" }}
                       >
                         {feature.title}
                       </Typography>
-                      <Typography color="text.secondary" align="center">
+                      <Typography align="center">
                         {feature.description}
                       </Typography>
                     </CardContent>
@@ -205,7 +226,7 @@ const Dashboard = () => {
       </Box>
 
       {/* Benefits Section */}
-      <Box sx={{ py: 12, bgcolor: "#f0f4f8" }}>
+      <Box sx={{ py: 12 }}>
         <Container maxWidth="lg">
           <Grid container spacing={8} alignItems="center">
             <Grid item xs={12} md={6}>
@@ -218,29 +239,29 @@ const Dashboard = () => {
                   variant="h3"
                   component="h2"
                   gutterBottom
-                  sx={{ fontWeight: "bold", color: "#1a237e", mb: 4 }}
+                  sx={{ fontWeight: "bold", mb: 4 }}
                 >
                   Why Choose CryptoBank?
                 </Typography>
                 <Box sx={{ mt: 12 }}>
                   {[
                     {
-                      icon: <Lock className="w-8 h-8 text-blue-600" />,
+                      icon: <Lock className="w-8 h-8" />,
                       title: "Ultimate asset protection",
                       description: "Only you have access to your account balance, ensuring absolute security against unauthorized access.",
                     },
                     {
-                      icon: <ScrollText className="w-8 h-8 text-blue-600" />,
+                      icon: <ScrollText className="w-8 h-8" />,
                       title: "Crypto inheritance planning",
                       description: "Set up an inheritance plan to transfer your digital assets in case of unforeseen circumstances.",
                     },
                     {
-                      icon: <Rocket className="w-8 h-8 text-blue-600" />,
+                      icon: <Rocket className="w-8 h-8" />,
                       title: "Perfect for crypto beginners",
                       description: "CryptoBank helps you invest and store assets safely, protecting you from exchange failures.",
                     },
                     {
-                      icon: <CreditCard className="w-8 h-8 text-blue-600" />,
+                      icon: <CreditCard className="w-8 h-8" />,
                       title: "Seamless crypto transfers",
                       description: "Send crypto to others—even those without a Web3 wallet—in just three minutes after creating an account.",
                     },
@@ -251,18 +272,16 @@ const Dashboard = () => {
                           p: 2,
                           pb: 1,
                           mr: 3,
-                          bgcolor: "#c3e1f7",
-                          color: "primary.main",
                           borderRadius: "12px",
                         }}
                       >
                         {benefit.icon}
                       </Paper>
                       <Box>
-                        <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#1a237e" }}>
+                        <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
                           {benefit.title}
                         </Typography>
-                        <Typography color="text.secondary">{benefit.description}</Typography>
+                        <Typography>{benefit.description}</Typography>
                       </Box>
                     </Box>
                   ))}
@@ -280,8 +299,6 @@ const Dashboard = () => {
                     sx={{
                       position: "absolute",
                       inset: "-10%",
-                      background: "linear-gradient(135deg, #5c6bc0 0%, #3f51b5 100%)",
-                      borderRadius: "70% 30% 30% 70% / 60% 40% 60% 40%",
                       opacity: 0.1,
                       filter: "blur(40px)",
                     }}
@@ -292,7 +309,6 @@ const Dashboard = () => {
                       position: "relative",
                       borderRadius: "20px",
                       overflow: "hidden",
-                      boxShadow: "0 20px 80px 0 rgba(63,81,181,0.3)",
                     }}
                   >
                     <img
@@ -309,42 +325,49 @@ const Dashboard = () => {
       </Box>
 
       {/* CTA Section */}
-      <Box sx={{ py: 8, bgcolor: "#e3f2fd" }}>
-        <Container maxWidth="lg"  >
+      <Box 
+        sx={{
+        py: 8,
+        marginLeft: 10,
+        marginRight: 8,
+        borderRadius: 4, 
+        bgcolor: "background.paper",
+        boxShadow: 3
+        }}
+      >
+        <Container maxWidth="lg">
           <Grid container spacing={6} alignItems="center">
             <Grid item xs={12} md={6}>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                <Typography variant="h3" component="h2" gutterBottom sx={{ fontWeight: "bold", color: "#1a237e" }}>
-                Ready to Create an Account?
+                <Typography variant="h3" component="h2" gutterBottom sx={{ fontWeight: "bold" }}>
+                  Ready to Create an Account?
                 </Typography>
-                <Typography variant="body1" sx={{ mb: 4, color: "text.secondary" , textAlign: "justify", mr: 5 }} >
-                Start your cryptocurrency investment journey securely with CryptoBank. Are you ready to protect your digital assets from common market risks? CryptoBank provides a comprehensive custody solution, allowing you to manage assets effortlessly without security concerns or complex procedures.
+                <Typography variant="body1" sx={{ mb: 4, textAlign: "justify", mr: 5 }}>
+                  Start your cryptocurrency investment journey securely with CryptoBank. Are you ready to protect your digital assets from common market risks? CryptoBank provides a comprehensive custody solution, allowing you to manage assets effortlessly without security concerns or complex procedures.
                 </Typography>
               </motion.div>
             </Grid>
-            <Grid item xs={12} md={6} >
+            <Grid item xs={12} md={6}>
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8 }}
               >
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-                  <Typography variant="h5" sx={{ color: "#3f51b5", mb: 8 }}>
-                  Sign up now and receive $5 in transaction fees!
+                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" , paddingLeft: 3}}>
+                  <Typography variant="h5" sx={{ mb: 8 }}>
+                    Sign up now and receive $5 in transaction fees!
                   </Typography>
                   <Button
                     variant="contained"
                     size="large"
                     endIcon={<ArrowRight />}
                     sx={{
-                      bgcolor: "#3f51b5",
-                      "&:hover": { bgcolor: "#283593" },
-                      boxShadow: "0 4px 14px 0 rgba(63,81,181,0.39)",
+                      "&:hover": { bgcolor: "inherit" },
                       fontWeight: "bold",
                       marginLeft: 40
                     }}
                   >
-                    Create an Account Now 
+                    Create an Account Now
                   </Button>
                 </Box>
               </motion.div>
@@ -354,14 +377,14 @@ const Dashboard = () => {
       </Box>
 
       {/* FAQ Section */}
-      <Box sx={{ py: 12, bgcolor: "#ffffff" }}>
+      <Box sx={{ py: 12 }}>
         <Container maxWidth="lg">
           <Typography
             variant="h3"
             component="h2"
             align="center"
             gutterBottom
-            sx={{ mb: 8, fontWeight: "bold", color: "#1a237e" }}
+            sx={{ mb: 8, fontWeight: "bold" }}
           >
             FAQ
           </Typography>
@@ -370,38 +393,31 @@ const Dashboard = () => {
               {[
                 {
                   question: "What is CryptoBank?",
-                  answer:
-                    "CryptoBank is a Web3 platform that enables users to manage crypto assets without handling wallets or private keys.",
+                  answer: "CryptoBank is a Web3 platform that enables users to manage crypto assets without handling wallets or private keys.",
                 },
                 {
                   question: "Does CryptoBank store my wallet and assets?",
-                  answer:
-                    "Yes, CryptoBank utilizes a unique Web3 wallet to manage user assets, ensuring safe custody storage.",
+                  answer: "Yes, CryptoBank utilizes a unique Web3 wallet to manage user assets, ensuring safe custody storage.",
                 },
                 {
                   question: "How do I sign up and use CryptoBank?",
-                  answer:
-                    "Simply register with a Username and Password. No need to create a wallet or manage private keys.",
+                  answer: "Simply register with a Username and Password. No need to create a wallet or manage private keys.",
                 },
                 {
                   question: "Can I receive Web3 assets from other wallets?",
-                  answer:
-                    "Yes, you can receive assets from any Web3 wallet using just your Username—no login required.",
+                  answer: "Yes, you can receive assets from any Web3 wallet using just your Username—no login required.",
                 },
                 {
                   question: "How do I transfer assets between Usernames?",
-                  answer:
-                    "You can transfer Web3 assets to any Username within the system without blockchain interactions.",
+                  answer: "You can transfer Web3 assets to any Username within the system without blockchain interactions.",
                 },
                 {
                   question: "Does CryptoBank charge transaction fees?",
-                  answer:
-                    "Transaction fees are optimized, reducing costs by processing transactions internally.",
+                  answer: "Transaction fees are optimized, reducing costs by processing transactions internally.",
                 },
                 {
                   question: "Do I need Web3 or blockchain knowledge to use CryptoBank?",
-                  answer:
-                    "No, CryptoBank is user-friendly—just a Username and Password are needed, with no blockchain expertise required.",
+                  answer: "No, CryptoBank is user-friendly—just a Username and Password are needed, with no blockchain expertise required.",
                 },
                 {
                   question: "What happens if I forget my password?",
@@ -409,26 +425,19 @@ const Dashboard = () => {
                 },
                 {
                   question: "Does CryptoBank support cross-chain transactions?",
-                  answer:
-                    "Currently, CryptoBank supports select blockchains but is exploring cross-chain transaction capabilities for the future."
+                  answer: "Currently, CryptoBank supports select blockchains but is exploring cross-chain transaction capabilities for the future.",
                 },
               ].map((faq, index) => (
                 <Accordion
                   key={index}
-                  sx={{ mb: 2, boxShadow: "0 2px 8px rgba(0,0,0,0.1)", borderRadius: "8px !important" }}
+                  sx={{ mb: 2, borderRadius: "8px !important" }}
                 >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls={`panel${index + 1}-content`}
                     id={`panel${index + 1}-header`}
-                    sx={{
-                      backgroundColor: "#f0f4f8",
-                      "&.Mui-expanded": {
-                        backgroundColor: "#e3f2fd",
-                      },
-                    }}
                   >
-                    <Typography sx={{ fontWeight: "bold", color: "#1a237e" }}>{faq.question}</Typography>
+                    <Typography sx={{ fontWeight: "bold" }}>{faq.question}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <Typography>{faq.answer}</Typography>
@@ -439,9 +448,26 @@ const Dashboard = () => {
           </Grid>
         </Container>
       </Box>
+
+      {/* KYC Dialog */}
+      <Dialog open={openKycDialog} onClose={handleSkipKyc}>
+        <DialogTitle>Complete Identity Verification (KYC)</DialogTitle>
+        <DialogContent>
+          <Typography>
+          Your account has not been verified. Please complete KYC to access all features.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleSkipKyc} color="primary">
+          Skip
+          </Button>
+          <Button onClick={handleConfirmKyc} variant="contained" color="primary">
+          Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   )
 }
 
 export default Dashboard
-

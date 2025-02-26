@@ -193,7 +193,7 @@ const Dashboard = () => {
                 // description: "Securely store your cryptocurrency with real-time tracking and management.",
                 description: "A digital asset inheritance plan to safeguard cherished memories and vital information.",
                 // "Một kế hoạch thừa kế tài sản kỹ thuật số để bảo vệ những kỷ niệm quý giá và thông tin quan trọng."
-              },              
+              },
               {
                 icon: <Shield className="w-12 h-12" />,
                 title: "Confidential savings",
@@ -258,7 +258,7 @@ const Dashboard = () => {
                     {
                       icon: <Shield className="w-8 h-8" />,
                       title: "Private & Anonymous",
-                      description: "Your financial data remains fully private—no tracking, no exposure, just true financial freedom.",
+                      description: "Your saving account data remains fully private no-tracking, no exposure, just true financial freedom.",
                     },
                     {
                       icon: <ScrollText className="w-8 h-8" />,
@@ -267,10 +267,10 @@ const Dashboard = () => {
                     },
                     {
                       icon: <Users className="w-8 h-8" />,
-                      title: "Community-Driven Support",
-                      description: "Get assistance from a dedicated support team and an active crypto community at any time.",
+                      title: "Recoverable wallet",
+                      description: "Lost access to your wallet? No worries. We will keep your assets secure and recoverable.",
                     },
-                    {  
+                    {
                       icon: <Rocket className="w-8 h-8" />,
                       title: "Perfect for crypto beginners",
                       description: "CryptoBank helps you invest and store assets safely, protecting you from exchange failures.",
@@ -285,7 +285,7 @@ const Dashboard = () => {
                     //   title: "Borderless Access",
                     //   description: "Manage and grow your digital assets globally, without restrictions or intermediaries.",
                     // },
-                    
+
                     // {
                     //   icon: <Lock className="w-8 h-8" />,
                     //   title: "Ultimate asset protection",
@@ -297,7 +297,7 @@ const Dashboard = () => {
                     //   description: "CryptoBank helps you invest and store assets safely, protecting you from exchange failures.",
                     // },
                     // {
-                                        
+
                     // {
                     //   icon: <CreditCard className="w-8 h-8" />,
                     //   title: "Seamless crypto transfers",
@@ -363,12 +363,12 @@ const Dashboard = () => {
       </Box>
 
       {/* CTA Section */}
-      <Box 
+      <Box
         sx={{
         py: 8,
         marginLeft: 10,
         marginRight: 8,
-        borderRadius: 4, 
+        borderRadius: 4,
         bgcolor: "background.paper",
         boxShadow: 3
         }}

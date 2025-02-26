@@ -2,7 +2,6 @@ import * as React from 'react'
 import { AppBar, Toolbar, Typography, Container, Grid, Card, CardActionArea, CardContent, CardMedia, Box, List, ListItem, ListItemText, Divider } from '@mui/material'
 import { styled } from '@mui/system'
 
-// Styled components
 const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
   marginBottom: theme.spacing(4),
@@ -20,42 +19,35 @@ const StyledCardContent = styled(CardContent)(({ theme }) => ({
   flex: 1,
 }))
 
-// Mock data for blog posts
 const blogPosts = [
-  { id: 4, title: 'SUI: Hệ sinh thái phi tập trung hiệu quả và an toàn', excerpt: ' Dự án SUI là một blockchain hiệu suất cao, mang lại sự an toàn và khả năng mở rộng vượt trội nhờ vào mô hình dữ liệu đối tượng', image: '/sui-placeholder.svg?height=200&width=300' },
-  { id: 5, title: 'NEAR: Blockchain thân thiện với nhà phát triển và người dùng', excerpt: ' NEAR Protocol là một blockchain hiệu suất cao, thân thiện với nhà phát triển và người dùng.', image: '/near-placeholder.svg?height=200&width=300' },
-  { id: 6, title: 'SOLANA: Blockchain nhanh và chi phí thấp', excerpt: 'Solana là một blockchain siêu nhanh với chi phí giao dịch cực thấp, thu hút nhiều dự án DeFi, NFT và Web3.', image: '/solana-placeholder.svg?height=200&width=300' },
-  { id: 1, title: 'Tương lai của Defi', excerpt: 'Khám phá sự tiềm năng của tài chính phi tập trung', image: '/placeholder.svg?height=200&width=300' },
-  { id: 2, title: 'NFTs: Nghệ thuật kỹ thuật số', excerpt: 'Non-fungible tokens đang cách mạng hóa các ngành công nghiệp khác nhau như thế nào...', image: '/placeholder.svg?height=200&width=300' },
-  { id: 3, title: 'Web3 và nhà sáng tạo kinh tế', excerpt: 'Blockchain đang trao quyền cho nhà sáng tạo nội dung như thế nào', image: '/placeholder.svg?height=200&width=300' },
-
+  { id: 4, title: 'SUI: Efficient and Secure Decentralized Ecosystem', excerpt: 'The SUI project is a high-performance blockchain, delivering superior security and scalability thanks to its object data model', image: '/sui-placeholder.svg?height=200&width=300' },
+  { id: 5, title: 'NEAR: Developer and User-Friendly Blockchain', excerpt: 'NEAR Protocol is a high-performance blockchain, friendly to both developers and users.', image: '/near-placeholder.svg?height=200&width=300' },
+  { id: 6, title: 'SOLANA: Fast and Low-Cost Blockchain', excerpt: 'Solana is an ultra-fast blockchain with extremely low transaction costs, attracting many DeFi, NFT, and Web3 projects.', image: '/solana-placeholder.svg?height=200&width=300' },
+  { id: 1, title: 'The Future of DeFi', excerpt: 'Exploring the potential of decentralized finance', image: '/placeholder.svg?height=200&width=300' },
+  { id: 2, title: 'NFTs: Digital Art', excerpt: 'How non-fungible tokens are revolutionizing various industries...', image: '/placeholder.svg?height=200&width=300' },
+  { id: 3, title: 'Web3 and the Creator Economy', excerpt: 'How blockchain is empowering content creators', image: '/placeholder.svg?height=200&width=300' },
 ]
 
-// Mock data for categories
-const categories = ['DeFi', 'NFTs', 'DAOs', 'Layer 2 ', 'Metaverse']
+const categories = ['DeFi', 'NFTs', 'DAOs', 'Layer 2', 'Metaverse']
 
 export default function Blog() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-        <h2 style={{ textAlign: 'center', textTransform: 'uppercase', marginLeft: 30 }}>Web3 và Crypto Blog</h2>
+          <h2 style={{ textAlign: 'center', textTransform: 'uppercase', marginLeft: 30 }}>Web3 and Crypto Blog</h2>
         </Toolbar>
       </AppBar>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
             <Typography variant="h5" gutterBottom>
-              Bài viết mới nhất
+              Latest Posts
             </Typography>
             {blogPosts.map((post) => (
               <StyledCard key={post.id}>
                 <CardActionArea sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
-                  <StyledCardMedia
-                    // component="img"
-                    // image={post.image}
-                    // alt={post.title}
-                  />
+                  <StyledCardMedia />
                   <StyledCardContent>
                     <Typography component="h2" variant="h5">
                       {post.title}
@@ -67,7 +59,7 @@ export default function Blog() {
                       {post.excerpt}
                     </Typography>
                     <Typography variant="subtitle1" color="primary">
-                      Tiếp tục đọc ...
+                      Continue reading ...
                     </Typography>
                   </StyledCardContent>
                 </CardActionArea>
@@ -76,7 +68,7 @@ export default function Blog() {
           </Grid>
           <Grid item xs={12} md={4}>
             <Typography variant="h5" gutterBottom>
-              Danh mục
+              Categories
             </Typography>
             <Card>
               <List>

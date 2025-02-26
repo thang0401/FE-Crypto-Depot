@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { useRouter } from "next/navigation"
-import { Wallet, Shield, ArrowRight, Lock, Activity, CreditCard, ScrollText, Rocket } from "lucide-react"
+import { Wallet, Shield, ArrowRight, Lock, Activity, CreditCard, ScrollText, Rocket, RefreshCw, Users, Globe, KeyRound } from "lucide-react"
 import {
   Button,
   Container,
@@ -92,7 +92,7 @@ const Dashboard = () => {
       </Drawer>
 
       {/* Hero Section */}
-      <Box sx={{ pt: 16, pb: 12 }}>
+      <Box sx={{ pt: 16, pb: 10 }}>
         <Container maxWidth="lg">
           <Grid container spacing={6} alignItems="center">
             <Grid item xs={12} md={6}>
@@ -171,26 +171,33 @@ const Dashboard = () => {
             component="h2"
             align="center"
             gutterBottom
-            sx={{ mb: 8, fontWeight: "bold" }}
+            sx={{ mb: 8, fontWeight: "bold" , mt: 0}}
           >
-            MỌI THỨ BẠN CẦN, CHỈ CẦN MỘT CHẠM
+            No risk, just speed - We'll take the lead
           </Typography>
           <Grid container spacing={4}>
             {[
+              // {
+              //   icon: <Activity className="w-12 h-12" />,
+              //   title: "Instant transactions",
+              //   description: "Execute transactions instantly with competitive rates and minimal fees.",
+              // },.
               {
-                icon: <Wallet className="w-12 h-12" />,
-                title: "Crypto wallet",
-                description: "Securely store your cryptocurrency with real-time tracking and management.",
+                icon: <KeyRound className="w-12 h-12" />,
+                title: "Recoverable wallet",
+                description: "Lost access to your wallet? No worries. We will keep your assets secure and recoverable",
               },
               {
-                icon: <Activity className="w-12 h-12" />,
-                title: "Instant transactions",
-                description: "Execute transactions instantly with competitive rates and minimal fees.",
-              },
+                icon: <ScrollText className="w-12 h-12" />,
+                title: "Inheritance planning",
+                // description: "Securely store your cryptocurrency with real-time tracking and management.",
+                description: "A digital asset inheritance plan to safeguard cherished memories and vital information.",
+                // "Một kế hoạch thừa kế tài sản kỹ thuật số để bảo vệ những kỷ niệm quý giá và thông tin quan trọng."
+              },              
               {
                 icon: <Shield className="w-12 h-12" />,
-                title: "High Security",
-                description: "Your assets are safeguarded with top-tier security and multi-factor authentication.",
+                title: "Confidential savings",
+                description: "Your savings stay private, secure, and invisible to everyone but you.",
               },
             ].map((feature, index) => (
               <Grid item xs={12} md={4} key={index}>
@@ -249,9 +256,9 @@ const Dashboard = () => {
                 <Box sx={{ mt: 12 }}>
                   {[
                     {
-                      icon: <Lock className="w-8 h-8" />,
-                      title: "Ultimate asset protection",
-                      description: "Only you have access to your account balance, ensuring absolute security against unauthorized access.",
+                      icon: <Shield className="w-8 h-8" />,
+                      title: "Private & Anonymous",
+                      description: "Your financial data remains fully private—no tracking, no exposure, just true financial freedom.",
                     },
                     {
                       icon: <ScrollText className="w-8 h-8" />,
@@ -259,15 +266,43 @@ const Dashboard = () => {
                       description: "Set up an inheritance plan to transfer your digital assets in case of unforeseen circumstances.",
                     },
                     {
+                      icon: <Users className="w-8 h-8" />,
+                      title: "Community-Driven Support",
+                      description: "Get assistance from a dedicated support team and an active crypto community at any time.",
+                    },
+                    {  
                       icon: <Rocket className="w-8 h-8" />,
                       title: "Perfect for crypto beginners",
                       description: "CryptoBank helps you invest and store assets safely, protecting you from exchange failures.",
                     },
-                    {
-                      icon: <CreditCard className="w-8 h-8" />,
-                      title: "Seamless crypto transfers",
-                      description: "Send crypto to others—even those without a Web3 wallet—in just three minutes after creating an account.",
-                    },
+                    // {
+                    //   icon: <RefreshCw className="w-8 h-8" />,
+                    //   title: "24/7 Instant Transactions",
+                    //   description: "Send and receive crypto anytime, anywhere, with lightning-fast processing and minimal fees.",
+                    // },
+                    // {
+                    //   icon: <Globe className="w-8 h-8" />,
+                    //   title: "Borderless Access",
+                    //   description: "Manage and grow your digital assets globally, without restrictions or intermediaries.",
+                    // },
+                    
+                    // {
+                    //   icon: <Lock className="w-8 h-8" />,
+                    //   title: "Ultimate asset protection",
+                    //   description: "Only you have access to your account balance, ensuring absolute security against unauthorized access.",
+                    // },
+                    // {
+                    //   icon: <Rocket className="w-8 h-8" />,
+                    //   title: "Perfect for crypto beginners",
+                    //   description: "CryptoBank helps you invest and store assets safely, protecting you from exchange failures.",
+                    // },
+                    // {
+                                        
+                    // {
+                    //   icon: <CreditCard className="w-8 h-8" />,
+                    //   title: "Seamless crypto transfers",
+                    //   description: "Send crypto to others—even those without a Web3 wallet—in just three minutes after creating an account.",
+                    // },
                   ].map((benefit, index) => (
                     <Box key={index} sx={{ display: "flex", alignItems: "flex-start", mb: 4 }}>
                       <Paper

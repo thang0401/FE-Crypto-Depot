@@ -13,24 +13,24 @@ const navigation = (): HorizontalNavItemsType => {
       icon: 'bx:customize',
       title: 'Quick Transactions',
       children: [
-        {
-          title: 'Transfer Asset',
-          icon: 'bx:transfer',
-          path: '/make-transaction/transfer-asset'
-        },
+        // {
+        //   title: 'Transfer Asset',
+        //   icon: 'bx:transfer',
+        //   path: '/make-transaction/transfer-asset'
+        // },
         {
           title: 'Deposit Asset',
           icon: 'bx:send',
           path: '/make-transaction/deposit-asset'
         },
-        {
-          title: 'Withdraw Asset',
-          icon: 'bx:asset',
-          path: '/make-transaction/withdraw-asset'
-        },
+        // {
+        //   title: 'Withdraw Asset',
+        //   icon: 'bx:asset',
+        //   path: '/make-transaction/withdraw-asset'
+        // },
         {
           title: 'Transfer Debit',
-          icon: 'bx:asset',
+          icon: 'bx:transfer',
           path: '/make-transaction/transfer-debit'
         }
       ]
@@ -44,11 +44,11 @@ const navigation = (): HorizontalNavItemsType => {
           icon: 'bx:envelope',
           path: '/saving/my-portfolios'
         },
-        {
-          title: 'Add Savings Asset',
-          icon: 'bx:send',
-          path: '/saving/add-saving-asset'
-        },
+        // {
+        //   title: 'Add Savings Asset',
+        //   icon: 'bx:send',
+        //   path: '/saving/add-saving-asset'
+        // },
         {
           title: 'Create Savings Portfolio',
           icon: 'bx:send',

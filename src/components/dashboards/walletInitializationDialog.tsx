@@ -46,9 +46,9 @@ const WalletInitializationDialog: React.FC<WalletInitializationDialogProps> = ({
   const handleSubmit = () => {
     // Hiển thị thông báo thành công dựa trên tùy chọn của người dùng
     if (walletOption === "create") {
-      setAlertMessage("Ví mới đã được tạo thành công!");
+      setAlertMessage("Wallet has been successfully created!");
     } else if (walletOption === "import") {
-      setAlertMessage(`Đã nhập ví thành công với public key: ${publicKey.substring(0, 10)}...`);
+      setAlertMessage(`Wallet successfully imported with public key: ${publicKey.substring(0, 10)}...`);
     }
     
     // Lưu trạng thái đã khởi tạo ví vào localStorage
@@ -113,7 +113,7 @@ const WalletInitializationDialog: React.FC<WalletInitializationDialogProps> = ({
             color="primary"
             disabled={walletOption === "" || (walletOption === "import" && publicKey === "")}
           >
-            Submit
+            {walletOption === "create" ? "Create" : walletOption === "import" ? "Import" : "Submit"}
           </Button>
         </DialogActions>
       </Dialog>

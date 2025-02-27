@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 
 // Sample data moved to constants
 const ACCOUNTS = [
-    { id: "1", label: "Main wallet - 123456789", balance: "100 USDC" },
+    { id: "1", label: "0x6d9a981d5C4Df84f57856A2bb9588Cc9966a085C", balance: "100 USDC" },
     // { id: "2", label: "Sub Account - 987654321", balance: "50 USDC" },
 ]
 
@@ -280,10 +280,10 @@ const SavingsPortfolioForm = () => {
 
                 <DialogActions sx={{ justifyContent: "center", mt: 2 }}>
                     <Button
-                        onClick={() => router.push("/")}
+                        onClick={() => router.push("/saving/my-portfolios/")}
                         variant="contained"
                     >
-                        Go to Homepage
+                        OK
                     </Button>
                 </DialogActions>
             </Dialog>

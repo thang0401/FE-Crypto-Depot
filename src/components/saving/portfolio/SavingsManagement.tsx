@@ -117,7 +117,7 @@ const SavingsManagement: React.FC = () => {
         term: "12 months",
         startDate: "2024-02-24",
         endDate: "2025-02-24",
-        balance: "50 USDC",
+        balance: "50",
         supportStaff: "Staff01",
         contractUrl: "",
         googleDriveUrl: "",
@@ -126,18 +126,21 @@ const SavingsManagement: React.FC = () => {
         id: "SAV002",
         status: "pending",
         heirStatus: "has_heir",
-        owner: { id: "USRER002", name: "Tran Huu Luan", email: "luantr@gmail.com", phone: "+8434567891" },
+        owner: { id: "USRER002", name: "Nguyen Van Thuan", email: "thuannv.it@gmail.com", phone: "+8434567891" },
         term: "6 months",
         startDate: "2024-02-25",
         endDate: "2024-08-25",
-        balance: "3 USDC",
+        balance: "3",
         supportStaff: "Staff02",
         contractUrl: "",
         googleDriveUrl: "",
       },
     ]
+    const savedAccounts: SavingsAccount[] = JSON.parse(localStorage.getItem("savingsAccounts") || "[]");
+    
+    const combinedAccounts = [...mockAccounts, ...savedAccounts];
 
-    let filtered = [...mockAccounts]
+    let filtered = [...combinedAccounts]
 
     if (filters.userId) {
       filtered = filtered.filter((account) =>
@@ -301,7 +304,7 @@ const SavingsManagement: React.FC = () => {
                     <TableCell>
                       <StatusChip status={account.heirStatus} />
                     </TableCell>
-                    <TableCell>{account.balance}</TableCell>
+                    <TableCell>{account.balance} USDC</TableCell>
                     <TableCell>{account.term}</TableCell>
                     <TableCell>{formatDate(account.startDate)}</TableCell>
                     <TableCell>{formatDate(account.endDate)}</TableCell>

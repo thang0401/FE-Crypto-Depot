@@ -28,6 +28,7 @@ import {
   DialogActions,
 } from "@mui/material"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import WalletInitializationDialog from "./walletInitializationDialog"
 
 const Dashboard = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false)
@@ -35,19 +36,27 @@ const Dashboard = () => {
   // const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   const router = useRouter()
   const [openKycDialog, setOpenKycDialog] = useState(false)
-
+  const [openWalletDialog, setOpenWalletDialog] = useState(false);
   // Set kycStatus = false
   const [kycStatus, setKycStatus] = useState(false) // Assuming this status comes from an API
-
+  const [walletInitialized, setWalletInitialized] = useState(false);
 
   // Simulate checking kyc_status on login
   useEffect(() => {
     // Replace with an actual API call to get kyc_status
     // Set kycStatus = false
-    const userKycStatus = false // Mock data from server
+    const storedData = localStorage.getItem("userKycStatus");
+    const userKycStatus = storedData ? JSON.parse(storedData) : false;
     setKycStatus(userKycStatus)
+
+    // Kiểm tra xem ví đã được khởi tạo chưa
+    const walletInit = localStorage.getItem("walletInitialized") === "true";
+    setWalletInitialized(walletInit);
+
     if (!userKycStatus) {
       setOpenKycDialog(true)
+    } else if (!walletInit){
+      setOpenWalletDialog(true);
     }
   }, [])
 
@@ -59,8 +68,15 @@ const Dashboard = () => {
   const handleSkipKyc = () => {
     setOpenKycDialog(false)
   }
+  
+  const handleCloseWalletDialog = () => {
+    setOpenWalletDialog(false);
+  };
 
-
+  const handleWalletInitialized = () => {
+    setWalletInitialized(true);
+    setOpenWalletDialog(false);
+  };
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
   }
@@ -171,7 +187,7 @@ const Dashboard = () => {
             component="h2"
             align="center"
             gutterBottom
-            sx={{ mb: 8, fontWeight: "bold" , mt: 0}}
+            sx={{ mb: 8, fontWeight: "bold", mt: 0 }}
           >
             No risk, just speed - We'll take the lead
           </Typography>
@@ -365,12 +381,14 @@ const Dashboard = () => {
       {/* CTA Section */}
       <Box
         sx={{
-        py: 8,
-        marginLeft: 10,
-        marginRight: 8,
-        borderRadius: 4,
-        bgcolor: "background.paper",
-        boxShadow: 3
+
+          py: 8,
+          marginLeft: 10,
+          marginRight: 8,
+          borderRadius: 4,
+          bgcolor: "background.paper",
+          boxShadow: 3
+
         }}
       >
         <Container maxWidth="lg">
@@ -391,7 +409,7 @@ const Dashboard = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8 }}
               >
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" , paddingLeft: 3}}>
+                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", paddingLeft: 3 }}>
                   <Typography variant="h5" sx={{ mb: 8 }}>
                     Sign up now and receive $5 in transaction fees!
                   </Typography>
@@ -492,19 +510,26 @@ const Dashboard = () => {
         <DialogTitle>Complete Identity Verification (KYC)</DialogTitle>
         <DialogContent>
           <Typography>
-          Your account has not been verified. Please complete KYC to access all features.
+            Your account has not been verified. Please complete KYC to access all features.
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSkipKyc} color="primary">
-          Skip
+            Skip
           </Button>
           <Button onClick={handleConfirmKyc} variant="contained" color="primary">
-          Confirm
+            Confirm
           </Button>
         </DialogActions>
       </Dialog>
+      <WalletInitializationDialog
+        open={openWalletDialog}
+        onClose={handleCloseWalletDialog}
+        onWalletInitialized={handleWalletInitialized} 
+      />
     </Box>
+
+
   )
 }
 

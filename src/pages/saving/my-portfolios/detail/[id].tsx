@@ -90,7 +90,14 @@ const AccountDetails: React.FC = () => {
         googleDriveUrl: "",
       },
     ]
-    const account = mockAccounts.find((acc) => acc.id === id)
+    // Lay data tu localStorage
+    const savedAccounts: SavingsAccount[] = JSON.parse(localStorage.getItem("savingsAccounts") || "[]");
+
+    let combinedAccounts = [...savedAccounts, ...mockAccounts];
+
+    const account = combinedAccounts.find((acc) => acc.id === id)
+    
+
     setEditedAccount(account || null)
   }, [id])
 
@@ -214,6 +221,7 @@ const AccountDetails: React.FC = () => {
                       label="Term"
                       value={editedAccount.term}
                       onChange={(e) => handleInputChange("term", e.target.value)}
+                      InputProps={{ readOnly: true }}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -222,6 +230,7 @@ const AccountDetails: React.FC = () => {
                       label="Start Date"
                       value={formatDate(editedAccount.startDate)}
                       onChange={(e) => handleInputChange("startDate", e.target.value)}
+                      InputProps={{ readOnly: true }}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -230,6 +239,7 @@ const AccountDetails: React.FC = () => {
                       label="End Date"
                       value={formatDate(editedAccount.endDate)} // 
                       onChange={(e) => handleInputChange("endDate", e.target.value)}
+                      InputProps={{ readOnly: true }}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -238,9 +248,10 @@ const AccountDetails: React.FC = () => {
                       label="Support Staff"
                       value={editedAccount.supportStaff}
                       onChange={(e) => handleInputChange("supportStaff", e.target.value)}
+                      InputProps={{ readOnly: true }}
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  {/* <Grid item xs={12}>
                     <TextField
                       fullWidth
                       label="Google Drive URL"
@@ -248,7 +259,7 @@ const AccountDetails: React.FC = () => {
                       onChange={(e) => handleInputChange("googleDriveUrl", e.target.value)}
                       placeholder="No URL provided"
                     />
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </Paper>
             </Grid>
@@ -295,7 +306,7 @@ const AccountDetails: React.FC = () => {
               </Paper>
             </Grid>
 
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Paper sx={{ p: 2 }}>
                 <Typography variant="subtitle1" gutterBottom>
                   Contract Document
@@ -314,7 +325,7 @@ const AccountDetails: React.FC = () => {
                   </Alert>
                 )}
               </Paper>
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
               <Box display="flex" justifyContent="flex-end" gap={2}>

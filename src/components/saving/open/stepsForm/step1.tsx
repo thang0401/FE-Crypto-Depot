@@ -130,7 +130,7 @@ export const Step1 = React.memo(({
                 <Grid item xs={12}>
                     <StyledCard>
                         <Typography variant="h6" gutterBottom sx={{  fontWeight: "bold", p: 2 }}>
-                            Source Account
+                            Source wallet
                         </Typography>
                         <FormControl fullWidth error={errors.sourceAccount} sx={{ px: 2, pb: 2 }}>
                             <InputLabel>Select account</InputLabel>

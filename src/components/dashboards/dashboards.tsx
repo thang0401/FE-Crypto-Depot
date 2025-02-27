@@ -274,7 +274,7 @@ const Dashboard = () => {
                     {
                       icon: <Shield className="w-8 h-8" />,
                       title: "Private & Anonymous",
-                      description: "Your financial data remains fully private—no tracking, no exposure, just true financial freedom.",
+                      description: "Your saving account data remains fully private no-tracking, no exposure, just true financial freedom.",
                     },
                     {
                       icon: <ScrollText className="w-8 h-8" />,
@@ -283,8 +283,8 @@ const Dashboard = () => {
                     },
                     {
                       icon: <Users className="w-8 h-8" />,
-                      title: "Community-Driven Support",
-                      description: "Get assistance from a dedicated support team and an active crypto community at any time.",
+                      title: "Recoverable wallet",
+                      description: "Lost access to your wallet? No worries. We will keep your assets secure and recoverable.",
                     },
                     {
                       icon: <Rocket className="w-8 h-8" />,
@@ -381,12 +381,14 @@ const Dashboard = () => {
       {/* CTA Section */}
       <Box
         sx={{
+
           py: 8,
           marginLeft: 10,
           marginRight: 8,
           borderRadius: 4,
           bgcolor: "background.paper",
           boxShadow: 3
+
         }}
       >
         <Container maxWidth="lg">

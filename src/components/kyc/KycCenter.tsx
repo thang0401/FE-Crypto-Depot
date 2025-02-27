@@ -88,6 +88,8 @@ const KycCenter: React.FC = () => {
     // Handle KYC submission (e.g., send to API)
     console.log("KYC Data:", kycData)
     alert("KYC is complete. Your profile will be reviewed within 24 hours!")
+    //Set userKycStatus to localStorage
+    const userKycStatus = localStorage.setItem("userKycStatus", JSON.stringify(true))
     router.push("/")
   }
 
@@ -156,7 +158,7 @@ const KycCenter: React.FC = () => {
             }}
           >
             <Typography variant="h6" sx={{ mb: 2 }}>
-              Front Side of ID Card/Driver's License
+              Front Side of ID Card
             </Typography>
             <Box sx={{ width: "100%", position: "relative" }}>
               {kycData.frontImagePreview && (
@@ -213,7 +215,7 @@ const KycCenter: React.FC = () => {
             }}
           >
             <Typography variant="h6" sx={{ mb: 2 }}>
-              Back Side of ID Card/Driver's License
+              Back Side of ID Card
             </Typography>
             <Box sx={{ width: "100%", position: "relative" }}>
               {kycData.backImagePreview && (

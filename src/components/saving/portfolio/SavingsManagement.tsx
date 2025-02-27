@@ -138,7 +138,7 @@ const SavingsManagement: React.FC = () => {
     ]
     const savedAccounts: SavingsAccount[] = JSON.parse(localStorage.getItem("savingsAccounts") || "[]");
     
-    let combinedAccounts = [...mockAccounts, ...savedAccounts];
+    const combinedAccounts = [...mockAccounts, ...savedAccounts];
 
     let filtered = [...combinedAccounts]
 

@@ -93,7 +93,7 @@ const AccountDetails: React.FC = () => {
     // Lay data tu localStorage
     const savedAccounts: SavingsAccount[] = JSON.parse(localStorage.getItem("savingsAccounts") || "[]");
 
-    let combinedAccounts = [...savedAccounts, ...mockAccounts];
+    const combinedAccounts = [...savedAccounts, ...mockAccounts];
 
     const account = combinedAccounts.find((acc) => acc.id === id)
     

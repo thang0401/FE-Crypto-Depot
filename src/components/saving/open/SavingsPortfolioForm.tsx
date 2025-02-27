@@ -73,32 +73,6 @@ const SavingsPortfolioForm = () => {
         setCurrentStep((prev) => prev - 1)
         setShowValidation(false)
     }, [])
-    const generateMockData = () => {
-        const today = new Date();
-        const termValue = formData.term; // Ví dụ: "1M", "3M", "6M", "12M"
-        const termMonths = parseInt(termValue.replace("M", "")); // Lấy số tháng từ term
-        const endDate = new Date(today);
-        endDate.setMonth(today.getMonth() + termMonths); // Tính ngày kết thúc
-
-        return {
-            id: `SAV${String(Math.floor(3 + Math.random() * 997)).padStart(3, '0')}`, // Tạo ID ngẫu nhiên
-            status: "active",
-            heirStatus: "no_heir",
-            owner: {
-                id: "USRER001",
-                name: "Nguyen Van Thuan",
-                email: "thuannv.it@gmail.com",
-                phone: "+8434567890",
-            },
-            term: TERMS.find((t) => t.value === termValue)?.label || "", // Chuyển từ "1M" sang "1 Month"
-            startDate: today.toISOString().split("T")[0], // Ngày hiện tại
-            endDate: endDate.toISOString().split("T")[0], // Ngày kết thúc
-            balance: formData.amount, // Số tiền người dùng nhập
-            supportStaff: "Staff01",
-            contractUrl: null,
-            googleDriveUrl: null,
-        };
-    };
     const handleSubmit = React.useCallback(() => {
         if (currentStep === 1 && !isStep1Valid) {
             setShowValidation(true);
@@ -113,11 +87,38 @@ const SavingsPortfolioForm = () => {
             return;
         }
         if (currentStep === 3) {
+            //  generateMockData ngay trong đây
+            const generateMockData = () => {
+                const today = new Date();
+                const termValue = formData.term;
+                const termMonths = parseInt(termValue.replace("M", ""));
+                const endDate = new Date(today);
+                endDate.setMonth(today.getMonth() + termMonths);
+    
+                return {
+                    id: `SAV${String(Math.floor(3 + Math.random() * 997)).padStart(3, '0')}`,
+                    status: "active",
+                    heirStatus: "no_heir",
+                    owner: {
+                        id: "USRER001",
+                        name: "Nguyen Van Thuan",
+                        email: "thuannv.it@gmail.com",
+                        phone: "+8434567890",
+                    },
+                    term: TERMS.find((t) => t.value === termValue)?.label || "",
+                    startDate: today.toISOString().split("T")[0],
+                    endDate: endDate.toISOString().split("T")[0],
+                    balance: formData.amount,
+                    supportStaff: "Staff01",
+                    contractUrl: null,
+                    googleDriveUrl: null,
+                };
+            };
+    
             const mockData = generateMockData();
-            // Lưu mockData vào localStorage để SavingsManagement có thể truy cập
             const existingData = JSON.parse(localStorage.getItem("savingsAccounts") || "[]");
             localStorage.setItem("savingsAccounts", JSON.stringify([...existingData, mockData]));
-
+    
             setOpenDialog(true);
             setTimeout(() => {
                 setOpenDialog(false);
@@ -126,7 +127,7 @@ const SavingsPortfolioForm = () => {
         } else {
             handleNext();
         }
-    }, [currentStep, handleNext, isStep1Valid, validateStep2, validateStep3, router, formData]);
+    }, [currentStep, handleNext, isStep1Valid, validateStep2, validateStep3, router, formData.term, formData.amount]);
 
     const renderStep = React.useCallback(() => {
         const props = {

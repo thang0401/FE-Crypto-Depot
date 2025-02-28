@@ -1,17 +1,27 @@
 import type React from "react"
-import { CardContent, Typography, List, ListItemAvatar, ListItemText, Avatar, Box, InputAdornment } from "@mui/material"
+import { CardContent, Typography, List, ListItemAvatar, ListItemText, Avatar, Box, InputAdornment ,Dialog,  DialogTitle,
+ DialogContent,
+ DialogActions,
+ Button,} from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
 import HistoryIcon from "@mui/icons-material/History"
 import { StyledCard, SearchBar, RecentUserItem } from "./styled-components"
 import { User } from "./type"
 
 
+interface DialogState {
+  open: boolean
+  message: string
+}
+
 interface RecipientSearchProps {
   phoneFilter: string
   selectedUser: User | null
-  recentUsers: User[]
+  recentUsers: User[] // Chỉ hiển thị 5 người gần đây
   onPhoneFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onUserSelect: (user: User) => void
+  dialog: DialogState
+  onCloseDialog: () => void
 }
 
 export default function RecipientSearch({
@@ -20,6 +30,8 @@ export default function RecipientSearch({
   recentUsers,
   onPhoneFilterChange,
   onUserSelect,
+  dialog,
+  onCloseDialog,
 }: RecipientSearchProps) {
   return (
     <StyledCard>
@@ -40,6 +52,7 @@ export default function RecipientSearch({
               </InputAdornment>
             ),
           }}
+          helperText="Enter full 10-digit phone number to search"
         />
 
         <Box sx={{ mt: 2 }}>
@@ -80,6 +93,17 @@ export default function RecipientSearch({
             ))}
           </List>
         </Box>
+        <Dialog open={dialog.open} onClose={onCloseDialog}>
+          <DialogTitle>Thông báo</DialogTitle>
+          <DialogContent>
+            <Typography>{dialog.message}</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onCloseDialog} color="primary">
+              Đóng
+            </Button>
+          </DialogActions>
+        </Dialog>
       </CardContent>
     </StyledCard>
   )

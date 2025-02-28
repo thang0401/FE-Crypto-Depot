@@ -135,21 +135,19 @@ const TransferDebit = () => {
     const value = e.target.value
     setPhoneFilter(value)
 
-    // Reset selected user khi người dùng thay đổi số điện thoại
     if (selectedUser) {
       setSelectedUser(null)
     }
 
-    // Kiểm tra khi số điện thoại đủ 10 số
+  
     if (value.length === 10) {
-      // Tìm kiếm trong tất cả users thay vì chỉ trong recent users
       const foundUser = allUsers.find((user) => user.phone === value)
       if (foundUser) {
         setSelectedUser(foundUser)
       } else {
         setDialog({
           open: true,
-          message: "Số điện thoại không tồn tại trong hệ thống",
+          message: "This user does not exist.",
         })
       }
     }

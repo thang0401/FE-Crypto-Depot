@@ -94,13 +94,13 @@ export default function RecipientSearch({
           </List>
         </Box>
         <Dialog open={dialog.open} onClose={onCloseDialog}>
-          <DialogTitle>Thông báo</DialogTitle>
+          <DialogTitle>Notification</DialogTitle>
           <DialogContent>
             <Typography>{dialog.message}</Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={onCloseDialog} color="primary">
-              Đóng
+              Close
             </Button>
           </DialogActions>
         </Dialog>

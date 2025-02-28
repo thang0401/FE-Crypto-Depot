@@ -48,7 +48,9 @@ import ReactHotToast from 'src/@core/styles/libs/react-hot-toast'
 
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
-import { ApolloProvider } from '@apollo/client'
+
+// ** Privy Imports
+import { PrivyProvider } from '@privy-io/react-auth'
 
 // ** Prismjs Styles
 import 'prismjs'
@@ -58,7 +60,6 @@ import 'prismjs/components/prism-tsx'
 
 // ** React Perfect Scrollbar Style
 import 'react-perfect-scrollbar/dist/css/styles.css'
-
 import 'src/iconify-bundle/icons-bundle-react'
 
 // ** Global css styles
@@ -111,48 +112,60 @@ const App = (props: ExtendedAppProps) => {
     Component.getLayout ?? (page => <UserLayout contentHeightFixed={contentHeightFixed}>{page}</UserLayout>)
 
   const setConfig = Component.setConfig ?? undefined
-
   const authGuard = Component.authGuard ?? true
-
   const guestGuard = Component.guestGuard ?? false
-
   const aclAbilities = Component.acl ?? defaultACLObj
 
   return (
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
         <Head>
-          <title>{`${themeConfig.templateName} - Giải pháp lưu trữ và giao dịch đơn giản, an toàn và bảo mật  `}</title>
+          <title>{`${themeConfig.templateName} - Giải pháp lưu trữ và giao dịch đơn giản, an toàn và bảo mật`}</title>
           <meta
             name='description'
-            content={`${themeConfig.templateName} –Cung cấp giải pháp lưu trữ và giao dịch đơn giản, an toàn và bảo mật số dư số dư tiền điện tử của bạn.`}
+            content={`${themeConfig.templateName} – Cung cấp giải pháp lưu trữ và giao dịch đơn giản, an toàn và bảo mật số dư tiền điện tử của bạn.`}
           />
           <meta name='keywords' content='Lưu ký crypto, giao dịch - bảo mật an toàn, bảo mật số dư' />
           <meta name='viewport' content='initial-scale=1, width=device-width' />
         </Head>
 
-        <AuthProvider>
-          {/* <ApolloProvider client={apollo}> */}
+        <PrivyProvider
+          appId="cm7m87xkw018yazredtxxnnjs" // Thay bằng App ID từ Privy Dashboard
+          config={{
+            loginMethods: ['google', 'discord'], // Phương thức đăng nhập từ thử nghiệm
+            appearance: {
+              theme: 'light',
+              logo: 'https://your-logo-url.com/logo.png', // Thay bằng logo dự án chính
+            },
+            embeddedWallets: {
+              ethereum: {
+                createOnLogin: 'users-without-wallets', // Tự động tạo ví nếu chưa có
+              },
+            },
+            mfa: {
+              noPromptOnMfaRequired: false, // Hiển thị modal quét vân tay
+            },
+          }}
+        >
+          <AuthProvider>
             <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
               <SettingsConsumer>
-                {({ settings }) => {
-                  return (
-                    <ThemeComponent settings={settings}>
-                      <Guard authGuard={authGuard} guestGuard={guestGuard}>
-                        <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard} authGuard={authGuard}>
-                          {getLayout(<Component {...pageProps} />)}
-                        </AclGuard>
-                      </Guard>
-                      <ReactHotToast>
-                        <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
-                      </ReactHotToast>
-                    </ThemeComponent>
-                  )
-                }}
+                {({ settings }) => (
+                  <ThemeComponent settings={settings}>
+                    <Guard authGuard={authGuard} guestGuard={guestGuard}>
+                      <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard} authGuard={authGuard}>
+                        {getLayout(<Component {...pageProps} />)}
+                      </AclGuard>
+                    </Guard>
+                    <ReactHotToast>
+                      <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
+                    </ReactHotToast>
+                  </ThemeComponent>
+                )}
               </SettingsConsumer>
             </SettingsProvider>
-          {/* </ApolloProvider> */}
-        </AuthProvider>
+          </AuthProvider>
+        </PrivyProvider>
       </CacheProvider>
     </Provider>
   )

@@ -26,9 +26,11 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  TextField,
 } from "@mui/material"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import WalletInitializationDialog from "./walletInitializationDialog"
+import { usePrivy, useWallets, useCreateWallet, useImportWallet } from '@privy-io/react-auth'; ///
 
 const Dashboard = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false)
@@ -40,7 +42,7 @@ const Dashboard = () => {
   // Set kycStatus = false
   const [kycStatus, setKycStatus] = useState(false) // Assuming this status comes from an API
   const [walletInitialized, setWalletInitialized] = useState(false);
-
+  const [privateKey, setPrivateKey] = useState('') ///
   // Simulate checking kyc_status on login
   useEffect(() => {
     // Replace with an actual API call to get kyc_status
@@ -60,18 +62,18 @@ const Dashboard = () => {
     }
   }, [])
 
-  const handleConfirmKyc = () => {
-    setOpenKycDialog(false)
-    router.push("/kyc-center")
-  }
+  // const handleConfirmKyc = () => {
+  //   setOpenKycDialog(false)
+  //   router.push("/kyc-center")
+  // }
 
-  const handleSkipKyc = () => {
-    setOpenKycDialog(false)
-  }
-  
-  const handleCloseWalletDialog = () => {
-    setOpenWalletDialog(false);
-  };
+  // const handleSkipKyc = () => {
+  //   setOpenKycDialog(false)
+  // }
+
+  // const handleCloseWalletDialog = () => {
+  //   setOpenWalletDialog(false);
+  // };
 
   const handleWalletInitialized = () => {
     setWalletInitialized(true);
@@ -92,6 +94,71 @@ const Dashboard = () => {
       ))}
     </List>
   )
+
+  /// Thêm Privy hooks
+  const { ready, authenticated, user } = usePrivy();
+  const { wallets } = useWallets();
+  const { createWallet } = useCreateWallet({
+    onSuccess: () => {
+      console.log('Wallet created successfully');
+      setWalletInitialized(true);
+      localStorage.setItem('walletInitialized', 'true');
+      router.push('/fingerprint');
+    },
+    onError: (error) => console.error('Failed to create wallet:', error),
+  });
+  const { importWallet } = useImportWallet();
+
+  useEffect(() => {
+    if (!ready) return;
+
+    const storedKycStatus = localStorage.getItem('userKycStatus');
+    const userKycStatus = storedKycStatus ? JSON.parse(storedKycStatus) : false;
+    setKycStatus(userKycStatus);
+
+    const walletInit = authenticated && !!user?.wallet && user?.mfaMethods?.includes('passkey');
+    setWalletInitialized(walletInit);
+
+    console.log('authenticated:', authenticated);
+    console.log('user?.wallet:', user?.wallet);
+    console.log('walletInitialized:', walletInit);
+    console.log('mfaMethods:', user?.mfaMethods);
+
+    if (!userKycStatus) {
+      setOpenKycDialog(true);
+    } else if (!walletInit) {
+      setOpenWalletDialog(true);
+    }
+  }, [ready, authenticated, user, router]);
+
+  const handleConfirmKyc = () => {
+    setOpenKycDialog(false);
+    router.push('/kyc-center');
+  };
+
+  const handleSkipKyc = () => {
+    setOpenKycDialog(false);
+  };
+
+  const handleCloseWalletDialog = () => {
+    setOpenWalletDialog(false);
+  };
+
+  const handleCreateWallet = () => {
+    createWallet();
+  };
+
+  const handleImportWallet = async () => {
+    try {
+      await importWallet({ privateKey });
+      console.log('Wallet imported successfully');
+      setWalletInitialized(true);
+      localStorage.setItem('walletInitialized', 'true');
+      router.push('/fingerprint');
+    } catch (error) {
+      console.error('Failed to import wallet:', error);
+    }
+  };
 
   return (
     <Box>
@@ -290,35 +357,7 @@ const Dashboard = () => {
                       icon: <Rocket className="w-8 h-8" />,
                       title: "Perfect for crypto beginners",
                       description: "CryptoBank helps you invest and store assets safely, protecting you from exchange failures.",
-                    },
-                    // {
-                    //   icon: <RefreshCw className="w-8 h-8" />,
-                    //   title: "24/7 Instant Transactions",
-                    //   description: "Send and receive crypto anytime, anywhere, with lightning-fast processing and minimal fees.",
-                    // },
-                    // {
-                    //   icon: <Globe className="w-8 h-8" />,
-                    //   title: "Borderless Access",
-                    //   description: "Manage and grow your digital assets globally, without restrictions or intermediaries.",
-                    // },
-
-                    // {
-                    //   icon: <Lock className="w-8 h-8" />,
-                    //   title: "Ultimate asset protection",
-                    //   description: "Only you have access to your account balance, ensuring absolute security against unauthorized access.",
-                    // },
-                    // {
-                    //   icon: <Rocket className="w-8 h-8" />,
-                    //   title: "Perfect for crypto beginners",
-                    //   description: "CryptoBank helps you invest and store assets safely, protecting you from exchange failures.",
-                    // },
-                    // {
-
-                    // {
-                    //   icon: <CreditCard className="w-8 h-8" />,
-                    //   title: "Seamless crypto transfers",
-                    //   description: "Send crypto to others—even those without a Web3 wallet—in just three minutes after creating an account.",
-                    // },
+                    }
                   ].map((benefit, index) => (
                     <Box key={index} sx={{ display: "flex", alignItems: "flex-start", mb: 4 }}>
                       <Paper
@@ -522,11 +561,43 @@ const Dashboard = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <WalletInitializationDialog
-        open={openWalletDialog}
-        onClose={handleCloseWalletDialog}
-        onWalletInitialized={handleWalletInitialized} 
-      />
+      {/* Wallet Dialog (Thay thế WalletInitializationDialog) */}
+      <Dialog open={openWalletDialog} onClose={handleCloseWalletDialog}>
+        <DialogTitle>Initialize Your Wallet</DialogTitle>
+        <DialogContent>
+          <Typography sx={{ mb: 2 }}>
+            Please select an option to initialize your wallet.
+          </Typography>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleCreateWallet}
+            sx={{ mb: 2 }}
+            disabled={walletInitialized}
+          >
+            Create New Wallet
+          </Button>
+          <TextField
+            fullWidth
+            label="Private Key"
+            type="password"
+            value={privateKey}
+            onChange={(e) => setPrivateKey(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleImportWallet}
+            disabled={!privateKey || walletInitialized}
+          >
+            Import Wallet
+          </Button>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseWalletDialog}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
 
 

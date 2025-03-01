@@ -22,7 +22,7 @@ import {
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import UploadIcon from "@mui/icons-material/Upload"
-import { format } from "date-fns" 
+import { format } from "date-fns"
 
 const StyledCard = styled(Card)(({ theme }) => ({
   marginBottom: theme.spacing(2),
@@ -96,7 +96,7 @@ const AccountDetails: React.FC = () => {
     const combinedAccounts = [...savedAccounts, ...mockAccounts];
 
     const account = combinedAccounts.find((acc) => acc.id === id)
-    
+
 
     setEditedAccount(account || null)
   }, [id])
@@ -237,7 +237,7 @@ const AccountDetails: React.FC = () => {
                     <TextField
                       fullWidth
                       label="End Date"
-                      value={formatDate(editedAccount.endDate)} // 
+                      value={formatDate(editedAccount.endDate)} //
                       onChange={(e) => handleInputChange("endDate", e.target.value)}
                       InputProps={{ readOnly: true }}
                     />
@@ -329,7 +329,7 @@ const AccountDetails: React.FC = () => {
 
             <Grid item xs={12}>
               <Box display="flex" justifyContent="flex-end" gap={2}>
-                <Button variant="outlined" color="secondary" onClick={() => router.push("/saving/my-portfolios/")}>
+                <Button variant="outlined" color="secondary" onClick={() => router.push("/saving/add-saving-asset/open/")}>
                   Back
                 </Button>
                 {/* <Button variant="contained" color="primary" onClick={handleSubmit} disabled={!hasChanges}>

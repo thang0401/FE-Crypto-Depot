@@ -1,9 +1,9 @@
 // ** React Imports
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 
 // ** Next Imports
 import Head from 'next/head'
-import { Router } from 'next/router'
+import { Router, useRouter } from 'next/router'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
@@ -20,7 +20,7 @@ import type { EmotionCache } from '@emotion/cache'
 
 // ** Config Imports
 import 'src/configs/i18n'
-import { defaultACLObj } from 'src/configs/acl'
+import { buildAbilityFor, defaultACLObj } from 'src/configs/acl'
 import themeConfig from 'src/configs/themeConfig'
 
 // ** Fake-DB Import
@@ -50,7 +50,7 @@ import ReactHotToast from 'src/@core/styles/libs/react-hot-toast'
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
 
 // ** Privy Imports
-import { PrivyProvider } from '@privy-io/react-auth'
+import { PrivyProvider, usePrivy } from '@privy-io/react-auth'
 
 // ** Prismjs Styles
 import 'prismjs'
@@ -64,6 +64,8 @@ import 'src/iconify-bundle/icons-bundle-react'
 
 // ** Global css styles
 import '../../styles/globals.css'
+import BlankLayout from 'src/@core/layouts/BlankLayout'
+import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -115,7 +117,17 @@ const App = (props: ExtendedAppProps) => {
   const authGuard = Component.authGuard ?? true
   const guestGuard = Component.guestGuard ?? false
   const aclAbilities = Component.acl ?? defaultACLObj
+   const abilitys = buildAbilityFor('client', aclAbilities.subject)
+   const { ready, authenticated, login } = usePrivy(); ///
+   const router = useRouter();///
+   console.log('router.pathname',router.pathname);
 
+     useEffect(() => {
+       if (router.pathname !== '/login' && !ready && !authenticated) {
+         router.push('/login');
+       }
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+     }, []);
   return (
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
@@ -130,21 +142,21 @@ const App = (props: ExtendedAppProps) => {
         </Head>
 
         <PrivyProvider
-          appId="cm7m87xkw018yazredtxxnnjs" // Thay bằng App ID từ Privy Dashboard
+          appId='cm7m87xkw018yazredtxxnnjs' // Thay bằng App ID từ Dashboard
           config={{
-            loginMethods: ['google', 'discord'], // Phương thức đăng nhập từ thử nghiệm
+            loginMethods: ['google', 'discord'], // Chỉ dùng Google và Discord
             appearance: {
-              theme: 'light',
-              logo: 'https://your-logo-url.com/logo.png', // Thay bằng logo dự án chính
+              theme: 'light'
+              // logo: 'https://your-logo-url.com/logo.png', // Thay bằng URL logo của bạn
             },
             embeddedWallets: {
               ethereum: {
-                createOnLogin: 'users-without-wallets', // Tự động tạo ví nếu chưa có
-              },
+                createOnLogin: 'off' // Tắt tạo ví tự động
+              }
             },
             mfa: {
-              noPromptOnMfaRequired: false, // Hiển thị modal quét vân tay
-            },
+              noPromptOnMfaRequired: false // Dùng UI mặc định của Privy cho MFA
+            }
           }}
         >
           <AuthProvider>
@@ -152,11 +164,11 @@ const App = (props: ExtendedAppProps) => {
               <SettingsConsumer>
                 {({ settings }) => (
                   <ThemeComponent settings={settings}>
-                    <Guard authGuard={authGuard} guestGuard={guestGuard}>
-                      <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard} authGuard={authGuard}>
+                    <BlankLayout>
+                        <AbilityContext.Provider value={abilitys}>
                         {getLayout(<Component {...pageProps} />)}
-                      </AclGuard>
-                    </Guard>
+                        </AbilityContext.Provider>
+                        </BlankLayout>
                     <ReactHotToast>
                       <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
                     </ReactHotToast>

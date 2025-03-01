@@ -5,10 +5,10 @@ import { Settings } from 'src/@core/context/settingsContext'
 const DefaultPalette = (mode: Palette['mode'], settings: Settings): Palette => {
   // ** Vars
   const whiteColor = '#FFF'
-  const lightColor = '50, 71, 92'
-  const darkColor = '219, 219, 235'
+  const lightColor = 'rgba(50, 71, 92)'
+  // const darkColor = '219, 219, 235'
   const darkPaperBgColor = '#2B2C40'
-  const mainColor = mode === 'light' ? lightColor : darkColor
+  const mainColor = mode === 'light' ? lightColor : 'rgba(219, 219, 235, 0.87)'
 
   const defaultBgColor = () => {
     if (settings.skin === 'bordered' && mode === 'light') {
@@ -38,7 +38,7 @@ const DefaultPalette = (mode: Palette['mode'], settings: Settings): Palette => {
 
   return {
     customColors: {
-      dark: darkColor,
+      dark: 'rgba(219, 219, 235, 0.87)',
       main: mainColor,
       light: lightColor,
       lightPaperBg: whiteColor,
@@ -61,7 +61,7 @@ const DefaultPalette = (mode: Palette['mode'], settings: Settings): Palette => {
       contrastText: whiteColor
     },
     secondary: {
-      light: '#97A2B1',
+      light: '#000000',
       main: '#8592A3',
       dark: '#798594',
       contrastText: whiteColor
@@ -107,7 +107,7 @@ const DefaultPalette = (mode: Palette['mode'], settings: Settings): Palette => {
       A700: '#616161'
     },
     text: {
-      primary: `rgba(${mainColor}, 0.87)`,
+      primary: `${mainColor}`,
       secondary: `rgba(${mainColor}, 0.6)`,
       disabled: `rgba(${mainColor}, 0.38)`
     },

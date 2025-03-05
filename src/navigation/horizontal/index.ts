@@ -113,6 +113,11 @@ const navigation = (): HorizontalNavItemsType => {
       icon: 'bx:palette',
       title: 'About Us',
       path: '/about-us'
+    },
+    {
+      icon: 'bx:palette',
+      title: 'My dashboard',
+      path: '/myDashboard'
     }
   ]
 }

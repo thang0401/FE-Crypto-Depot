@@ -21,7 +21,8 @@ const Main = () => {
       </Grid>
 
       {/* Quick Actions */}
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={4} 
+      >
         <QuickActions />
       </Grid>
 

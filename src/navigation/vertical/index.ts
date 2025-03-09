@@ -4,64 +4,109 @@ import { VerticalNavItemsType } from 'src/@core/layouts/types'
 const navigation = (): VerticalNavItemsType => {
   return [
     {
+      icon: 'bx:palette',
+      title: 'Dashboard',
+      path: '/myDashboard'
+    },
+    {
       icon: 'bx:home-circle',
-      title: 'Trang chủ',
+      title: 'Home',
       path: '/home'
     },
     {
       icon: 'bx:customize',
-      title: 'Giao dịch ngay',
+      title: 'Quick Transactions',
       children: [
+        // {
+        //   title: 'Transfer Asset',
+        //   icon: 'bx:transfer',
+        //   path: '/make-transaction/transfer-asset'
+        // },
         {
-          title: 'Danh mục lưu trữ',
-          icon: 'bx:envelope',
-          path: '/trade-now/portfolio/personal-portfolio'
-        },
-        {
-          title: 'Nạp tài sản',
+          title: 'Deposit Asset',
           icon: 'bx:send',
           path: '/make-transaction/deposit-asset'
         },
+        // {
+        //   title: 'Withdraw Asset',
+        //   icon: 'bx:asset',
+        //   path: '/make-transaction/withdraw-asset'
+        // },
         {
-          title: 'Chuyển tài sản ',
+          title: 'Transfer Debit',
           icon: 'bx:transfer',
-          path: '/trade-now/transfer-asset'
-        },
-        {
-          title: 'Rút tài sản',
-          icon: 'bx:asset',
-          path: '/make-transaction/withdraw-asset'
+          path: '/make-transaction/transfer-debit'
         }
       ]
     },
     {
+      icon: 'bx:customize',
+      title: 'Savings',
+      children: [
+        {
+          title: 'My Savings Portfolios',
+          icon: 'bx:envelope',
+          path: '/saving/my-portfolios'
+        },
+        // {
+        //   title: 'Add Savings Asset',
+        //   icon: 'bx:send',
+        //   path: '/saving/add-saving-asset'
+        // },
+        {
+          title: 'Create Savings Portfolio',
+          icon: 'bx:send',
+          path: '/saving/add-saving-asset/open'
+        },
+        // {
+        //   title: 'Principal Withdrawal',
+        //   icon: 'bx:transfer',
+        //   path: '/saving/transfer-asset'
+        // },
+        // {
+        //   title: 'Child Savings',
+        //   icon: 'bx:asset',
+        //   path: '/saving/withdraw-asset'
+        // },
+        // {
+        //   title: 'Child Savings',
+        //   icon: 'bx:asset',
+        //   path: '/saving/open-saving'
+        // }
+      ]
+    },
+    {
       icon: 'bx:collection',
-      title: 'Lịch sử giao dịch',
+      title: 'Transaction History',
       path: '/transaction-history'
+    },
+
+    {
+      icon: 'bx:collection',
+      title: 'Borrow and Repaymnet',
+      path: '/Borrow-and-Repaymnet'
     },
     {
       icon: 'bx:grid-alt',
-      title: 'Trang cá nhân',
-     children: [
-      {
-        title: 'Bảo mật',
-         path: '/user-profile/security'
-       },
-
-       {
-        title: 'Danh mục lưu trữ',
-        path: '/user-profile/account'
-
-       },
-       {
-        title: 'Lịch sử giao dịch',
-         path: '/user-profile/billing-plan/'
-       },
-       {
-        title: 'Thông tin',
-         path: '/user-profile/notification/'
-       }
-     ]
+      title: 'Personal Page',
+      children: [
+        {
+          title: 'Security',
+          path: '/user-profile/security'
+        },
+        {
+          title: 'Account',
+          path: '/user-profile/account'
+        },
+        {
+          title: 'Billing History',
+          path: '/user-profile/billing-plan/'
+        },
+        {
+          title: 'Notifications',
+          path: '/user-profile/notification/'
+        }
+      ]
     },
     {
       title: 'Blog',
@@ -70,14 +115,18 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       icon: 'bx:palette',
-      title: 'Về chúng tôi',
+      title: 'About Us',
       path: '/about-us'
     },
     {
-      title: 'Khác ',
-      icon: 'bx:dots-horizontal-rounded',
-      path: '/others'
-    }
+      icon: 'bx:palette',
+      title: 'Logout'
+
+    },
+    {
+      icon: 'bx:palette',
+      title: 'setting'
+    },
   ]
 }
 

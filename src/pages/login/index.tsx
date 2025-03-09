@@ -116,7 +116,7 @@ const LoginPage = () => {
   })
   useEffect(() => {
     if (ready && authenticated) {
-      router.push('/dashboard'); /// Chuyển hướng đến dashboard thay vì wallet-methods
+      router.push('/myDashboard'); /// Chuyển hướng đến dashboard thay vì wallet-methods
     }
   }, [ready, authenticated, router]);
 

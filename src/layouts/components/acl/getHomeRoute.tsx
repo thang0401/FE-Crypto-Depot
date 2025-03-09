@@ -2,7 +2,7 @@
  *  Set Home URL based on User Roles
  */
 const getHomeRoute = (role: string) => {
-  if (role === 'client') return '/dashboard';
+  if (role === 'client') return '/myDashboard';
   else return '/login'
 }
 

@@ -12,7 +12,7 @@ const Main = () => {
   return (
     <Box sx={{ p: { xs: 2, md: 3 } }}>
     {/* Header */}
-    <DashboardHeader />
+    {/* <DashboardHeader /> */}
 
     <Grid container spacing={3}>
       {/* Account Cards */}

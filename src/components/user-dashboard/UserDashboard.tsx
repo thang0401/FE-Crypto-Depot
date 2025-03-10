@@ -19,7 +19,7 @@ const UserDashboard = () => {
 
     return (
         <Box sx={{ display: "flex" }}>
-            <Sidebar open={open} onToggle={handleDrawerToggle} />
+            {/* <Sidebar open={open} onToggle={handleDrawerToggle} /> */}
             <Box
                 component="main"
                 sx={{

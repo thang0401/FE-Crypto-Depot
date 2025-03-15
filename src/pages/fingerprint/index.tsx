@@ -13,7 +13,7 @@ export default function FingerprintPage() {
     if (ready && !authenticated) {
       router.push('/login');
     } else if (ready && authenticated && !user?.wallet) {
-      router.push('/dashboard');
+      router.push('/myDashboard');
     } else if (ready && authenticated && user?.wallet && user?.mfaMethods?.includes('passkey')) {
       router.push('/saving/my-portfolios/');
     }

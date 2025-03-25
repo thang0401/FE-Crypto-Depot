@@ -13,16 +13,45 @@ import {
 } from "@mui/material"
 import { useRouter } from "next/navigation"
 import axios from "axios"
-import { uploadFileToDrive, createDriveFolder } from "../../utils/google-drive"
+
+// Định nghĩa kiểu cho dữ liệu KYC
+interface KycData {
+  country: string
+  nationalId: string
+  frontImage: File | null
+  frontImagePreview: string | null
+  backImage: File | null
+  backImagePreview: string | null
+  firstName: string
+  middleName: string
+  lastName: string
+  gender: string
+  phone: string
+  birthday: string
+  address: string
+  ward: string
+  district: string
+  province: string
+}
+
+// Định nghĩa kiểu cho lỗi
+type Errors = Record<string, string>
+
+// Định nghĩa kiểu cho dữ liệu từ API tỉnh/thành
+interface LocationData {
+  id: string
+  full_name: string
+}
+
 const KycCenter: React.FC = () => {
   const router = useRouter()
-  const [kycData, setKycData] = useState({
+  const [kycData, setKycData] = useState<KycData>({
     country: "VN",
     nationalId: "",
-    frontImage: null as File | null,
-    frontImagePreview: null as string | null,
-    backImage: null as File | null,
-    backImagePreview: null as string | null,
+    frontImage: null,
+    frontImagePreview: null,
+    backImage: null,
+    backImagePreview: null,
     firstName: "",
     middleName: "",
     lastName: "",
@@ -35,11 +64,12 @@ const KycCenter: React.FC = () => {
     province: "",
   })
 
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [provinces, setProvinces] = useState<any[]>([])
-  const [districts, setDistricts] = useState<any[]>([])
-  const [wards, setWards] = useState<any[]>([])
+  const [errors, setErrors] = useState<Errors>({})
+  const [provinces, setProvinces] = useState<LocationData[]>([])
+  const [districts, setDistricts] = useState<LocationData[]>([])
+  const [wards, setWards] = useState<LocationData[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
+
   // Fetch provinces
   useEffect(() => {
     axios
@@ -83,9 +113,9 @@ const KycCenter: React.FC = () => {
     }
   }, [kycData.district])
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {}
-    
+  const validateForm = (): boolean => {
+    const newErrors: Errors = {}
+
     if (!kycData.nationalId.trim()) {
       newErrors.nationalId = "National ID is required"
     } else if (!/^\d{9,12}$/.test(kycData.nationalId)) {
@@ -111,7 +141,7 @@ const KycCenter: React.FC = () => {
     }
 
     if (!kycData.gender) newErrors.gender = "Gender is required"
-    
+
     if (!kycData.phone.trim()) {
       newErrors.phone = "Phone number is required"
     } else if (!/^\d{10,11}$/.test(kycData.phone)) {
@@ -138,16 +168,49 @@ const KycCenter: React.FC = () => {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = () => {
-    if (validateForm()) {
-      console.log("KYC Data:", kycData)
+  const handleSubmit = async () => {
+    if (!validateForm()) return
+
+    setIsSubmitting(true)
+
+    try {
+      // Chuyển file thành base64 để gửi lên server
+      const toBase64 = (file: File): Promise<string> =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.readAsDataURL(file)
+          reader.onload = () => resolve(reader.result as string)
+          reader.onerror = (error) => reject(error)
+        })
+
+      const frontImageBase64 = kycData.frontImage ? await toBase64(kycData.frontImage) : null
+      const backImageBase64 = kycData.backImage ? await toBase64(kycData.backImage) : null
+
+      // Gửi request đến API route
+      const response = await axios.post("/api/upload-to-drive", {
+        nationalId: kycData.nationalId,
+        frontImage: frontImageBase64,
+        backImage: backImageBase64,
+      })
+
+      const { frontImageUrl, backImageUrl } = response.data
+
+      console.log("KYC Data:", { ...kycData, frontImageUrl, backImageUrl })
       alert("KYC is complete. Your profile will be reviewed within 24 hours!")
       localStorage.setItem("userKycStatus", JSON.stringify(true))
       router.push("/")
+    } catch (error) {
+      console.error("Error submitting KYC:", error)
+      setErrors((prev) => ({
+        ...prev,
+        submit: "Failed to submit KYC. Please try again.",
+      }))
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
-  const handleChange = (field: keyof typeof kycData, value: any) => {
+  const handleChange = (field: keyof KycData, value: any) => {
     if (field === "frontImage" && value instanceof File) {
       const previewUrl = URL.createObjectURL(value)
       setKycData((prev) => ({ ...prev, [field]: value, frontImagePreview: previewUrl }))
@@ -157,7 +220,6 @@ const KycCenter: React.FC = () => {
     } else {
       setKycData((prev) => ({ ...prev, [field]: value }))
     }
-    // Clear error when user starts typing
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: "" }))
     }
@@ -168,6 +230,11 @@ const KycCenter: React.FC = () => {
       <Typography variant="h5" gutterBottom>
         Upload Documents and Personal Information
       </Typography>
+      {errors.submit && (
+        <Typography color="error" sx={{ mb: 2 }}>
+          {errors.submit}
+        </Typography>
+      )}
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -191,15 +258,42 @@ const KycCenter: React.FC = () => {
         </Grid>
 
         <Grid item xs={6}>
-          <Card sx={{ border: "2px dashed #ccc", borderRadius: "8px", padding: 2, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "300px" }}>
-            <Typography variant="h6" sx={{ mb: 2 }}>Front Side of ID Card</Typography>
+          <Card
+            sx={{
+              border: "2px dashed #ccc",
+              borderRadius: "8px",
+              padding: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "300px",
+            }}
+          >
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Front Side of ID Card
+            </Typography>
             <Box sx={{ width: "100%", position: "relative" }}>
               {kycData.frontImagePreview && (
-                <CardMedia component="img" image={kycData.frontImagePreview} alt="Front Image Preview" sx={{ borderRadius: "8px", height: 200, objectFit: "contain", maxWidth: "100%" }} />
+                <CardMedia
+                  component="img"
+                  image={kycData.frontImagePreview}
+                  alt="Front Image Preview"
+                  sx={{ borderRadius: "8px", height: 200, objectFit: "contain", maxWidth: "100%" }}
+                />
               )}
-              <Button variant="contained" component="label" sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 1 }}>
+              <Button
+                variant="contained"
+                component="label"
+                sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 1 }}
+              >
                 {kycData.frontImage ? "Re-upload" : "Upload"}
-                <input type="file" hidden accept="image/jpeg,image/png,application/pdf" onChange={(e) => handleChange("frontImage", e.target.files?.[0] || null)} />
+                <input
+                  type="file"
+                  hidden
+                  accept="image/jpeg,image/png,application/pdf"
+                  onChange={(e) => handleChange("frontImage", e.target.files?.[0] || null)}
+                />
               </Button>
               {!kycData.frontImage && (
                 <Typography variant="caption" sx={{ mt: 10, display: "block", textAlign: "center", pt: 5 }}>
@@ -207,20 +301,51 @@ const KycCenter: React.FC = () => {
                 </Typography>
               )}
             </Box>
-            {errors.frontImage && <Typography color="error" variant="caption">{errors.frontImage}</Typography>}
+            {errors.frontImage && (
+              <Typography color="error" variant="caption">
+                {errors.frontImage}
+              </Typography>
+            )}
           </Card>
         </Grid>
 
         <Grid item xs={6}>
-          <Card sx={{ border: "2px dashed #ccc", borderRadius: "8px", padding: 2, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "300px" }}>
-            <Typography variant="h6" sx={{ mb: 2 }}>Back Side of ID Card</Typography>
+          <Card
+            sx={{
+              border: "2px dashed #ccc",
+              borderRadius: "8px",
+              padding: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "300px",
+            }}
+          >
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Back Side of ID Card
+            </Typography>
             <Box sx={{ width: "100%", position: "relative" }}>
               {kycData.backImagePreview && (
-                <CardMedia component="img" image={kycData.backImagePreview} alt="Back Image Preview" sx={{ borderRadius: "8px", height: 200, objectFit: "contain", maxWidth: "100%" }} />
+                <CardMedia
+                  component="img"
+                  image={kycData.backImagePreview}
+                  alt="Back Image Preview"
+                  sx={{ borderRadius: "8px", height: 200, objectFit: "contain", maxWidth: "100%" }}
+                />
               )}
-              <Button variant="contained" component="label" sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 1 }}>
+              <Button
+                variant="contained"
+                component="label"
+                sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 1 }}
+              >
                 {kycData.backImage ? "Re-upload" : "Upload"}
-                <input type="file" hidden accept="image/jpeg,image/png,application/pdf" onChange={(e) => handleChange("backImage", e.target.files?.[0] || null)} />
+                <input
+                  type="file"
+                  hidden
+                  accept="image/jpeg,image/png,application/pdf"
+                  onChange={(e) => handleChange("backImage", e.target.files?.[0] || null)}
+                />
               </Button>
               {!kycData.backImage && (
                 <Typography variant="caption" sx={{ mt: 10, display: "block", textAlign: "center", pt: 5 }}>
@@ -228,7 +353,11 @@ const KycCenter: React.FC = () => {
                 </Typography>
               )}
             </Box>
-            {errors.backImage && <Typography color="error" variant="caption">{errors.backImage}</Typography>}
+            {errors.backImage && (
+              <Typography color="error" variant="caption">
+                {errors.backImage}
+              </Typography>
+            )}
           </Card>
         </Grid>
 
@@ -381,8 +510,8 @@ const KycCenter: React.FC = () => {
       </Grid>
 
       <Box sx={{ mt: 4, display: "flex", justifyContent: "flex-end" }}>
-        <Button variant="contained" onClick={handleSubmit}>
-          Confirm
+        <Button variant="contained" onClick={handleSubmit} disabled={isSubmitting}>
+          {isSubmitting ? "Submitting..." : "Confirm"}
         </Button>
       </Box>
     </Box>

@@ -91,6 +91,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     // Decode từ Base64
     const decodedFolderLink: string = atob(base64FolderLink)
     console.log("Decoded folder link:", decodedFolderLink)
+    
     return res.status(200).json({ frontImageUrl, backImageUrl, folderLink: base64FolderLink })
   } catch (error) {
     console.error("Error in upload-to-drive:", error)

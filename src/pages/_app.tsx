@@ -144,7 +144,7 @@ const App = (props: ExtendedAppProps) => {
         <PrivyProvider
           appId='cm7m87xkw018yazredtxxnnjs' // Thay bằng App ID từ Dashboard
           config={{
-            loginMethods: ['google', 'discord'], // Chỉ dùng Google và Discord
+            loginMethods: ['google', 'discord', 'github'], // Chỉ dùng Google và Discord
             appearance: {
               theme: 'light'
               // logo: 'https://your-logo-url.com/logo.png', // Thay bằng URL logo của bạn

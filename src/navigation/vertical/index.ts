@@ -58,11 +58,11 @@ const navigation = (): VerticalNavItemsType => {
           icon: 'bx:send',
           path: '/saving/add-saving-asset/open'
         },
-        // {
-        //   title: 'Principal Withdrawal',
-        //   icon: 'bx:transfer',
-        //   path: '/saving/transfer-asset'
-        // },
+        {
+          title: 'Calculator',
+          icon: 'bx:transfer',
+          path: '/saving/caculator'
+        },
         // {
         //   title: 'Child Savings',
         //   icon: 'bx:asset',

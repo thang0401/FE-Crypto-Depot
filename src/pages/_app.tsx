@@ -165,9 +165,9 @@ const App = (props: ExtendedAppProps) => {
                 {({ settings }) => (
                   <ThemeComponent settings={settings}>
                     <BlankLayout>
-                        <AbilityContext.Provider value={abilitys}>
+                        {/* <AbilityContext.Provider value={abilitys}> */}
                         {getLayout(<Component {...pageProps} />)}
-                        </AbilityContext.Provider>
+                        {/* </AbilityContext.Provider> */}
                         </BlankLayout>
                     <ReactHotToast>
                       <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />

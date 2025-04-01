@@ -80,6 +80,11 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Transaction History',
       path: '/transaction-history'
     },
+    {
+      icon: 'bx:collection',
+      title: 'Buy Sell USDC',
+      path: '/buy-sell'
+    },
 
     {
       icon: 'bx:collection',

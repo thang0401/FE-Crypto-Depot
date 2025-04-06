@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
-import { usePrivy, useSendTransaction } from '@privy-io/react-auth';
+// import { usePrivy, useSendTransaction } from '@privy-io/react-auth';
 import Web3 from 'web3';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -293,19 +293,19 @@ const SavingsPortfolioForm = () => {
     otp: '',
   });
 
-  const { ready, authenticated, user, login } = usePrivy();
-  const { sendTransaction } = useSendTransaction();
+  // const { ready, authenticated, user, login } = usePrivy();
+  // const { sendTransaction } = useSendTransaction();
 
-  useEffect(() => {
-    if (ready && authenticated && user?.wallet) { // Sử dụng optional chaining cho user.wallet
-      const wallet = user.wallet;
-      setWalletAddress(wallet.address);
-      setFormData(prev => ({ ...prev, sourceAccount: wallet.address }));
-      fetchWalletBalances(wallet.address);
-    } else if (ready && !authenticated) {
-      router.push('/login');
-    }
-  }, [ready, authenticated, user, router]);
+  // useEffect(() => {
+  //   if (ready && authenticated && user?.wallet) { // Sử dụng optional chaining cho user.wallet
+  //     const wallet = user.wallet;
+  //     setWalletAddress(wallet.address);
+  //     setFormData(prev => ({ ...prev, sourceAccount: wallet.address }));
+  //     fetchWalletBalances(wallet.address);
+  //   } else if (ready && !authenticated) {
+  //     router.push('/login');
+  //   }
+  // }, [ready, authenticated, user, router]);
 
   const fetchWalletBalances = async (address: string) => {
     try {
@@ -339,49 +339,49 @@ const SavingsPortfolioForm = () => {
     setShowValidation(false);
   };
 
-  const handleSubmit = async () => {
-    if (currentStep === 1 && !isStep1Valid) {
-      setShowValidation(true);
-      return;
-    }
+  // const handleSubmit = async () => {
+  //   if (currentStep === 1 && !isStep1Valid) {
+  //     setShowValidation(true);
+  //     return;
+  //   }
 
-    if (currentStep === 3) {
-      try {
-        const web3 = new Web3('https://sepolia-rollup.arbitrum.io/rpc');
-        const usdcContract = new web3.eth.Contract(USDC_ABI, USDC_ADDRESS);
-        const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+  //   if (currentStep === 3) {
+  //     try {
+  //       const web3 = new Web3('https://sepolia-rollup.arbitrum.io/rpc');
+  //       const usdcContract = new web3.eth.Contract(USDC_ABI, USDC_ADDRESS);
+  //       const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
 
-        const usdcAmount = web3.utils.toWei(formData.amount.replace(/,/g, ''), 'mwei');
-        const termId = formData.term.replace('M', ' Months');
-        const interestRate = TERMS.find(t => t.value === formData.term)?.interest;
-        const interestValue = Math.round(parseFloat(interestRate!.replace('%', '')) * 100);
-        const savingAccount = `SAV${Date.now()}`;
+  //       const usdcAmount = web3.utils.toWei(formData.amount.replace(/,/g, ''), 'mwei');
+  //       const termId = formData.term.replace('M', ' Months');
+  //       const interestRate = TERMS.find(t => t.value === formData.term)?.interest;
+  //       const interestValue = Math.round(parseFloat(interestRate!.replace('%', '')) * 100);
+  //       const savingAccount = `SAV${Date.now()}`;
 
-        const allowance = await usdcContract.methods.allowance(walletAddress, CONTRACT_ADDRESS).call();
-        if (Web3.utils.toBigInt(allowance) < BigInt(usdcAmount)) {
-          const approveData = usdcContract.methods.approve(CONTRACT_ADDRESS, usdcAmount).encodeABI();
-          const approveTx = { to: USDC_ADDRESS, chainId: 421614, data: approveData };
-          await sendTransaction(approveTx, { uiOptions: { description: `Approve ${formData.amount} USDC`, buttonText: 'Approve' } });
-        }
+  //       const allowance = await usdcContract.methods.allowance(walletAddress, CONTRACT_ADDRESS).call();
+  //       if (Web3.utils.toBigInt(allowance) < BigInt(usdcAmount)) {
+  //         const approveData = usdcContract.methods.approve(CONTRACT_ADDRESS, usdcAmount).encodeABI();
+  //         const approveTx = { to: USDC_ADDRESS, chainId: 421614, data: approveData };
+  //         await sendTransaction(approveTx, { uiOptions: { description: `Approve ${formData.amount} USDC`, buttonText: 'Approve' } });
+  //       }
 
-        const depositData = contract.methods.deposit(usdcAmount, savingAccount, termId, interestValue).encodeABI();
-        const depositTx = { to: CONTRACT_ADDRESS, chainId: 421614, data: depositData };
-        const { hash } = await sendTransaction(depositTx, { uiOptions: { description: `Deposit ${formData.amount} USDC`, buttonText: 'Confirm' } });
+  //       const depositData = contract.methods.deposit(usdcAmount, savingAccount, termId, interestValue).encodeABI();
+  //       const depositTx = { to: CONTRACT_ADDRESS, chainId: 421614, data: depositData };
+  //       const { hash } = await sendTransaction(depositTx, { uiOptions: { description: `Deposit ${formData.amount} USDC`, buttonText: 'Confirm' } });
 
-        console.log('Deposit hash:', hash);
-        setOpenDialog(true);
-        setTimeout(() => {
-          setOpenDialog(false);
-          router.push('/saving/my-portfolios');
-        }, 5000);
-      } catch (error: any) {
-        console.error('Transaction failed:', error);
-        alert('Transaction failed: ' + error.message);
-      }
-    } else {
-      handleNext();
-    }
-  };
+  //       console.log('Deposit hash:', hash);
+  //       setOpenDialog(true);
+  //       setTimeout(() => {
+  //         setOpenDialog(false);
+  //         router.push('/saving/my-portfolios');
+  //       }, 5000);
+  //     } catch (error: any) {
+  //       console.error('Transaction failed:', error);
+  //       alert('Transaction failed: ' + error.message);
+  //     }
+  //   } else {
+  //     handleNext();
+  //   }
+  // };
 
   const renderStep = () => {
     const props = {
@@ -402,7 +402,7 @@ const SavingsPortfolioForm = () => {
     }
   };
 
-  if (!ready) return <div>Loading...</div>;
+  // if (!ready) return <div>Loading...</div>;
 
   return (
     <Box sx={{ minHeight: '100vh', py: 6 }}>
@@ -430,7 +430,7 @@ const SavingsPortfolioForm = () => {
             <StyledButton variant="outlined" onClick={handleBack} disabled={currentStep === 1} startIcon={<ArrowLeft />} sx={{ borderColor: 'inherit', '&:hover': { borderColor: 'inherit' } }}>
               Back
             </StyledButton>
-            <StyledButton variant="contained" onClick={handleSubmit} endIcon={currentStep !== 3 && <ArrowRight />} sx={{ '&:hover': { bgcolor: 'inherit' }, boxShadow: 'none' }}>
+            <StyledButton variant="contained"  endIcon={currentStep !== 3 && <ArrowRight />} sx={{ '&:hover': { bgcolor: 'inherit' }, boxShadow: 'none' }}>
               {currentStep === 3 ? 'Complete' : 'Continue'}
             </StyledButton>
           </Box>

@@ -3,7 +3,7 @@
  */
 const getHomeRoute = (role: string) => {
   if (role === 'client') return '/myDashboard';
-  else return '/login'
+  else return '/myDashboard'
 }
 
 

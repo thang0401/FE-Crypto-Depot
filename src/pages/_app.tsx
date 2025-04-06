@@ -1,9 +1,9 @@
 // ** React Imports
-import { ReactNode, useEffect } from 'react'
+import { ReactNode } from 'react'
 
 // ** Next Imports
 import Head from 'next/head'
-import { Router, useRouter } from 'next/router'
+import { Router } from 'next/router'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
@@ -20,7 +20,7 @@ import type { EmotionCache } from '@emotion/cache'
 
 // ** Config Imports
 import 'src/configs/i18n'
-import { buildAbilityFor, defaultACLObj } from 'src/configs/acl'
+import { defaultACLObj } from 'src/configs/acl'
 import themeConfig from 'src/configs/themeConfig'
 
 // ** Fake-DB Import
@@ -40,7 +40,7 @@ import GuestGuard from 'src/@core/components/auth/GuestGuard'
 import Spinner from 'src/@core/components/spinner'
 
 // ** Contexts
-import { AuthProvider } from 'src/context/AuthContext'
+ import { AuthProvider } from 'src/context/AuthContext'
 import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsContext'
 
 // ** Styled Components
@@ -48,10 +48,8 @@ import ReactHotToast from 'src/@core/styles/libs/react-hot-toast'
 
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
-
-// ** Privy Imports
-import { PrivyProvider, usePrivy } from '@privy-io/react-auth'
-
+import { ApolloProvider } from '@apollo/client'
+//import apollo from 'src/graphql/apollo'
 // ** Prismjs Styles
 import 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
@@ -60,12 +58,11 @@ import 'prismjs/components/prism-tsx'
 
 // ** React Perfect Scrollbar Style
 import 'react-perfect-scrollbar/dist/css/styles.css'
+
 import 'src/iconify-bundle/icons-bundle-react'
 
 // ** Global css styles
 import '../../styles/globals.css'
-import BlankLayout from 'src/@core/layouts/BlankLayout'
-import { AbilityContext } from 'src/layouts/components/acl/Can'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -114,70 +111,50 @@ const App = (props: ExtendedAppProps) => {
     Component.getLayout ?? (page => <UserLayout contentHeightFixed={contentHeightFixed}>{page}</UserLayout>)
 
   const setConfig = Component.setConfig ?? undefined
-  const authGuard = Component.authGuard ?? true
-  const guestGuard = Component.guestGuard ?? false
-  const aclAbilities = Component.acl ?? defaultACLObj
-   const abilitys = buildAbilityFor('client', aclAbilities.subject)
-   const { ready, authenticated, login } = usePrivy(); ///
-   const router = useRouter();///
-   console.log('router.pathname',router.pathname);
 
-     useEffect(() => {
-       if (router.pathname !== '/login' && !ready && !authenticated) {
-         router.push('/login');
-       }
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-     }, []);
+  const authGuard = Component.authGuard ?? true
+
+  const guestGuard = Component.guestGuard ?? false
+
+  const aclAbilities = Component.acl ?? defaultACLObj
+
   return (
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
         <Head>
-          <title>{`${themeConfig.templateName} - Giải pháp lưu trữ và giao dịch đơn giản, an toàn và bảo mật`}</title>
+          <title>{`${themeConfig.templateName} - Giải pháp lưu trữ và giao dịch đơn giản, an toàn và bảo mật  `}</title>
           <meta
             name='description'
-            content={`${themeConfig.templateName} – Cung cấp giải pháp lưu trữ và giao dịch đơn giản, an toàn và bảo mật số dư tiền điện tử của bạn.`}
+            content={`${themeConfig.templateName} –Cung cấp giải pháp lưu trữ và giao dịch đơn giản, an toàn và bảo mật số dư số dư tiền điện tử của bạn.`}
           />
           <meta name='keywords' content='Lưu ký crypto, giao dịch - bảo mật an toàn, bảo mật số dư' />
           <meta name='viewport' content='initial-scale=1, width=device-width' />
         </Head>
 
-        <PrivyProvider
-          appId='cm7m87xkw018yazredtxxnnjs' // Thay bằng App ID từ Dashboard
-          config={{
-            loginMethods: ['google', 'discord', 'github'], // Chỉ dùng Google và Discord
-            appearance: {
-              theme: 'light'
-              // logo: 'https://your-logo-url.com/logo.png', // Thay bằng URL logo của bạn
-            },
-            embeddedWallets: {
-              ethereum: {
-                createOnLogin: 'off' // Tắt tạo ví tự động
-              }
-            },
-            mfa: {
-              noPromptOnMfaRequired: false // Dùng UI mặc định của Privy cho MFA
-            }
-          }}
-        >
+{/*
+        <AuthProvider>
+          <ApolloProvider client={apollo}> */}
           <AuthProvider>
             <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
               <SettingsConsumer>
-                {({ settings }) => (
-                  <ThemeComponent settings={settings}>
-                    <BlankLayout>
-                        {/* <AbilityContext.Provider value={abilitys}> */}
-                        {getLayout(<Component {...pageProps} />)}
-                        {/* </AbilityContext.Provider> */}
-                        </BlankLayout>
-                    <ReactHotToast>
-                      <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
-                    </ReactHotToast>
-                  </ThemeComponent>
-                )}
+                {({ settings }) => {
+                  return (
+                    <ThemeComponent settings={settings}>
+                      <Guard authGuard={authGuard} guestGuard={guestGuard}>
+                        <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard} authGuard={authGuard}>
+                          {getLayout(<Component {...pageProps} />)}
+                        </AclGuard>
+                      </Guard>
+                      <ReactHotToast>
+                        <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
+                      </ReactHotToast>
+                    </ThemeComponent>
+                  )
+                }}
               </SettingsConsumer>
             </SettingsProvider>
+          {/* </ApolloProvider> */}
           </AuthProvider>
-        </PrivyProvider>
       </CacheProvider>
     </Provider>
   )

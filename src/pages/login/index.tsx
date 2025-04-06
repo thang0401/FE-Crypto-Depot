@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ReactNode, MouseEvent, useEffect } from 'react'
+import { useState, ReactNode, MouseEvent } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -21,7 +21,7 @@ import { styled, useTheme } from '@mui/material/styles'
 import FormHelperText from '@mui/material/FormHelperText'
 import InputAdornment from '@mui/material/InputAdornment'
 import FormControlLabel from '@mui/material/FormControlLabel'
-import { usePrivy } from '@privy-io/react-auth'; /// Thêm Privy
+
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
 
@@ -31,7 +31,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 // ** Hooks
-// import { useAuth } from 'src/hooks/useAuth'
+import { useAuth } from 'src/hooks/useAuth'
 import useBgColor, { UseBgColorType } from 'src/@core/hooks/useBgColor'
 import { useSettings } from 'src/@core/hooks/useSettings'
 
@@ -40,7 +40,6 @@ import themeConfig from 'src/configs/themeConfig'
 
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
-import { useRouter } from 'next/router'
 
 // ** Styled Components
 const LoginIllustration = styled('img')({
@@ -92,14 +91,11 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
 
   // ** Hooks
-  // const auth = useAuth()
+  const auth = useAuth()
   const theme = useTheme()
   const { settings } = useSettings()
   const bgColors: UseBgColorType = useBgColor()
   const hidden = useMediaQuery(theme.breakpoints.down('lg'))
-
-  const { ready, authenticated, login } = usePrivy(); ///
-  const router = useRouter();///
 
   // ** Var
   const { skin } = settings
@@ -114,22 +110,16 @@ const LoginPage = () => {
     mode: 'onBlur',
     resolver: yupResolver(schema)
   })
-  useEffect(() => {
-    if (ready && authenticated) {
-      router.push('/mydashboard'); /// Chuyển hướng đến dashboard thay vì wallet-methods
-    }
-  }, [ready, authenticated, router]);
 
-  // const onSubmit = (data: FormData) => {
-  //   const { email, password } = data
-  //   auth.login({ email, password, rememberMe }, () => {
-  //     setError('email', {
-  //       type: 'manual',
-  //       message: 'Email or Password is invalid'
-  //     })
-  //   })
-  // }
-
+  const onSubmit = (data: FormData) => {
+    const { email, password } = data
+    auth.login({ email, password, rememberMe }, () => {
+      setError('email', {
+        type: 'manual',
+        message: 'Email or Password is invalid'
+      })
+    })
+  }
 
   return (
     <Box className='content-right'>
@@ -183,9 +173,16 @@ const LoginPage = () => {
           <Typography sx={{ mb: 6, color: 'text.secondary' }}>
             Please sign-in to your account and start the adventure
           </Typography>
-
-          <form noValidate autoComplete='off' >
-            {/* <FormControl fullWidth sx={{ mb: 4 }}>
+          {/* <Alert icon={false} sx={{ py: 3, mb: 6, ...bgColors.primaryLight, '& .MuiAlert-message': { p: 0 } }}>
+            <Typography variant='caption' sx={{ mb: 2, display: 'block', color: 'primary.main' }}>
+              Admin: <strong>admin@sneat.com</strong> / Pass: <strong>admin</strong>
+            </Typography>
+            <Typography variant='caption' sx={{ display: 'block', color: 'primary.main' }}>
+              Client: <strong>client@sneat.com</strong> / Pass: <strong>client</strong>
+            </Typography>
+          </Alert> */}
+          <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+            <FormControl fullWidth sx={{ mb: 4 }}>
               <Controller
                 name='email'
                 control={control}
@@ -203,8 +200,8 @@ const LoginPage = () => {
                 )}
               />
               {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
-            </FormControl> */}
-            {/* <FormControl fullWidth sx={{ mb: 2 }}>
+            </FormControl>
+            <FormControl fullWidth sx={{ mb: 2 }}>
               <InputLabel htmlFor='auth-login-v2-password' error={Boolean(errors.password)}>
                 Password
               </InputLabel>
@@ -240,8 +237,8 @@ const LoginPage = () => {
                   {errors.password.message}
                 </FormHelperText>
               )}
-            </FormControl> */}
-            {/* <Box
+            </FormControl>
+            <Box
               sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
               <FormControlLabel
@@ -250,30 +247,52 @@ const LoginPage = () => {
                 control={<Checkbox checked={rememberMe} onChange={e => setRememberMe(e.target.checked)} />}
               />
               <LinkStyled href='/forgot-password'>Forgot Password?</LinkStyled>
-            </Box> */}
-            {/* <Button fullWidth size='large' type='submit' variant='contained' sx={{ mb: 4 }}>
+            </Box>
+            <Button fullWidth size='large' type='submit' variant='contained' sx={{ mb: 4 }}>
               Sign in
-            </Button> */}
-            {/* <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+            </Button>
+            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Typography variant='body2' sx={{ mr: 2 }}>
                 New on our platform?
               </Typography>
               <Typography>
                 <LinkStyled href='/register'>Create an account</LinkStyled>
               </Typography>
-            </Box> */}
-            <Divider sx={{ my: `${theme.spacing(6)} !important` }}>Start your journey</Divider>
+            </Box>
+            <Divider sx={{ my: `${theme.spacing(6)} !important` }}>or</Divider>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-
-              <Button
-              variant="contained"
-              fullWidth
-              onClick={login}
-              sx={{ mt: 2 }}
-              disabled={!ready || authenticated}
-            >
-              Login with Google or Discord
-            </Button>
+              <IconButton
+                href='/'
+                component={Link}
+                sx={{ color: '#497ce2' }}
+                onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+              >
+                <Icon icon='bxl:facebook-circle' />
+              </IconButton>
+              <IconButton
+                href='/'
+                component={Link}
+                sx={{ color: '#1da1f2' }}
+                onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+              >
+                <Icon icon='bxl:twitter' />
+              </IconButton>
+              <IconButton
+                href='/'
+                component={Link}
+                onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+                sx={{ color: theme.palette.mode === 'light' ? '#272727' : 'grey.300' }}
+              >
+                <Icon icon='bxl:github' />
+              </IconButton>
+              <IconButton
+                href='/'
+                component={Link}
+                sx={{ color: '#db4437' }}
+                onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+              >
+                <Icon icon='bxl:google' />
+              </IconButton>
             </Box>
           </form>
         </Box>

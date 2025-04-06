@@ -5,10 +5,17 @@ import { Settings } from 'src/@core/context/settingsContext'
 const DefaultPalette = (mode: Palette['mode'], settings: Settings): Palette => {
   // ** Vars
   const whiteColor = '#FFF'
-  const lightColor = 'rgba(50, 71, 92)'
-  // const darkColor = '219, 219, 235'
+// For RGB values to use in rgba() functions
+  const lightColorRGB = '50, 71, 92'
+  const darkColorRGB = '219, 219, 235'
+
+  // For complete color values to use directly
+  const lightColor = 'rgb(50, 71, 92)'
+  const darkColor = 'rgb(219, 219, 235)'
+
   const darkPaperBgColor = '#2B2C40'
-  const mainColor = mode === 'light' ? lightColor : 'rgba(219, 219, 235, 0.87)'
+  const mainColor = mode === 'light' ? lightColor : darkColor
+  const mainColorRGB = mode === 'light' ? lightColorRGB : darkColorRGB
 
   const defaultBgColor = () => {
     if (settings.skin === 'bordered' && mode === 'light') {
@@ -38,7 +45,7 @@ const DefaultPalette = (mode: Palette['mode'], settings: Settings): Palette => {
 
   return {
     customColors: {
-      dark: 'rgba(219, 219, 235, 0.87)',
+      dark: darkColor,
       main: mainColor,
       light: lightColor,
       lightPaperBg: whiteColor,
@@ -61,7 +68,7 @@ const DefaultPalette = (mode: Palette['mode'], settings: Settings): Palette => {
       contrastText: whiteColor
     },
     secondary: {
-      light: '#000000',
+      light: '#97A2B1',
       main: '#8592A3',
       dark: '#798594',
       contrastText: whiteColor
@@ -107,10 +114,10 @@ const DefaultPalette = (mode: Palette['mode'], settings: Settings): Palette => {
       A700: '#616161'
     },
     text: {
-      primary: `${mainColor}`,
-      secondary: `rgba(${mainColor}, 0.6)`,
-      disabled: `rgba(${mainColor}, 0.38)`
-    },
+    primary: `rgba(${mainColorRGB}, 0.87)`,
+    secondary: `rgba(${mainColorRGB}, 0.6)`,
+    disabled: `rgba(${mainColorRGB}, 0.38)`
+     },
     divider: `rgba(${mainColor}, 0.12)`,
     background: {
       paper: mode === 'light' ? whiteColor : darkPaperBgColor,

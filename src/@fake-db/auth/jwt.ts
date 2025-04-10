@@ -12,20 +12,28 @@ import { UserDataType } from 'src/context/types'
 
 const users: UserDataType[] = [
   {
-    id: 1,
+    id: 'user_003',
     role: 'admin',
     password: 'admin',
     fullName: 'John Doe',
     username: 'johndoe',
-    email: 'thangadmin@gmail.com'
+    avatar: null,
+    email: 'thangadmin@gmail.com',
+    kycStatus : true,
+    walletAddress : '0x6d9a981d5C4Df84f57856A2bb9588Cc9966a085C',
+    firstName: 'thăng'
   },
   {
-    id: 2,
+    id: 'user_003',
     role: 'client',
     password: 'client',
     fullName: 'Jane Doe',
     username: 'janedoe',
-    email: 'thangclient@gmail.com'
+    avatar: null,
+    email: 'thangclient@gmail.com',
+    kycStatus : true,
+    walletAddress : '0x6d9a981d5C4Df84f57856A2bb9588Cc9966a085C',
+    firstName: 'thăng'
   }
 ]
 
@@ -76,19 +84,18 @@ mock.onPost('/jwt/register').reply(request => {
     }
 
     if (!error.username && !error.email) {
-      const { length } = users
-      let lastIndex = 0
-      if (length) {
-        lastIndex = users[length - 1].id
-      }
+
       const userData = {
-        id: lastIndex + 1,
-        email,
-        password,
-        username,
-        avatar: null,
-        fullName: '',
-        role: 'admin'
+        id: '',
+        role: '',
+        password: '',
+        fullName: ' ',
+        username: '',
+        avatar: '',
+        email: '',
+        kycStatus : true,
+        walletAddress : '',
+        firstName: ''
       }
 
       users.push(userData)
@@ -96,7 +103,7 @@ mock.onPost('/jwt/register').reply(request => {
       const accessToken = jwt.sign({ id: userData.id }, jwtConfig.secret as string)
 
       const user = { ...userData }
-      delete user.password
+      // delete user.password
 
       const response = { accessToken }
 

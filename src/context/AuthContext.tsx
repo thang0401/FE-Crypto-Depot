@@ -20,7 +20,11 @@ const defaultProvider: AuthValuesType = {
   setUser: () => null,
   setLoading: () => Boolean,
   login: () => Promise.resolve(),
-  logout: () => Promise.resolve()
+  logout: () => Promise.resolve(),
+  // otpRequired: false,
+  // handleOtpVerify: function (otp: string, errorCallback?: ErrCallbackType): void {
+  //   throw new Error('Function not implemented.')
+  // }
 }
 
 const AuthContext = createContext(defaultProvider)

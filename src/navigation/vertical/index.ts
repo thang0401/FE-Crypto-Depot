@@ -92,6 +92,11 @@ const navigation = (): VerticalNavItemsType => {
       path: '/Borrow-and-Repaymnet'
     },
     {
+      icon: 'bx:collection',
+      title: 'Support/Claim',
+      path: '/support'
+    },
+    {
       icon: 'bx:grid-alt',
       title: 'Personal Page',
       children: [

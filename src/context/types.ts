@@ -17,6 +17,7 @@ export type UserDataType = {
   kycStatus : boolean
   walletAddress? : string | null
   firstName : string
+  rememberMe : boolean
 }
 
 

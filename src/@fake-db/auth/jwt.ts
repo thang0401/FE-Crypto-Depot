@@ -20,6 +20,7 @@ const users: UserDataType[] = [
     avatar: null,
     email: 'thangadmin@gmail.com',
     kycStatus : true,
+    rememberMe : true,
     walletAddress : '0x6d9a981d5C4Df84f57856A2bb9588Cc9966a085C',
     firstName: 'thăng'
   },
@@ -32,6 +33,7 @@ const users: UserDataType[] = [
     avatar: null,
     email: 'thangclient@gmail.com',
     kycStatus : true,
+    rememberMe : true,
     walletAddress : '0x6d9a981d5C4Df84f57856A2bb9588Cc9966a085C',
     firstName: 'thăng'
   }
@@ -95,7 +97,8 @@ mock.onPost('/jwt/register').reply(request => {
         email: '',
         kycStatus : true,
         walletAddress : '',
-        firstName: ''
+        firstName: '',
+        rememberMe : true,
       }
 
       users.push(userData)

@@ -172,7 +172,7 @@ const CryptoExchangeForm = () => {
         // Cập nhật payAmount với giá trị đã định dạng
         setPayAmount(formattedValue);
         
-        // Kiểm tra số dư và tính toán receiveAmount
+        // Kiểm tra số dư và tínhível toán receiveAmount
         const numericValue = parseFloat(inputValue);
         setInsufficientBalance(!isNaN(numericValue) && numericValue > usdcBalance);
         
@@ -232,7 +232,7 @@ const CryptoExchangeForm = () => {
 
   const handleSubmit = () => {
     // Handle the buy/sell transaction
-    console.log(`${tradeType === 'buy' ? 'Buying' : 'Selling'} ${receiveAmount} ${receivingCurrency}`);
+    console.log(`${tradeType === 'buy' ? 'Mua' : 'Bán'} ${receiveAmount} ${receivingCurrency}`);
   };
 
   // Hàm để chuyển đổi chế độ hiển thị tỷ giá
@@ -301,32 +301,32 @@ const CryptoExchangeForm = () => {
               value={tradeType}
               exclusive
               onChange={handleTradeTypeChange}
-              aria-label="trade type"
+              aria-label="loại giao dịch"
             >
-              <ToggleButton value="buy" aria-label="buy">
-                Buy
+              <ToggleButton value="buy" aria-label="mua">
+                Mua
               </ToggleButton>
-              <ToggleButton value="sell" aria-label="sell">
-                Sell
+              <ToggleButton value="sell" aria-label="bán">
+                Bán
               </ToggleButton>
             </StyledToggleButtonGroup>
             
             {/* {insufficientBalance && (
               <Alert severity="error" sx={{ mb: 2 }}>
-                Insufficient balance
+                Số dư không đủ
               </Alert>
             )} */}
             
             <Box mb={3}>
               <Typography variant="body1" mb={1}>
-                I will pay
+                Tôi sẽ trả
               </Typography>
               <TextField
                 fullWidth
                 variant="outlined"
                 value={payAmount}
                 onChange={handlePayAmountChange}
-                placeholder={tradeType === 'buy' ? "Minimum: 2,600" : "Minimum: 0.1"}
+                placeholder={tradeType === 'buy' ? "Tối thiểu: 2.600" : "Tối thiểu: 0.1"}
                 error={insufficientBalance}
                 InputProps={{
                   endAdornment: (
@@ -342,7 +342,7 @@ const CryptoExchangeForm = () => {
                           }} 
                           onClick={handleMaxClick}
                         >
-                          MAX
+                          TỐI ĐA
                         </Button>
                         <CurrencySelector>
                           {payingCurrency === 'VND' ? <VNDCurrencyIcon /> : <USDCIcon />}
@@ -356,17 +356,17 @@ const CryptoExchangeForm = () => {
               />
               {insufficientBalance && (
                  <Typography color="error" variant="body2">
-                   Insufficient {payingCurrency} balance
+                   Số dư {payingCurrency} không đủ
                  </Typography>
               )}
               <Typography variant="body2" color="text.secondary">
-                Balance: {getCurrentBalance()}
+                Số dư: {getCurrentBalance()}
               </Typography>
             </Box>
             
             <Box mb={3}>
               <Typography variant="body1" mb={1}>
-                I will receive
+                Tôi sẽ nhận
               </Typography>
               <TextField
                 fullWidth
@@ -389,7 +389,7 @@ const CryptoExchangeForm = () => {
             
             <Box mb={3} display="flex" alignItems="center">
               <Typography variant="body2" color="text.secondary">
-                With price: {getFormattedRate()}
+                Với tỷ giá: {getFormattedRate()}
               </Typography>
               <IconButton 
                 onClick={toggleRateDisplayMode} 
@@ -407,7 +407,7 @@ const CryptoExchangeForm = () => {
               disabled={insufficientBalance || !hasUserTyped || payAmount === ''}
               sx={{ bgcolor: '#0292B1', '&:hover': { bgcolor: '#03A9D2' } }}
             >
-              {tradeType === 'buy' ? 'Buy USDC' : 'Sell USDC'}
+              {tradeType === 'buy' ? 'Mua USDC' : 'Bán USDC'}
             </StyledButton>
           </StyledCard>
         </motion.div>

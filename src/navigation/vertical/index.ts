@@ -10,30 +10,20 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       icon: 'bx:home-circle',
-      title: 'Home',
+      title: 'Trang chủ',
       path: '/home'
     },
     {
       icon: 'bx:customize',
-      title: 'Quick Transactions',
+      title: 'Giao dịch nhanh',
       children: [
-        // {
-        //   title: 'Transfer Asset',
-        //   icon: 'bx:transfer',
-        //   path: '/make-transaction/transfer-asset'
-        // },
         {
-          title: 'Deposit Asset',
+          title: 'Nạp tài sản',
           icon: 'bx:send',
           path: '/make-transaction/deposit-asset'
         },
-        // {
-        //   title: 'Withdraw Asset',
-        //   icon: 'bx:asset',
-        //   path: '/make-transaction/withdraw-asset'
-        // },
-        {
-          title: 'Transfer Debit',
+  {
+          title: 'Chuyển khoản nợ',
           icon: 'bx:transfer',
           path: '/make-transaction/transfer-debit'
         }
@@ -41,79 +31,63 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       icon: 'bx:customize',
-      title: 'Savings',
+      title: 'Tiết kiệm',
       children: [
         {
-          title: 'My Savings Portfolios',
+          title: 'Danh mục tiết kiệm của tôi',
           icon: 'bx:envelope',
           path: '/saving/my-portfolios'
         },
-        // {
-        //   title: 'Add Savings Asset',
-        //   icon: 'bx:send',
-        //   path: '/saving/add-saving-asset'
-        // },
         {
-          title: 'Create Savings Portfolio',
+          title: 'Tạo danh mục tiết kiệm',
           icon: 'bx:send',
           path: '/saving/add-saving-asset/open'
         },
         {
-          title: 'Calculator',
+          title: 'Tính lãi suất',
           icon: 'bx:transfer',
           path: '/saving/caculator'
-        },
-        // {
-        //   title: 'Child Savings',
-        //   icon: 'bx:asset',
-        //   path: '/saving/withdraw-asset'
-        // },
-        // {
-        //   title: 'Child Savings',
-        //   icon: 'bx:asset',
-        //   path: '/saving/open-saving'
-        // }
+        }
       ]
     },
     {
       icon: 'bx:collection',
-      title: 'Transaction History',
+      title: 'Lịch sử giao dịch',
       path: '/transaction-history'
     },
     {
       icon: 'bx:collection',
-      title: 'Buy Sell USDC',
+      title: 'Mua bán USDC',
       path: '/buy-sell'
     },
-
     {
       icon: 'bx:collection',
-      title: 'Borrow and Repaymnet',
+      title: 'Vay và trả nợ',
       path: '/Borrow-and-Repaymnet'
     },
     {
       icon: 'bx:collection',
-      title: 'Support/Claim',
+      title: 'Hỗ trợ/Khiếu nại',
       path: '/support'
     },
     {
       icon: 'bx:grid-alt',
-      title: 'Personal Page',
+      title: 'Trang cá nhân',
       children: [
         {
-          title: 'Security',
+          title: 'Bảo mật',
           path: '/user-profile/security'
         },
         {
-          title: 'Account',
+          title: 'Tài khoản',
           path: '/user-profile/account'
         },
         {
-          title: 'Billing History',
+          title: 'Lịch sử thanh toán',
           path: '/user-profile/billing-plan/'
         },
         {
-          title: 'Notifications',
+          title: 'Thông báo',
           path: '/user-profile/notification/'
         }
       ]
@@ -125,18 +99,17 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       icon: 'bx:palette',
-      title: 'About Us',
+      title: 'Về chúng tôi',
       path: '/about-us'
     },
     {
       icon: 'bx:palette',
-      title: 'Logout'
-
+      title: 'Đăng xuất'
     },
     {
       icon: 'bx:palette',
-      title: 'setting'
-    },
+      title: 'Cài đặt'
+    }
   ]
 }
 

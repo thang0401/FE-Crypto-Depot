@@ -79,7 +79,7 @@ const KycCenter: React.FC = () => {
           setProvinces(response.data.data)
         }
       })
-      .catch((error) => console.error("Error fetching provinces:", error))
+      .catch((error) => console.error("Lỗi khi lấy danh sách tỉnh/thành:", error))
   }, [])
 
   // Fetch districts based on province
@@ -94,7 +94,7 @@ const KycCenter: React.FC = () => {
             setKycData((prev) => ({ ...prev, district: "", ward: "" }))
           }
         })
-        .catch((error) => console.error("Error fetching districts:", error))
+        .catch((error) => console.error("Lỗi khi lấy danh sách quận/huyện:", error))
     }
   }, [kycData.province])
 
@@ -109,7 +109,7 @@ const KycCenter: React.FC = () => {
             setKycData((prev) => ({ ...prev, ward: "" }))
           }
         })
-        .catch((error) => console.error("Error fetching wards:", error))
+        .catch((error) => console.error("Lỗi khi lấy danh sách phường/xã:", error))
     }
   }, [kycData.district])
 
@@ -117,52 +117,52 @@ const KycCenter: React.FC = () => {
     const newErrors: Errors = {}
 
     if (!kycData.nationalId.trim()) {
-      newErrors.nationalId = "National ID is required"
+      newErrors.nationalId = "Số CMND/CCCD là bắt buộc"
     } else if (!/^\d{9,12}$/.test(kycData.nationalId)) {
-      newErrors.nationalId = "National ID must be 9-12 digits"
+      newErrors.nationalId = "Số CMND/CCCD phải có 9-12 chữ số"
     }
 
     if (!kycData.firstName.trim()) {
-      newErrors.firstName = "First Name is required"
+      newErrors.firstName = "Tên là bắt buộc"
     } else if (!/^[a-zA-Z\s]+$/.test(kycData.firstName)) {
-      newErrors.firstName = "First Name must contain only letters"
+      newErrors.firstName = "Tên chỉ được chứa chữ cái"
     }
 
     if (!kycData.middleName.trim()) {
-      newErrors.middleName = "Middle Name is required"
+      newErrors.middleName = "Tên đệm là bắt buộc"
     } else if (!/^[a-zA-Z\s]+$/.test(kycData.middleName)) {
-      newErrors.middleName = "Middle Name must contain only letters"
+      newErrors.middleName = "Tên đệm chỉ được chứa chữ cái"
     }
 
     if (!kycData.lastName.trim()) {
-      newErrors.lastName = "Last Name is required"
+      newErrors.lastName = "Họ là bắt buộc"
     } else if (!/^[a-zA-Z\s]+$/.test(kycData.lastName)) {
-      newErrors.lastName = "Last Name must contain only letters"
+      newErrors.lastName = "Họ chỉ được chứa chữ cái"
     }
 
-    if (!kycData.gender) newErrors.gender = "Gender is required"
+    if (!kycData.gender) newErrors.gender = "Giới tính là bắt buộc"
 
     if (!kycData.phone.trim()) {
-      newErrors.phone = "Phone number is required"
+      newErrors.phone = "Số điện thoại là bắt buộc"
     } else if (!/^\d{10,11}$/.test(kycData.phone)) {
-      newErrors.phone = "Phone must be 10-11 digits"
+      newErrors.phone = "Số điện thoại phải có 10-11 chữ số"
     }
 
     if (!kycData.birthday) {
-      newErrors.birthday = "Date of Birth is required"
+      newErrors.birthday = "Ngày sinh là bắt buộc"
     } else {
       const birthDate = new Date(kycData.birthday)
       const today = new Date()
       const age = today.getFullYear() - birthDate.getFullYear()
-      if (age < 18) newErrors.birthday = "Must be at least 18 years old"
+      if (age < 18) newErrors.birthday = "Phải ít nhất 18 tuổi"
     }
 
-    if (!kycData.address.trim()) newErrors.address = "Address is required"
-    if (!kycData.province) newErrors.province = "Province is required"
-    if (!kycData.district) newErrors.district = "District is required"
-    if (!kycData.ward) newErrors.ward = "Ward is required"
-    if (!kycData.frontImage) newErrors.frontImage = "Front image is required"
-    if (!kycData.backImage) newErrors.backImage = "Back image is required"
+    if (!kycData.address.trim()) newErrors.address = "Địa chỉ là bắt buộc"
+    if (!kycData.province) newErrors.province = "Tỉnh/Thành phố là bắt buộc"
+    if (!kycData.district) newErrors.district = "Quận/Huyện là bắt buộc"
+    if (!kycData.ward) newErrors.ward = "Phường/Xã là bắt buộc"
+    if (!kycData.frontImage) newErrors.frontImage = "Ảnh mặt trước là bắt buộc"
+    if (!kycData.backImage) newErrors.backImage = "Ảnh mặt sau là bắt buộc"
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -195,15 +195,15 @@ const KycCenter: React.FC = () => {
 
       const { frontImageUrl, backImageUrl } = response.data
 
-      console.log("KYC Data:", { ...kycData, frontImageUrl, backImageUrl })
-      alert("KYC is complete. Your profile will be reviewed within 24 hours!")
+      console.log("Dữ liệu KYC:", { ...kycData, frontImageUrl, backImageUrl })
+      alert("KYC đã hoàn tất. Hồ sơ của bạn sẽ được xem xét trong vòng 24 giờ!")
       localStorage.setItem("userKycStatus", JSON.stringify(true))
       router.push("/")
     } catch (error) {
-      console.error("Error submitting KYC:", error)
+      console.error("Lỗi khi gửi KYC:", error)
       setErrors((prev) => ({
         ...prev,
-        submit: "Failed to submit KYC. Please try again.",
+        submit: "Gửi KYC thất bại. Vui lòng thử lại.",
       }))
     } finally {
       setIsSubmitting(false)
@@ -228,7 +228,7 @@ const KycCenter: React.FC = () => {
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>
-        Upload Documents and Personal Information
+        Tải lên tài liệu và thông tin cá nhân
       </Typography>
       {errors.submit && (
         <Typography color="error" sx={{ mb: 2 }}>
@@ -239,8 +239,8 @@ const KycCenter: React.FC = () => {
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label="Country"
-            value="Viet Nam"
+            label="Quốc gia"
+            value="Việt Nam"
             InputProps={{ readOnly: true, sx: { fontWeight: "bold", fontSize: "1.2rem" } }}
           />
         </Grid>
@@ -248,7 +248,7 @@ const KycCenter: React.FC = () => {
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label="National ID Number"
+            label="Số CMND/CCCD"
             value={kycData.nationalId}
             onChange={(e) => handleChange("nationalId", e.target.value)}
             required
@@ -271,14 +271,14 @@ const KycCenter: React.FC = () => {
             }}
           >
             <Typography variant="h6" sx={{ mb: 2 }}>
-              Front Side of ID Card
+              Mặt trước CMND/CCCD
             </Typography>
             <Box sx={{ width: "100%", position: "relative" }}>
               {kycData.frontImagePreview && (
                 <CardMedia
                   component="img"
                   image={kycData.frontImagePreview}
-                  alt="Front Image Preview"
+                  alt="Ảnh xem trước mặt trước"
                   sx={{ borderRadius: "8px", height: 200, objectFit: "contain", maxWidth: "100%" }}
                 />
               )}
@@ -287,7 +287,7 @@ const KycCenter: React.FC = () => {
                 component="label"
                 sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 1 }}
               >
-                {kycData.frontImage ? "Re-upload" : "Upload"}
+                {kycData.frontImage ? "Tải lại" : "Tải lên"}
                 <input
                   type="file"
                   hidden
@@ -297,7 +297,7 @@ const KycCenter: React.FC = () => {
               </Button>
               {!kycData.frontImage && (
                 <Typography variant="caption" sx={{ mt: 10, display: "block", textAlign: "center", pt: 5 }}>
-                  Upload up to 50MB, formats: .jpg, .png, .pdf
+                  Tải lên tối đa 50MB, định dạng: .jpg, .png, .pdf
                 </Typography>
               )}
             </Box>
@@ -323,14 +323,14 @@ const KycCenter: React.FC = () => {
             }}
           >
             <Typography variant="h6" sx={{ mb: 2 }}>
-              Back Side of ID Card
+              Mặt sau CMND/CCCD
             </Typography>
             <Box sx={{ width: "100%", position: "relative" }}>
               {kycData.backImagePreview && (
                 <CardMedia
                   component="img"
                   image={kycData.backImagePreview}
-                  alt="Back Image Preview"
+                  alt="Ảnh xem trước mặt sau"
                   sx={{ borderRadius: "8px", height: 200, objectFit: "contain", maxWidth: "100%" }}
                 />
               )}
@@ -339,7 +339,7 @@ const KycCenter: React.FC = () => {
                 component="label"
                 sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 1 }}
               >
-                {kycData.backImage ? "Re-upload" : "Upload"}
+                {kycData.backImage ? "Tải lại" : "Tải lên"}
                 <input
                   type="file"
                   hidden
@@ -349,7 +349,7 @@ const KycCenter: React.FC = () => {
               </Button>
               {!kycData.backImage && (
                 <Typography variant="caption" sx={{ mt: 10, display: "block", textAlign: "center", pt: 5 }}>
-                  Upload up to 50MB, formats: .jpg, .png, .pdf
+                  Tải lên tối đa 50MB, định dạng: .jpg, .png, .pdf
                 </Typography>
               )}
             </Box>
@@ -364,7 +364,7 @@ const KycCenter: React.FC = () => {
         <Grid item xs={4}>
           <TextField
             fullWidth
-            label="First Name"
+            label="Tên"
             value={kycData.firstName}
             onChange={(e) => handleChange("firstName", e.target.value)}
             required
@@ -375,7 +375,7 @@ const KycCenter: React.FC = () => {
         <Grid item xs={4}>
           <TextField
             fullWidth
-            label="Middle Name"
+            label="Tên đệm"
             value={kycData.middleName}
             onChange={(e) => handleChange("middleName", e.target.value)}
             required
@@ -386,7 +386,7 @@ const KycCenter: React.FC = () => {
         <Grid item xs={4}>
           <TextField
             fullWidth
-            label="Last Name"
+            label="Họ"
             value={kycData.lastName}
             onChange={(e) => handleChange("lastName", e.target.value)}
             required
@@ -399,22 +399,22 @@ const KycCenter: React.FC = () => {
           <TextField
             select
             fullWidth
-            label="Gender"
+            label="Giới tính"
             value={kycData.gender}
             onChange={(e) => handleChange("gender", e.target.value)}
             required
             error={!!errors.gender}
             helperText={errors.gender}
           >
-            <MenuItem value="male">Male</MenuItem>
-            <MenuItem value="female">Female</MenuItem>
-            <MenuItem value="other">Other</MenuItem>
+            <MenuItem value="male">Nam</MenuItem>
+            <MenuItem value="female">Nữ</MenuItem>
+            <MenuItem value="other">Khác</MenuItem>
           </TextField>
         </Grid>
         <Grid item xs={4}>
           <TextField
             fullWidth
-            label="Phone"
+            label="Số điện thoại"
             value={kycData.phone}
             onChange={(e) => handleChange("phone", e.target.value)}
             required
@@ -425,7 +425,7 @@ const KycCenter: React.FC = () => {
         <Grid item xs={4}>
           <TextField
             fullWidth
-            label="Date of Birth"
+            label="Ngày sinh"
             type="date"
             value={kycData.birthday}
             onChange={(e) => handleChange("birthday", e.target.value)}
@@ -440,14 +440,14 @@ const KycCenter: React.FC = () => {
           <TextField
             select
             fullWidth
-            label="Province"
+            label="Tỉnh/Thành phố"
             value={kycData.province}
             onChange={(e) => handleChange("province", e.target.value)}
             required
             error={!!errors.province}
             helperText={errors.province}
           >
-            <MenuItem value="">Select province</MenuItem>
+            <MenuItem value="">Chọn tỉnh/thành phố</MenuItem>
             {provinces.map((province) => (
               <MenuItem key={province.id} value={province.id}>
                 {province.full_name}
@@ -459,7 +459,7 @@ const KycCenter: React.FC = () => {
           <TextField
             select
             fullWidth
-            label="District"
+            label="Quận/Huyện"
             value={kycData.district}
             onChange={(e) => handleChange("district", e.target.value)}
             required
@@ -467,7 +467,7 @@ const KycCenter: React.FC = () => {
             error={!!errors.district}
             helperText={errors.district}
           >
-            <MenuItem value="">Select District</MenuItem>
+            <MenuItem value="">Chọn quận/huyện</MenuItem>
             {districts.map((district) => (
               <MenuItem key={district.id} value={district.id}>
                 {district.full_name}
@@ -479,7 +479,7 @@ const KycCenter: React.FC = () => {
           <TextField
             select
             fullWidth
-            label="Ward"
+            label="Phường/Xã"
             value={kycData.ward}
             onChange={(e) => handleChange("ward", e.target.value)}
             required
@@ -487,7 +487,7 @@ const KycCenter: React.FC = () => {
             error={!!errors.ward}
             helperText={errors.ward}
           >
-            <MenuItem value="">Select Ward</MenuItem>
+            <MenuItem value="">Chọn phường/xã</MenuItem>
             {wards.map((ward) => (
               <MenuItem key={ward.id} value={ward.id}>
                 {ward.full_name}
@@ -499,7 +499,7 @@ const KycCenter: React.FC = () => {
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label="Address"
+            label="Địa chỉ"
             value={kycData.address}
             onChange={(e) => handleChange("address", e.target.value)}
             required
@@ -511,7 +511,7 @@ const KycCenter: React.FC = () => {
 
       <Box sx={{ mt: 4, display: "flex", justifyContent: "flex-end" }}>
         <Button variant="contained" onClick={handleSubmit} disabled={isSubmitting}>
-          {isSubmitting ? "Submitting..." : "Confirm"}
+          {isSubmitting ? "Đang gửi..." : "Xác nhận"}
         </Button>
       </Box>
     </Box>

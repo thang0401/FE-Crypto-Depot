@@ -7,27 +7,27 @@ export default function QuickActions() {
     <DashboardCard>
       <CardContent>
         <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
-          Quick Actions
+          Tiện ích
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <QuickActionButton variant="contained" color="primary" fullWidth startIcon={<Send />} sx={{ mb: 2 }}>
-              Send Money
+              Gửi tiền
             </QuickActionButton>
           </Grid>
           <Grid item xs={6}>
             <QuickActionButton variant="outlined" fullWidth startIcon={<QrCode />} sx={{ mb: 2 }}>
-              Scan QR
+              Quét QR
             </QuickActionButton>
           </Grid>
           <Grid item xs={6}>
             <QuickActionButton variant="outlined" fullWidth startIcon={<Payment />}>
-              Pay Bills
+              Thanh toán hóa đơn
             </QuickActionButton>
           </Grid>
           <Grid item xs={6}>
             <QuickActionButton variant="outlined" fullWidth startIcon={<History />}>
-              History
+              Lịch sử
             </QuickActionButton>
           </Grid>
         </Grid>

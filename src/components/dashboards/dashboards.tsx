@@ -113,12 +113,12 @@ const Dashboard = () => {
   // const { wallets } = useWallets();
   // const { createWallet } = useCreateWallet({
   //   onSuccess: () => {
-  //     console.log('Wallet created successfully');
+  //     console.log('Ví được tạo thành công');
   //     setWalletInitialized(true);
   //     localStorage.setItem('walletInitialized', 'true');
   //     router.push('/fingerprint');
   //   },
-  //   onError: (error) => console.error('Failed to create wallet:', error),
+  //   onError: (error) => console.error('Tạo ví thất bại:', error),
   // });
   // const { importWallet } = useImportWallet();
 
@@ -164,12 +164,12 @@ const Dashboard = () => {
   // const handleImportWallet = async () => {
   //   try {
   //     await importWallet({ privateKey });
-  //     console.log('Wallet imported successfully');
+  //     console.log('Ví được nhập thành công');
   //     setWalletInitialized(true);
   //     localStorage.setItem('walletInitialized', 'true');
   //     router.push('/fingerprint');
   //   } catch (error) {
-  //     console.error('Failed to import wallet:', error);
+  //     console.error('Nhập ví thất bại:', error);
   //   }
   // };
 
@@ -187,18 +187,17 @@ const Dashboard = () => {
         {drawer}
       </Drawer>
 
-      {/* Hero Section */}
+      {/* Phần Giới Thiệu */}
       <Box sx={{ pt: 16, pb: 10 }}>
         <Container maxWidth='lg'>
           <Grid container spacing={6} alignItems='center'>
             <Grid item xs={12} md={6}>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
                 <Typography variant='h2' component='h1' gutterBottom sx={{ fontWeight: 'bold' }}>
-                  CryptoBank is <span style={{ color: 'inherit' }}>FUTURE</span>
+                  CryptoBank là <span style={{ color: 'inherit' }}>TƯƠNG LAI</span>
                 </Typography>
                 <Typography variant='h5' sx={{ mb: 4 }}>
-                  Experience seamless banking services powered by cryptocurrency. Secure, fast, and built for the modern
-                  era.
+                  Trải nghiệm các dịch vụ ngân hàng liền mạch được cung cấp bởi tiền mã hóa. An toàn, nhanh chóng và được xây dựng cho kỷ nguyên hiện đại.
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 2 }}>
                   <Button
@@ -209,7 +208,7 @@ const Dashboard = () => {
                       '&:hover': { bgcolor: 'inherit' }
                     }}
                   >
-                    Get started now
+                    Bắt đầu ngay bây giờ
                   </Button>
                   <Button
                     variant='outlined'
@@ -218,7 +217,7 @@ const Dashboard = () => {
                       '&:hover': { borderColor: 'inherit', color: 'inherit' }
                     }}
                   >
-                    Learn more
+                    Tìm hiểu thêm
                   </Button>
                 </Box>
               </motion.div>
@@ -260,35 +259,33 @@ const Dashboard = () => {
         </Container>
       </Box>
 
-      {/* Features Section */}
+      {/* Phần Tính Năng */}
       <Box sx={{ py: 12 }}>
         <Container maxWidth='lg'>
           <Typography variant='h3' component='h2' align='center' gutterBottom sx={{ mb: 8, fontWeight: 'bold', mt: 0 }}>
-            No risk, just speed - We'll take the lead
+            Không rủi ro, chỉ tốc độ - Chúng tôi sẽ dẫn đầu
           </Typography>
           <Grid container spacing={4}>
             {[
               // {
               //   icon: <Activity className="w-12 h-12" />,
-              //   title: "Instant transactions",
-              //   description: "Execute transactions instantly with competitive rates and minimal fees.",
-              // },.
+              //   title: "Giao dịch tức thời",
+              //   description: "Thực hiện giao dịch ngay lập tức với tỷ giá cạnh tranh và phí tối thiểu.",
+              // },
               {
                 icon: <KeyRound className='w-12 h-12' />,
-                title: 'Recoverable wallet',
-                description: 'Lost access to your wallet? No worries. We will keep your assets secure and recoverable'
+                title: 'Ví có thể khôi phục',
+                description: 'Mất quyền truy cập vào ví của bạn? Đừng lo. Chúng tôi sẽ giữ tài sản của bạn an toàn và có thể khôi phục.'
               },
               {
                 icon: <ScrollText className='w-12 h-12' />,
-                title: 'Inheritance planning',
-                // description: "Securely store your cryptocurrency with real-time tracking and management.",
-                description: 'A digital asset inheritance plan to safeguard cherished memories and vital information.'
-                // "Một kế hoạch thừa kế tài sản kỹ thuật số để bảo vệ những kỷ niệm quý giá và thông tin quan trọng."
+                title: 'Lập kế hoạch thừa kế',
+                description: 'Một kế hoạch thừa kế tài sản kỹ thuật số để bảo vệ những kỷ niệm quý giá và thông tin quan trọng.'
               },
               {
                 icon: <Shield className='w-12 h-12' />,
-                title: 'Confidential savings',
-                description: 'Your savings stay private, secure, and invisible to everyone but you.'
+                title: 'Tiết kiệm bí mật',
+                description: 'Khoản tiết kiệm của bạn luôn riêng tư, an toàn và chỉ bạn có thể thấy.'
               }
             ].map((feature, index) => (
               <Grid item xs={12} md={4} key={index}>
@@ -320,7 +317,7 @@ const Dashboard = () => {
         </Container>
       </Box>
 
-      {/* Benefits Section */}
+      {/* Phần Lợi Ích */}
       <Box sx={{ py: 12 }}>
         <Container maxWidth='lg'>
           <Grid container spacing={8} alignItems='center'>
@@ -331,33 +328,33 @@ const Dashboard = () => {
                 transition={{ duration: 0.8 }}
               >
                 <Typography variant='h3' component='h2' gutterBottom sx={{ fontWeight: 'bold', mb: 4 }}>
-                  Why Choose CryptoBank?
+                  Tại sao chọn CryptoBank?
                 </Typography>
                 <Box sx={{ mt: 12 }}>
                   {[
                     {
                       icon: <Shield className='w-8 h-8' />,
-                      title: 'Private & Anonymous',
+                      title: 'Riêng tư & Ẩn danh',
                       description:
-                        'Your saving account data remains fully private no-tracking, no exposure, just true financial freedom.'
+                        'Dữ liệu tài khoản tiết kiệm của bạn hoàn toàn riêng tư, không bị theo dõi, không bị phơi bày, mang lại tự do tài chính thực sự.'
                     },
                     {
                       icon: <ScrollText className='w-8 h-8' />,
-                      title: 'Crypto inheritance planning',
+                      title: 'Lập kế hoạch thừa kế tiền mã hóa',
                       description:
-                        'Set up an inheritance plan to transfer your digital assets in case of unforeseen circumstances.'
+                        'Thiết lập kế hoạch thừa kế để chuyển giao tài sản số của bạn trong trường hợp xảy ra sự cố bất ngờ.'
                     },
                     {
                       icon: <Users className='w-8 h-8' />,
-                      title: 'Recoverable wallet',
+                      title: 'Ví có thể khôi phục',
                       description:
-                        'Lost access to your wallet? No worries. We will keep your assets secure and recoverable.'
+                        'Mất quyền truy cập vào ví của bạn? Đừng lo. Chúng tôi sẽ giữ tài sản của bạn an toàn và có thể khôi phục.'
                     },
                     {
                       icon: <Rocket className='w-8 h-8' />,
-                      title: 'Perfect for crypto beginners',
+                      title: 'Hoàn hảo cho người mới bắt đầu với tiền mã hóa',
                       description:
-                        'CryptoBank helps you invest and store assets safely, protecting you from exchange failures.'
+                        'CryptoBank giúp bạn đầu tư và lưu trữ tài sản an toàn, bảo vệ bạn khỏi các thất bại từ sàn giao dịch.'
                     }
                   ].map((benefit, index) => (
                     <Box key={index} sx={{ display: 'flex', alignItems: 'flex-start', mb: 4 }}>
@@ -407,7 +404,7 @@ const Dashboard = () => {
                   >
                     <img
                       src='/images/pages/homepage-second-image.png'
-                      alt=''
+                      alt='Hình ảnh minh họa CryptoBank'
                       style={{ width: '100%', height: 'auto', display: 'block' }}
                     />
                   </Paper>
@@ -418,7 +415,7 @@ const Dashboard = () => {
         </Container>
       </Box>
 
-      {/* CTA Section */}
+      {/* Phần Kêu Gọi Hành Động */}
       <Box
         sx={{
           py: 8,
@@ -434,12 +431,10 @@ const Dashboard = () => {
             <Grid item xs={12} md={6}>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
                 <Typography variant='h3' component='h2' gutterBottom sx={{ fontWeight: 'bold' }}>
-                  Ready to Create an Account?
+                  Sẵn sàng tạo tài khoản?
                 </Typography>
                 <Typography variant='body1' sx={{ mb: 4, textAlign: 'justify', mr: 5 }}>
-                  Start your cryptocurrency investment journey securely with CryptoBank. Are you ready to protect your
-                  digital assets from common market risks? CryptoBank provides a comprehensive custody solution,
-                  allowing you to manage assets effortlessly without security concerns or complex procedures.
+                  Bắt đầu hành trình đầu tư tiền mã hóa của bạn một cách an toàn với CryptoBank. Bạn đã sẵn sàng bảo vệ tài sản số của mình khỏi các rủi ro thị trường phổ biến chưa? CryptoBank cung cấp giải pháp lưu ký toàn diện, cho phép bạn quản lý tài sản dễ dàng mà không lo lắng về bảo mật hay các thủ tục phức tạp.
                 </Typography>
               </motion.div>
             </Grid>
@@ -451,7 +446,7 @@ const Dashboard = () => {
               >
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', paddingLeft: 3 }}>
                   <Typography variant='h5' sx={{ mb: 8 }}>
-                    Sign up now and receive $5 in transaction fees!
+                    Đăng ký ngay bây giờ và nhận $5 phí giao dịch miễn phí!
                   </Typography>
                   <Button
                     variant='contained'
@@ -463,7 +458,7 @@ const Dashboard = () => {
                       marginLeft: 40
                     }}
                   >
-                    Create an Account Now
+                    Tạo tài khoản ngay
                   </Button>
                 </Box>
               </motion.div>
@@ -472,56 +467,56 @@ const Dashboard = () => {
         </Container>
       </Box>
 
-      {/* FAQ Section */}
+      {/* Phần Câu Hỏi Thường Gặp */}
       <Box sx={{ py: 12 }}>
         <Container maxWidth='lg'>
           <Typography variant='h3' component='h2' align='center' gutterBottom sx={{ mb: 8, fontWeight: 'bold' }}>
-            FAQ
+            Câu Hỏi Thường Gặp
           </Typography>
           <Grid container spacing={4} justifyContent='left'>
             <Grid item xs={12} md={20}>
               {[
                 {
-                  question: 'What is CryptoBank?',
+                  question: 'CryptoBank là gì?',
                   answer:
-                    'CryptoBank is a Web3 platform that enables users to manage crypto assets without handling wallets or private keys.'
+                    'CryptoBank là một nền tảng Web3 cho phép người dùng quản lý tài sản mã hóa mà không cần xử lý ví hoặc khóa riêng.'
                 },
                 {
-                  question: 'Does CryptoBank store my wallet and assets?',
+                  question: 'CryptoBank có lưu trữ ví và tài sản của tôi không?',
                   answer:
-                    'Yes, CryptoBank utilizes a unique Web3 wallet to manage user assets, ensuring safe custody storage.'
+                    'Có, CryptoBank sử dụng ví Web3 độc đáo để quản lý tài sản của người dùng, đảm bảo lưu trữ an toàn.'
                 },
                 {
-                  question: 'How do I sign up and use CryptoBank?',
+                  question: 'Làm thế nào để đăng ký và sử dụng CryptoBank?',
                   answer:
-                    'Simply register with a Username and Password. No need to create a wallet or manage private keys.'
+                    'Chỉ cần đăng ký với Tên người dùng và Mật khẩu. Không cần tạo ví hoặc quản lý khóa riêng.'
                 },
                 {
-                  question: 'Can I receive Web3 assets from other wallets?',
-                  answer: 'Yes, you can receive assets from any Web3 wallet using just your Username—no login required.'
+                  question: 'Tôi có thể nhận tài sản Web3 từ các ví khác không?',
+                  answer: 'Có, bạn có thể nhận tài sản từ bất kỳ ví Web3 nào chỉ bằng Tên người dùng—không cần đăng nhập.'
                 },
                 {
-                  question: 'How do I transfer assets between Usernames?',
+                  question: 'Làm thế nào để chuyển tài sản giữa các Tên người dùng?',
                   answer:
-                    'You can transfer Web3 assets to any Username within the system without blockchain interactions.'
+                    'Bạn có thể chuyển tài sản Web3 đến bất kỳ Tên người dùng nào trong hệ thống mà không cần tương tác với blockchain.'
                 },
                 {
-                  question: 'Does CryptoBank charge transaction fees?',
-                  answer: 'Transaction fees are optimized, reducing costs by processing transactions internally.'
+                  question: 'CryptoBank có tính phí giao dịch không?',
+                  answer: 'Phí giao dịch được tối ưu hóa, giảm chi phí bằng cách xử lý giao dịch nội bộ.'
                 },
                 {
-                  question: 'Do I need Web3 or blockchain knowledge to use CryptoBank?',
+                  question: 'Tôi có cần kiến thức về Web3 hoặc blockchain để sử dụng CryptoBank không?',
                   answer:
-                    'No, CryptoBank is user-friendly—just a Username and Password are needed, with no blockchain expertise required.'
+                    'Không, CryptoBank thân thiện với người dùng—chỉ cần Tên người dùng và Mật khẩu, không cần chuyên môn blockchain.'
                 },
                 {
-                  question: 'What happens if I forget my password?',
-                  answer: 'You can recover your password by verifying your information to ensure security.'
+                  question: 'Điều gì xảy ra nếu tôi quên mật khẩu?',
+                  answer: 'Bạn có thể khôi phục mật khẩu bằng cách xác minh thông tin để đảm bảo an toàn.'
                 },
                 {
-                  question: 'Does CryptoBank support cross-chain transactions?',
+                  question: 'CryptoBank có hỗ trợ giao dịch liên chuỗi không?',
                   answer:
-                    'Currently, CryptoBank supports select blockchains but is exploring cross-chain transaction capabilities for the future.'
+                    'Hiện tại, CryptoBank hỗ trợ một số blockchain nhất định nhưng đang khám phá khả năng giao dịch liên chuỗi trong tương lai.'
                 }
               ].map((faq, index) => (
                 <Accordion key={index} sx={{ mb: 2, borderRadius: '8px !important' }}>
@@ -542,29 +537,29 @@ const Dashboard = () => {
         </Container>
       </Box>
 
-      {/* KYC Dialog */}
+      {/* Hộp thoại KYC */}
       {/* <Dialog open={openKycDialog} onClose={handleSkipKyc}>
-        <DialogTitle>Complete Identity Verification (KYC)</DialogTitle>
+        <DialogTitle>Hoàn thành xác minh danh tính (KYC)</DialogTitle>
         <DialogContent>
           <Typography>
-            Your account has not been verified. Please complete KYC to access all features.
+            Tài khoản của bạn chưa được xác minh. Vui lòng hoàn thành KYC để truy cập tất cả các tính năng.
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSkipKyc} color="primary">
-            Skip
+            Bỏ qua
           </Button>
           <Button onClick={handleConfirmKyc} variant="contained" color="primary">
-            Confirm
+            Xác nhận
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog open={openWalletDialog} onClose={handleCloseWalletDialog}>
-        <DialogTitle>Initialize Your Wallet</DialogTitle>
+        <DialogTitle>Khởi tạo ví của bạn</DialogTitle>
         <DialogContent>
           <Typography sx={{ mb: 2 }}>
-            Please select an option to initialize your wallet.
+            Vui lòng chọn một tùy chọn để khởi tạo ví của bạn.
           </Typography>
           <Button
             variant="contained"
@@ -573,11 +568,11 @@ const Dashboard = () => {
             sx={{ mb: 2 }}
             disabled={walletInitialized}
           >
-            Create New Wallet
+            Tạo ví mới
           </Button>
           <TextField
             fullWidth
-            label="Private Key"
+            label="Khóa riêng"
             type="password"
             value={privateKey}
             onChange={(e) => setPrivateKey(e.target.value)}
@@ -589,11 +584,11 @@ const Dashboard = () => {
             onClick={handleImportWallet}
             disabled={!privateKey || walletInitialized}
           >
-            Import Wallet
+            Nhập ví
           </Button>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseWalletDialog}>Cancel</Button>
+          <Button onClick={handleCloseWalletDialog}>Hủy</Button>
         </DialogActions>
       </Dialog> */}
     </Box>

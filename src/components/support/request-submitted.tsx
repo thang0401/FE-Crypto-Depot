@@ -47,8 +47,8 @@ const RequestSubmitted = () => {
   return (
     <>
       <Head>
-        <title>Request Submitted | Support</title>
-        <meta name="description" content="Your support request has been submitted successfully" />
+        <title>Yêu cầu đã gửi | Hỗ trợ</title>
+        <meta name="description" content="Yêu cầu hỗ trợ của bạn đã được gửi thành công" />
       </Head>
 
       <Container maxWidth="md">
@@ -59,7 +59,7 @@ const RequestSubmitted = () => {
             onClick={() => router.push("/support")}
             sx={{ mb: 4 }}
           >
-            Back to Support
+            Quay lại trang hỗ trợ
           </Button>
 
           <Paper sx={{ p: 4, borderRadius: 2, boxShadow: theme.shadows[3] }}>
@@ -73,10 +73,10 @@ const RequestSubmitted = () => {
                   <CheckCircle color={theme.palette.success.main} size={40} />
                   <Box sx={{ ml: 2 }}>
                     <Typography variant="h4" fontWeight="bold">
-                      Request Submitted Successfully
+                      Yêu cầu đã được gửi thành công
                     </Typography>
                     <Typography variant="body1" color="text.secondary">
-                      Thank you for contacting our support team
+                      Cảm ơn bạn đã liên hệ với đội ngũ hỗ trợ của chúng tôi
                     </Typography>
                   </Box>
                 </Box>
@@ -86,7 +86,7 @@ const RequestSubmitted = () => {
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={6}>
                     <Typography variant="subtitle2" color="text.secondary">
-                      Request ID
+                      Mã yêu cầu
                     </Typography>
                     <Typography variant="h6" fontWeight="medium">
                       {id}
@@ -95,25 +95,25 @@ const RequestSubmitted = () => {
 
                   <Grid item xs={12} sm={6}>
                     <Typography variant="subtitle2" color="text.secondary">
-                      Submission Date
+                      Ngày gửi
                     </Typography>
                     <Typography variant="body1">
-                      {new Date().toLocaleDateString()} at {new Date().toLocaleTimeString()}
+                      {new Date().toLocaleDateString("vi-VN")} lúc {new Date().toLocaleTimeString("vi-VN")}
                     </Typography>
                   </Grid>
 
                   <Grid item xs={12} sm={6}>
                     <Typography variant="subtitle2" color="text.secondary">
-                      Status
+                      Trạng thái
                     </Typography>
-                    <Chip icon={<Clock size={16} />} label="Received" color="primary" variant="outlined" />
+                    <Chip icon={<Clock size={16} />} label="Đã nhận" color="primary" variant="outlined" />
                   </Grid>
 
                   <Grid item xs={12} sm={6}>
                     <Typography variant="subtitle2" color="text.secondary">
-                      Estimated Response Time
+                      Thời gian phản hồi dự kiến
                     </Typography>
-                    <Typography variant="body1">Within 24-48 hours</Typography>
+                    <Typography variant="body1">Trong vòng 24-48 giờ</Typography>
                   </Grid>
                 </Grid>
 
@@ -122,19 +122,19 @@ const RequestSubmitted = () => {
                     <AlertCircle size={24} style={{ marginRight: 12, marginTop: 2 }} />
                     <Box>
                       <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-                        What happens next?
+                        Điều gì xảy ra tiếp theo?
                       </Typography>
                       <Typography variant="body2">
-                        1. Our support team will review your request and assign it to the appropriate department.
+                        1. Đội ngũ hỗ trợ của chúng tôi sẽ xem xét yêu cầu của bạn và phân công đến bộ phận phù hợp.
                       </Typography>
                       <Typography variant="body2">
-                        2. You'll receive an email confirmation with your request details.
+                        2. Bạn sẽ nhận được email xác nhận với chi tiết yêu cầu của mình.
                       </Typography>
                       <Typography variant="body2">
-                        3. A support representative will contact you via your preferred contact method.
+                        3. Một nhân viên hỗ trợ sẽ liên hệ với bạn qua phương thức liên hệ bạn chọn.
                       </Typography>
                       <Typography variant="body2" sx={{ mt: 1 }}>
-                        You can check the status of your request anytime by logging into your account.
+                        Bạn có thể kiểm tra trạng thái yêu cầu bất kỳ lúc nào bằng cách đăng nhập vào tài khoản của mình.
                       </Typography>
                     </Box>
                   </Box>
@@ -142,10 +142,10 @@ const RequestSubmitted = () => {
 
                 <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
                   <Button variant="contained" onClick={() => router.push("/support/my-requests")} sx={{ mr: 2 }}>
-                    View My Requests
+                    Xem các yêu cầu của tôi
                   </Button>
                   <Button variant="outlined" onClick={() => router.push("/")}>
-                    Return to Dashboard
+                    Quay lại bảng điều khiển
                   </Button>
                 </Box>
               </>

@@ -12,129 +12,129 @@ import RefreshIcon from '@mui/icons-material/Refresh'
 export const rows = [
   {
     id: 1,
-    transactionType: 'Deposit Asset',
+    transactionType: 'Nạp tài sản',
     assetType: 'USDC',
     amount: '83',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
     ID_number: 'xxx-xxx-xxx-123',
-    status: 'Successful'
+    status: 'Thành công'
   },
   {
     id: 2,
-    transactionType: 'Withdraw Asset',
+    transactionType: 'Rút tài sản',
     assetType: 'USDC',
     amount: '66',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Successful'
+    status: 'Thành công'
   },
   {
     id: 3,
-    transactionType: 'Transfer Asset',
+    transactionType: 'Chuyển tài sản',
     assetType: 'USDC',
     amount: '17',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Successful'
+    status: 'Thành công'
   },
   {
     id: 4,
-    transactionType: 'Transfer Asset',
+    transactionType: 'Chuyển tài sản',
     assetType: 'USDC',
     amount: '52',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Successful'
+    status: 'Thành công'
   },
   {
     id: 5,
-    transactionType: 'Deposit Asset',
+    transactionType: 'Nạp tài sản',
     assetType: 'USDC',
     amount: '16',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Successful'
+    status: 'Thành công'
   },
   {
     id: 6,
-    transactionType: 'Withdraw Asset',
+    transactionType: 'Rút tài sản',
     assetType: 'USDC',
     amount: '85',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Successful'
+    status: 'Thành công'
   },
   {
     id: 7,
-    transactionType: 'Transfer Asset',
+    transactionType: 'Chuyển tài sản',
     assetType: 'USDC',
     amount: '17',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Successful'
+    status: 'Thành công'
   },
   {
     id: 8,
-    transactionType: 'Transfer Asset',
+    transactionType: 'Chuyển tài sản',
     assetType: 'USDC',
     amount: '17',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Successful'
+    status: 'Thành công'
   },
   {
     id: 9,
-    transactionType: 'Deposit Asset',
+    transactionType: 'Nạp tài sản',
     assetType: 'USDC',
     amount: '71',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Successful'
+    status: 'Thành công'
   },
   {
     id: 10,
-    transactionType: 'Withdraw Asset',
+    transactionType: 'Rút tài sản',
     assetType: 'USDC',
     amount: '470',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Successful'
+    status: 'Thành công'
   },
   {
     id: 11,
-    transactionType: 'Deposit Asset',
+    transactionType: 'Nạp tài sản',
     assetType: 'USDC',
     amount: '171',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Successful'
+    status: 'Thành công'
   },
   {
     id: 12,
-    transactionType: 'Deposit Asset',
+    transactionType: 'Nạp tài sản',
     assetType: 'USDC',
     amount: '42',
     email: 'Thangnc0401@gmail.com',
     end_date: Date.now(),
     start_date: Date.now(),
-    status: 'Successful'
+    status: 'Thành công'
   }
 ]
 
 const UserViewBilling = () => {
-  const getTransactionTypes: string[] = ['Deposit Asset', 'Transfer Asset', 'Withdraw Asset']
+  const getTransactionTypes: string[] = ['Nạp tài sản', 'Chuyển tài sản', 'Rút tài sản']
   const getAssetTypes: string[] = ['USDC']
 
   const [open, setOpen] = React.useState(false)
@@ -152,41 +152,41 @@ const UserViewBilling = () => {
       flex: 0.1,
       field: 'id',
       minWidth: 120,
-      headerName: 'No.'
+      headerName: 'STT'
     },
     {
       flex: 0.1,
       field: 'transactionType',
       minWidth: 180,
-      headerName: 'Transaction Type'
+      headerName: 'Loại giao dịch'
     },
     {
       flex: 0.1,
       field: 'assetType',
       minWidth: 120,
-      headerName: 'Asset Type'
+      headerName: 'Loại tài sản'
     },
     {
       flex: 0.25,
       minWidth: 100,
       field: 'amount',
-      headerName: 'Amount'
+      headerName: 'Số tiền'
     },
     {
       flex: 0.15,
       minWidth: 180,
       field: 'status',
-      headerName: 'Status'
+      headerName: 'Trạng thái'
     },
     {
       flex: 0.25,
       minWidth: 120,
       field: 'button',
-      headerName: 'View Details',
+      headerName: 'Xem chi tiết',
       renderCell: params => {
         return (
           <div className='flex justify-center'>
-            <IconButton title='View Details' onClick={handleViewDetail}>
+            <IconButton title='Xem chi tiết' onClick={handleViewDetail}>
               <Send />
             </IconButton>
           </div>
@@ -208,7 +208,7 @@ const UserViewBilling = () => {
               <Autocomplete
                 options={getTransactionTypes}
                 renderInput={params => (
-                  <TextField {...params} label='Search by Transaction Type' placeholder='Search by Transaction Type' />
+                  <TextField {...params} label='Tìm theo loại giao dịch' placeholder='Tìm theo loại giao dịch' />
                 )}
               />
             </Grid>
@@ -216,7 +216,7 @@ const UserViewBilling = () => {
               <Autocomplete
                 options={getAssetTypes}
                 renderInput={params => (
-                  <TextField {...params} label='Search by Asset Type' placeholder='Search by Asset Type' />
+                  <TextField {...params} label='Tìm theo loại tài sản' placeholder='Tìm theo loại tài sản' />
                 )}
               />
             </Grid>
@@ -225,14 +225,14 @@ const UserViewBilling = () => {
               variant='contained'
               style={{ width: 56, height: 56 }}
             >
-              <SearchIcon/>
+              <SearchIcon />
             </Button>
             <Button
               sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
               variant='contained'
-              style={{  width: 45, height: 56 }}
+              style={{ width: 45, height: 56 }}
             >
-              <RefreshIcon/>
+              <RefreshIcon />
             </Button>
           </Grid>
         </Card>

@@ -70,7 +70,20 @@ const StatusChip = ({ status }: { status: string }) => {
     }
   }
   const { bg, color } = getStatusColor()
-  return <Chip label={status.replace("_", " ").toUpperCase()} style={{ backgroundColor: bg, color }} />
+  return (
+    <Chip
+      label={
+        status === "no_heir"
+          ? "KHÔNG CÓ NGƯỜI THỪA KẾ"
+          : status === "has_heir"
+          ? "CÓ NGƯỜI THỪA KẾ"
+          : status === "in_process"
+          ? "ĐANG XỬ LÝ"
+          : status.replace("_", " ").toUpperCase()
+      }
+      style={{ backgroundColor: bg, color }}
+    />
+  )
 }
 
 const formatDate = (dateString: string) => {
@@ -96,7 +109,6 @@ const SavingsManagement: React.FC = () => {
     router.push(`/saving/my-portfolios/detail/${id}`)
   }
 
- 
   const handleClearFilters = () => {
     setFilters({
       userId: "",
@@ -113,8 +125,13 @@ const SavingsManagement: React.FC = () => {
         id: "SAV001",
         status: "active",
         heirStatus: "no_heir",
-        owner: { id: "USRER001", name: "Nguyen Van Thuan", email: "thuannv.it@gmail.com", phone: "+8434567890" },
-        term: "12 months",
+        owner: {
+          id: "USRER001",
+          name: "Nguyen Van Thuan",
+          email: "thuannv.it@gmail.com",
+          phone: "+8434567890",
+        },
+        term: "12 tháng",
         startDate: "2024-02-24",
         endDate: "2025-02-24",
         balance: "50",
@@ -126,8 +143,13 @@ const SavingsManagement: React.FC = () => {
         id: "SAV002",
         status: "pending",
         heirStatus: "has_heir",
-        owner: { id: "USRER002", name: "Nguyen Van Thuan", email: "thuannv.it@gmail.com", phone: "+8434567891" },
-        term: "6 months",
+        owner: {
+          id: "USRER002",
+          name: "Nguyen Van Thuan",
+          email: "thuannv.it@gmail.com",
+          phone: "+8434567891",
+        },
+        term: "6 tháng",
         startDate: "2024-02-25",
         endDate: "2024-08-25",
         balance: "3",
@@ -136,9 +158,7 @@ const SavingsManagement: React.FC = () => {
         googleDriveUrl: "",
       },
     ]
-    const savedAccounts: SavingsAccount[] = JSON.parse(localStorage.getItem("savingsAccounts") || "[]");
-    
-    // const combinedAccounts = [...mockAccounts, ...savedAccounts];
+    const savedAccounts: SavingsAccount[] = JSON.parse(localStorage.getItem("savingsAccounts") || "[]")
 
     let filtered = [...savedAccounts]
 
@@ -176,43 +196,13 @@ const SavingsManagement: React.FC = () => {
       <StyledCard>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            Search Filters
+            Bộ lọc tìm kiếm
           </Typography>
           <Grid container spacing={2} alignItems="center">
-            {/* <Grid item xs={12} sm={2}>
-              <TextField
-                fullWidth
-                label="User ID"
-                value={filters.userId}
-                onChange={(e) => handleFilterChange("userId", e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                fullWidth
-                label="Owner Name"
-                value={filters.ownerName}
-                onChange={(e) => handleFilterChange("ownerName", e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid> */}
             <Grid item xs={12} sm={2}>
               <TextField
                 fullWidth
-                label="Term"
+                label="Kỳ hạn"
                 value={filters.term}
                 onChange={(e) => handleFilterChange("term", e.target.value)}
                 InputProps={{
@@ -227,7 +217,7 @@ const SavingsManagement: React.FC = () => {
             <Grid item xs={12} sm={2}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  label="From Date"
+                  label="Từ ngày"
                   value={filters.dateFrom}
                   onChange={(date) => handleFilterChange("dateFrom", date)}
                   slotProps={{
@@ -240,7 +230,7 @@ const SavingsManagement: React.FC = () => {
             <Grid item xs={12} sm={2}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  label="To Date"
+                  label="Đến ngày"
                   value={filters.dateTo}
                   onChange={(date) => handleFilterChange("dateTo", date)}
                   slotProps={{
@@ -259,7 +249,7 @@ const SavingsManagement: React.FC = () => {
                 fullWidth
                 sx={{ height: "100%" }}
               >
-                Clear
+                Xóa
               </Button>
             </Grid>
             <Grid item xs={12} sm={5} display="flex" justifyContent="flex-end">
@@ -267,8 +257,8 @@ const SavingsManagement: React.FC = () => {
                 variant="contained"
                 color="primary"
                 onClick={() => router.push("/saving/add-saving-asset/open/")}
-                >
-                Add new savings portfolio
+              >
+                Thêm danh mục tiết kiệm mới
               </Button>
             </Grid>
           </Grid>
@@ -278,21 +268,21 @@ const SavingsManagement: React.FC = () => {
       <StyledCard>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            Savings Accounts
+            Tài khoản tiết kiệm
           </Typography>
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Account ID</TableCell>
-                  <TableCell>User ID</TableCell>
-                  <TableCell>Owner</TableCell>
-                  <TableCell>Heir Status</TableCell>
-                  <TableCell>Balance</TableCell>
-                  <TableCell>Term</TableCell>
-                  <TableCell>Start Date</TableCell>
-                  <TableCell>End Date</TableCell>
-                  <TableCell>Actions</TableCell>
+                  <TableCell>Mã tài khoản</TableCell>
+                  <TableCell>Mã người dùng</TableCell>
+                  <TableCell>Chủ sở hữu</TableCell>
+                  <TableCell>Trạng thái thừa kế</TableCell>
+                  <TableCell>Số dư</TableCell>
+                  <TableCell>Kỳ hạn</TableCell>
+                  <TableCell>Ngày bắt đầu</TableCell>
+                  <TableCell>Ngày kết thúc</TableCell>
+                  <TableCell>Hành động</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

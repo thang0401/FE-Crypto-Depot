@@ -228,7 +228,7 @@ const TransferDebit = () => {
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
-        USDC Transfer in CryptoBank
+        Chuyển khoản USDC
       </Typography>
 
       <Grid container spacing={3}>

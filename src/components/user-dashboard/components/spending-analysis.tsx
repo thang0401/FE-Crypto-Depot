@@ -20,20 +20,20 @@ import { DashboardCard } from "../styled-components"
 
 // Mock data
 const spendingData = [
-  { name: "Jan", amount: 1200 },
-  { name: "Feb", amount: 900 },
-  { name: "Mar", amount: 1500 },
-  { name: "Apr", amount: 1000 },
-  { name: "May", amount: 1800 },
-  { name: "Jun", amount: 1300 },
+  { name: "Th1", amount: 1200 },
+  { name: "Th2", amount: 900 },
+  { name: "Th3", amount: 1500 },
+  { name: "Th4", amount: 1000 },
+  { name: "Th5", amount: 1800 },
+  { name: "Th6", amount: 1300 },
 ]
 
 const categoryData = [
-  { name: "Food", value: 35 },
-  { name: "Transport", value: 20 },
-  { name: "Shopping", value: 25 },
-  { name: "Bills", value: 15 },
-  { name: "Others", value: 5 },
+  { name: "Ăn uống", value: 35 },
+  { name: "Di chuyển", value: 20 },
+  { name: "Mua sắm", value: 25 },
+  { name: "Hóa đơn", value: 15 },
+  { name: "Khác", value: 5 },
 ]
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"]
@@ -49,11 +49,11 @@ export default function SpendingAnalysis() {
     <DashboardCard>
       <CardContent>
         <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
-          Spending Analysis
+          Phân tích chi tiêu
         </Typography>
         <Tabs value={tabValue} onChange={handleTabChange} variant="fullWidth" sx={{ mb: 2 }}>
-          <Tab label="Monthly" />
-          <Tab label="Categories" />
+          <Tab label="Hàng tháng" />
+          <Tab label="Danh mục" />
         </Tabs>
         {tabValue === 0 ? (
           <Box sx={{ height: 250 }}>
@@ -62,7 +62,7 @@ export default function SpendingAnalysis() {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} />
                 <YAxis axisLine={false} tickLine={false} />
-                <RechartsTooltip />
+                <RechartsTooltip formatter={(value) => [`${value} USDC`, "Số tiền"]} />
                 <Bar dataKey="amount" fill="#2196f3" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -85,7 +85,7 @@ export default function SpendingAnalysis() {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <RechartsTooltip />
+                <RechartsTooltip formatter={(value) => [`${value}%`, "Tỷ lệ"]} />
               </PieChart>
             </ResponsiveContainer>
           </Box>
@@ -94,4 +94,3 @@ export default function SpendingAnalysis() {
     </DashboardCard>
   )
 }
-

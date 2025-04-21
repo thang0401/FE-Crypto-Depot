@@ -100,17 +100,17 @@ export default function CurrencyConverter() {
       <CardContent>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
           <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-            Exchange Rates & Currency Converter
+            Tỷ giá & Quy đổi tiền tệ
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Tooltip title="Current exchange rate: 1 USDC = 25,000 VND">
+            <Tooltip title="Tỷ giá hiện tại: 1 USDC = 25,000 VND">
               <IconButton size="small">
                 <Info />
               </IconButton>
             </Tooltip>
             <Chip
               icon={<CurrencyExchange />}
-              label="Updated: Today, 10:30 AM"
+              label="Cập nhật: Hôm nay, 10:30 sáng"
               size="small"
               variant="outlined"
               sx={{ ml: 1 }}
@@ -123,7 +123,7 @@ export default function CurrencyConverter() {
             <Grid item xs={12} md={4}>
               <Box>
                 <Typography variant="subtitle2" gutterBottom>
-                  From
+                  Từ
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "flex-start" }}>
                   <TextField
@@ -159,7 +159,7 @@ export default function CurrencyConverter() {
             <Grid item xs={12} md={4}>
               <Box>
                 <Typography variant="subtitle2" gutterBottom>
-                  To
+                  Đến
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "flex-start" }}>
                   <TextField
@@ -196,17 +196,17 @@ export default function CurrencyConverter() {
                   marginTop: "25px"
                 }}
               >
-                Convert Currency
+                Quy đổi tiền tệ
               </Button>
             </Grid>
           </Grid>
 
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
             <Typography variant="body2">
-              Exchange Rate: 1 {fromCurrency} = {fromCurrency === "USDC" ? "25,000" : "0.00004"} {toCurrency}
+              Tỷ giá: 1 {fromCurrency} = {fromCurrency === "USDC" ? "25,000" : "0.00004"} {toCurrency}
             </Typography>
             <Typography variant="body2" sx={{ fontWeight: "medium" }}>
-              No conversion fee for Premium accounts
+              Miễn phí quy đổi cho tài khoản Premium
             </Typography>
           </Box>
         </Paper>

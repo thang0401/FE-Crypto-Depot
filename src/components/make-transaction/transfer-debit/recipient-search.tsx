@@ -1,5 +1,5 @@
 import type React from "react"
-import { CardContent, Typography, List, ListItemAvatar, ListItemText, Avatar, Box, InputAdornment ,Dialog,  DialogTitle,
+import { CardContent, Typography, List, ListItemAvatar, ListItemText, Avatar, Box, InputAdornment, Dialog, DialogTitle,
  DialogContent,
  DialogActions,
  Button,} from "@mui/material"
@@ -7,7 +7,6 @@ import SearchIcon from "@mui/icons-material/Search"
 import HistoryIcon from "@mui/icons-material/History"
 import { StyledCard, SearchBar, RecentUserItem } from "./styled-components"
 import { User } from "./type"
-
 
 interface DialogState {
   open: boolean
@@ -37,12 +36,12 @@ export default function RecipientSearch({
     <StyledCard>
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          Find Recipient
+          Tìm người nhận
         </Typography>
 
         <SearchBar
           fullWidth
-          placeholder="Enter recipient's phone number"
+          placeholder="Nhập số điện thoại của người nhận"
           value={phoneFilter}
           onChange={onPhoneFilterChange}
           InputProps={{
@@ -52,13 +51,13 @@ export default function RecipientSearch({
               </InputAdornment>
             ),
           }}
-          helperText="Enter full 10-digit phone number to search"
+          helperText="Nhập số điện thoại 10 chữ số đầy đủ để tìm kiếm"
         />
 
         <Box sx={{ mt: 2 }}>
           <Typography variant="subtitle1" sx={{ display: "flex", alignItems: "center", mb: 1 }}>
             <HistoryIcon fontSize="small" sx={{ mr: 1 }} />
-            Recent Transactions
+            Giao dịch gần đây
           </Typography>
 
           <List sx={{ py: 0 }}>
@@ -94,13 +93,13 @@ export default function RecipientSearch({
           </List>
         </Box>
         <Dialog open={dialog.open} onClose={onCloseDialog}>
-          <DialogTitle>Notification</DialogTitle>
+          <DialogTitle>Thông báo</DialogTitle>
           <DialogContent>
             <Typography>{dialog.message}</Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={onCloseDialog} color="primary">
-              Close
+              Đóng
             </Button>
           </DialogActions>
         </Dialog>
@@ -108,4 +107,3 @@ export default function RecipientSearch({
     </StyledCard>
   )
 }
-

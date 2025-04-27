@@ -1,19 +1,19 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Box, Container, Typography, Paper, Grid, 
-  TextField, FormControl, InputLabel, 
-  Select, MenuItem, SelectChangeEvent,
-  Button, ToggleButton, ToggleButtonGroup,
-  InputAdornment, IconButton, Alert
+import {
+  Box, Container, Typography, Paper, Grid,
+  TextField, FormControl, InputLabel,
+  Select, MenuItem, Button, ToggleButton,
+  ToggleButtonGroup, InputAdornment, IconButton, Alert
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
-// Styled components
+// Styled components (giữ nguyên như code gốc)
 const StyledCard = styled(Paper)(({ theme }) => ({
   borderRadius: '16px',
   boxShadow: '0 4px 20px 0 rgba(0,0,0,0.1)',
@@ -44,7 +44,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
       color: 'white',
       borderBottom: '3px solid #0292B1',
       '&:hover': {
-        backgroundColor: ' #03A9D2',
+        backgroundColor: '#03A9D2',
       }
     },
     '&:first-of-type': {
@@ -70,7 +70,7 @@ const CryptoIcon = styled('div')(({ theme }) => ({
 
 const USDCIcon = () => (
   <CryptoIcon>
-     <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=024" alt="USDC" width={24} height={24} />
+   <img src="/images/logos/usdc-logo-removebg-preview.png" alt="USDC" width={24} height={24} />
   </CryptoIcon>
 );
 
@@ -97,35 +97,57 @@ const CryptoExchangeForm = () => {
   const [receivingCurrency, setReceivingCurrency] = useState('USDC');
   const [hasUserTyped, setHasUserTyped] = useState(false);
   const [insufficientBalance, setInsufficientBalance] = useState(false);
-  
-  // Default balances
-  const usdcBalance = 98.55;
-  const vndBalance = 1555235;
-  
-  const exchangeRate = 26003.73;
-  // Thêm state cho chế độ hiển thị tỷ giá
-  const [rateDisplayMode, setRateDisplayMode] = useState('normal'); // 'normal' hoặc 'inverse'
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  // Hàm định dạng số với dấu phẩy ngăn cách hàng nghìn
-  const formatNumber = (num: number | string) : string => {
-    // Chuyển đổi sang số
+  // Giả định userId lấy từ context hoặc auth
+  const userId = 'cvc142nsillh6aihs0g0'; // Thay bằng logic lấy userId từ token/auth
+
+  // Số dư và tỷ giá (lấy từ API thay vì hard-code)
+  const [usdcBalance, setUsdcBalance] = useState(0);
+  const [vndBalance, setVndBalance] = useState(0);
+  const [exchangeRate, setExchangeRate] = useState(0);
+  const [rateDisplayMode, setRateDisplayMode] = useState('normal');
+
+  // Base URL của backend
+  const API_BASE_URL = 'http://localhost:8000/api/payment'; // Thay bằng URL thực tế
+
+  // Hàm lấy số dư và tỷ giá từ API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Giả định có API lấy số dư (cần xác nhận với backend)
+        // const balanceResponse = await axios.get(`${API_BASE_URL}/balance/${userId}`);
+        // setUsdcBalance(balanceResponse.data.usdcBalance);
+        // setVndBalance(balanceResponse.data.vndBalance);
+
+        // Giả định có API lấy tỷ giá
+        // const rateResponse = await axios.get(`${API_BASE_URL}/exchange-rate`);
+        // setExchangeRate(rateResponse.data.rate);
+
+        // Tạm thời dùng giá trị hard-coded
+        setUsdcBalance(98.55);
+        setVndBalance(1555235);
+        setExchangeRate(26003.73);
+      } catch (err) {
+        setError('Không thể tải dữ liệu số dư hoặc tỷ giá');
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Hàm định dạng số
+  const formatNumber = (num: number | string): string => {
     const value = parseFloat(num.toString().replace(/,/g, ''));
     if (isNaN(value)) return '';
-    
-    // Chia phần nguyên và phần thập phân
     const parts = value.toString().split('.');
-    
-    // Định dạng phần nguyên với dấu phẩy ngăn cách hàng nghìn
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    
-    // Nối lại với phần thập phân (nếu có)
     return parts.length > 1 ? parts.join('.') : parts[0];
   };
 
   const handleTradeTypeChange = (event: React.MouseEvent<HTMLElement>, newTradeType: string | null) => {
     if (newTradeType !== null) {
       setTradeType(newTradeType);
-      // Swap currencies when changing trade type
       if (newTradeType === 'buy') {
         setPayingCurrency('VND');
         setReceivingCurrency('USDC');
@@ -133,70 +155,48 @@ const CryptoExchangeForm = () => {
         setPayingCurrency('USDC');
         setReceivingCurrency('VND');
       }
-      // Reset amounts and user typing state
       setPayAmount('');
       setReceiveAmount('0.00');
       setHasUserTyped(false);
       setInsufficientBalance(false);
+      setError(null);
     }
   };
 
   const handlePayAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // Allow decimal points and numbers
     let inputValue = event.target.value;
-    
-    // Set user has typed flag
     setHasUserTyped(true);
-    
-    // For USDC (sell tab), we need to handle decimals specially
+
     if (tradeType === 'sell') {
-        // Chỉ cho phép số và dấu chấm (loại bỏ ký tự không hợp lệ)
-        inputValue = inputValue.replace(/[^0-9.]/g, '');
-        
-        // Đảm bảo chỉ có một dấu chấm
-        const decimalCount = (inputValue.match(/\./g) || []).length;
-        if (decimalCount > 1) {
-            const parts = inputValue.split('.');
-            inputValue = parts[0] + '.' + parts.slice(1).join('');
-        }
-        
-        // Tách phần nguyên và phần thập phân
-        const [integerPart, decimalPart] = inputValue.split('.');
-        const formattedInteger = formatNumber(integerPart); // Định dạng phần nguyên
-        
-        // Kết hợp lại với phần thập phân nếu có
-        const formattedValue = decimalPart !== undefined 
-            ? `${formattedInteger}.${decimalPart}` 
-            : formattedInteger;
-        
-        // Cập nhật payAmount với giá trị đã định dạng
-        setPayAmount(formattedValue);
-        
-        // Kiểm tra số dư và tínhível toán receiveAmount
-        const numericValue = parseFloat(inputValue);
-        setInsufficientBalance(!isNaN(numericValue) && numericValue > usdcBalance);
-        
-        if (!isNaN(numericValue)) {
-            const calculated = (numericValue * exchangeRate).toFixed(2);
-            setReceiveAmount(formatNumber(calculated));
-        } else {
-            setReceiveAmount('0.00');
-        }
+      inputValue = inputValue.replace(/[^0-9.]/g, '');
+      const decimalCount = (inputValue.match(/\./g) || []).length;
+      if (decimalCount > 1) {
+        const parts = inputValue.split('.');
+        inputValue = parts[0] + '.' + parts.slice(1).join('');
+      }
+      const [integerPart, decimalPart] = inputValue.split('.');
+      const formattedInteger = formatNumber(integerPart);
+      const formattedValue = decimalPart !== undefined
+        ? `${formattedInteger}.${decimalPart}`
+        : formattedInteger;
+      setPayAmount(formattedValue);
+
+      const numericValue = parseFloat(inputValue);
+      setInsufficientBalance(!isNaN(numericValue) && numericValue > usdcBalance);
+
+      if (!isNaN(numericValue)) {
+        const calculated = (numericValue * exchangeRate).toFixed(2);
+        setReceiveAmount(formatNumber(calculated));
+      } else {
+        setReceiveAmount('0.00');
+      }
     } else {
-      // For VND (buy tab)
       inputValue = inputValue.replace(/[^0-9,]/g, '');
-      
-      // Process commas for VND
       const numericValue = parseFloat(inputValue.replace(/,/g, ''));
-      
-      // Check balance for VND
       setInsufficientBalance(!isNaN(numericValue) && numericValue > vndBalance);
-      
-      // Định dạng số với dấu phẩy ngăn cách hàng nghìn
+
       if (!isNaN(numericValue)) {
         setPayAmount(formatNumber(numericValue));
-        
-        // Tính toán số tiền nhận được
         const calculated = (numericValue / exchangeRate).toFixed(2);
         setReceiveAmount(calculated);
       } else {
@@ -207,20 +207,15 @@ const CryptoExchangeForm = () => {
   };
 
   const handleMaxClick = () => {
-    // Use the appropriate balance based on trade type
     const maxAmount = tradeType === 'buy' ? vndBalance : usdcBalance;
-    
     if (tradeType === 'buy') {
       setPayAmount(formatNumber(maxAmount));
     } else {
-      // For USDC, just set the raw value without formatting
       setPayAmount(maxAmount.toString());
     }
-    
     setHasUserTyped(true);
     setInsufficientBalance(false);
-    
-    // Update receive amount based on max
+
     if (tradeType === 'buy') {
       const calculated = (maxAmount / exchangeRate).toFixed(2);
       setReceiveAmount(calculated);
@@ -230,17 +225,47 @@ const CryptoExchangeForm = () => {
     }
   };
 
-  const handleSubmit = () => {
-    // Handle the buy/sell transaction
-    console.log(`${tradeType === 'buy' ? 'Mua' : 'Bán'} ${receiveAmount} ${receivingCurrency}`);
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      if (tradeType === 'buy') {
+        // Gọi API deposit
+        const orderId = `ORDER_${Date.now()}`; // Tạo orderId duy nhất
+        const response = await axios.post(`${API_BASE_URL}/deposit`, {
+          orderId,
+          amount: parseFloat(payAmount.replace(/,/g, '')),
+          description: `Nạp`,
+          returnUrl: `${window.location.origin}/payment/success`,
+          cancelUrl: `${window.location.origin}/payment/cancel`,
+          userId
+        });
+        // Chuyển hướng đến URL thanh toán từ PayOS
+        window.location.href = response.data.checkoutUrl; // Giả định response trả về paymentUrl
+      } else {
+        // Gọi API withdraw
+        const response = await axios.post(`${API_BASE_URL}/withdraw`, {
+          userId,
+          amount: parseFloat(payAmount)
+        });
+        // Hiển thị thông báo thành công
+        alert('Yêu cầu rút tiền đã được gửi!');
+        // Reset form
+        setPayAmount('');
+        setReceiveAmount('0.00');
+        setHasUserTyped(false);
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Đã có lỗi xảy ra, vui lòng thử lại');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Hàm để chuyển đổi chế độ hiển thị tỷ giá
   const toggleRateDisplayMode = () => {
     setRateDisplayMode(rateDisplayMode === 'normal' ? 'inverse' : 'normal');
   };
 
-  // Hiển thị tỷ giá theo chế độ đã chọn
   const getFormattedRate = () => {
     if (rateDisplayMode === 'normal') {
       return `1 USDC = ${formatNumber(exchangeRate)} VND`;
@@ -250,18 +275,16 @@ const CryptoExchangeForm = () => {
     }
   };
 
-  // Get current balance based on the currency
   const getCurrentBalance = () => {
-    return payingCurrency === 'VND' 
-      ? `${formatNumber(vndBalance)} VND` 
+    return payingCurrency === 'VND'
+      ? `${formatNumber(vndBalance)} VND`
       : `${usdcBalance} USDC`;
   };
 
   return (
-    <Box sx={{ 
-      minHeight: '100vh', 
-      py: 6, 
-    //   background: 'linear-gradient(135deg, #f5f7fa 0%, #e9eef2 100%)',
+    <Box sx={{
+      minHeight: '100vh',
+      py: 6,
       position: 'relative',
       overflow: 'hidden'
     }}>
@@ -291,12 +314,17 @@ const CryptoExchangeForm = () => {
         }}
       />
       <Container maxWidth="sm">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <StyledCard elevation={0}>
+            {error && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+              </Alert>
+            )}
             <StyledToggleButtonGroup
               value={tradeType}
               exclusive
@@ -310,13 +338,7 @@ const CryptoExchangeForm = () => {
                 Bán
               </ToggleButton>
             </StyledToggleButtonGroup>
-            
-            {/* {insufficientBalance && (
-              <Alert severity="error" sx={{ mb: 2 }}>
-                Số dư không đủ
-              </Alert>
-            )} */}
-            
+
             <Box mb={3}>
               <Typography variant="body1" mb={1}>
                 Tôi sẽ trả
@@ -332,14 +354,12 @@ const CryptoExchangeForm = () => {
                   endAdornment: (
                     <InputAdornment position="end">
                       <Box display="flex" alignItems="center">
-                        <Button 
-                          size="small" 
-                          sx={{ 
-                            mr: 1, 
-                            // bgcolor: '#f3f4f6', 
+                        <Button
+                          size="small"
+                          sx={{
+                            mr: 1,
                             color: '#6366f1',
-                            // '&:hover': { bgcolor: '#e5e7eb' }
-                          }} 
+                          }}
                           onClick={handleMaxClick}
                         >
                           TỐI ĐA
@@ -355,15 +375,15 @@ const CryptoExchangeForm = () => {
                 sx={{ mb: 1 }}
               />
               {insufficientBalance && (
-                 <Typography color="error" variant="body2">
-                   Số dư {payingCurrency} không đủ
-                 </Typography>
+                <Typography color="error" variant="body2">
+                  Số dư {payingCurrency} không đủ
+                </Typography>
               )}
               <Typography variant="body2" color="text.secondary">
                 Số dư: {getCurrentBalance()}
               </Typography>
             </Box>
-            
+
             <Box mb={3}>
               <Typography variant="body1" mb={1}>
                 Tôi sẽ nhận
@@ -386,28 +406,28 @@ const CryptoExchangeForm = () => {
                 }}
               />
             </Box>
-            
+
             <Box mb={3} display="flex" alignItems="center">
               <Typography variant="body2" color="text.secondary">
                 Với tỷ giá: {getFormattedRate()}
               </Typography>
-              <IconButton 
-                onClick={toggleRateDisplayMode} 
-                size="small" 
+              <IconButton
+                onClick={toggleRateDisplayMode}
+                size="small"
                 sx={{ ml: 1, color: '#0292B1' }}
               >
                 <SwapHorizIcon fontSize="small" />
               </IconButton>
             </Box>
-            
-            <StyledButton 
-              variant="contained" 
+
+            <StyledButton
+              variant="contained"
               color="primary"
               onClick={handleSubmit}
-              disabled={insufficientBalance || !hasUserTyped || payAmount === ''}
+              disabled={insufficientBalance || !hasUserTyped || payAmount === '' || loading}
               sx={{ bgcolor: '#0292B1', '&:hover': { bgcolor: '#03A9D2' } }}
             >
-              {tradeType === 'buy' ? 'Mua USDC' : 'Bán USDC'}
+              {loading ? 'Đang xử lý...' : tradeType === 'buy' ? 'Mua USDC' : 'Bán USDC'}
             </StyledButton>
           </StyledCard>
         </motion.div>

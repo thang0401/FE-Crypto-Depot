@@ -168,6 +168,13 @@ const KycCenter: React.FC = () => {
     return Object.keys(newErrors).length === 0
   }
 
+  // Hàm chuyển đổi định dạng ngày từ dd/mm/yyyy sang ISO
+  const formatDateToISO = (dateStr: string): string => {
+    if (!dateStr) return ""
+    const [year, month, day] = dateStr.split("-")
+    return new Date(`${year}-${month}-${day}`).toISOString()
+  }
+
   const handleSubmit = async () => {
     if (!validateForm()) return
 
@@ -186,16 +193,38 @@ const KycCenter: React.FC = () => {
       const frontImageBase64 = kycData.frontImage ? await toBase64(kycData.frontImage) : null
       const backImageBase64 = kycData.backImage ? await toBase64(kycData.backImage) : null
 
-      // Gửi request đến API route
-      const response = await axios.post("/api/upload-to-drive", {
+      // Gửi request đến API route để upload ảnh
+      const uploadResponse = await axios.post("/api/upload-to-drive", {
         nationalId: kycData.nationalId,
         frontImage: frontImageBase64,
         backImage: backImageBase64,
       })
 
-      const { frontImageUrl, backImageUrl } = response.data
+      const { frontImageUrl, backImageUrl } = uploadResponse.data
 
-      console.log("Dữ liệu KYC:", { ...kycData, frontImageUrl, backImageUrl })
+      // Chuẩn bị dữ liệu cho API KYC
+      const userId = "d00u84k5ig8jm25nu6pg"
+      const kycPayload = {
+        fullName: `${kycData.lastName} ${kycData.middleName} ${kycData.firstName}`.trim(),
+        firstName: kycData.firstName,
+        lastName: kycData.lastName,
+        middleName: kycData.middleName,
+        address: kycData.address,
+        dateOfBirth: formatDateToISO(kycData.birthday),
+        gender: kycData.gender,
+        phone: kycData.phone,
+        idCardFrontImgUrl: frontImageUrl,
+        idCardBackImgUrl: backImageUrl,
+        ward: wards.find((w) => w.id === kycData.ward)?.full_name || kycData.ward,
+        district: districts.find((d) => d.id === kycData.district)?.full_name || kycData.district,
+        province: provinces.find((p) => p.id === kycData.province)?.full_name || kycData.province,
+        nation: kycData.country,
+        idNumber: kycData.nationalId,
+      }
+
+      // Gửi request đến API KYC
+      await axios.put(`https://be-crypto-depot.name.vn/api/Kyc/ventify/${userId}`, kycPayload)
+
       alert("KYC đã hoàn tất. Hồ sơ của bạn sẽ được xem xét trong vòng 24 giờ!")
       localStorage.setItem("userKycStatus", JSON.stringify(true))
       router.push("/")

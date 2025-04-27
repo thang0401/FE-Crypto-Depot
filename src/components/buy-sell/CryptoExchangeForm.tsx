@@ -110,7 +110,7 @@ const CryptoExchangeForm = () => {
   const [rateDisplayMode, setRateDisplayMode] = useState('normal');
 
   // Base URL của backend
-  const API_BASE_URL = 'http://localhost:8000/api/payment'; // Thay bằng URL thực tế
+  const API_BASE_URL = 'https://be-crypto-depot.name.vn/api/payment'; // Thay bằng URL thực tế
 
   // Hàm lấy số dư và tỷ giá từ API
   useEffect(() => {

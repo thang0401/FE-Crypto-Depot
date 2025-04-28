@@ -6,10 +6,10 @@ export default function DashboardHeader() {
     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
       <Box>
         <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-          Banking Dashboard
+          Bảng điều khiển ngân hàng
         </Typography>
         <Typography variant="subtitle1" color="text.secondary">
-          Welcome back, Nguyen Van An
+          Chào mừng trở lại, Nguyễn Văn An
         </Typography>
       </Box>
       <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -26,4 +26,3 @@ export default function DashboardHeader() {
     </Box>
   )
 }
-

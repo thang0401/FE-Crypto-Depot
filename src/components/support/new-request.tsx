@@ -49,70 +49,70 @@ interface SupportRequest {
 
 // Define complaint types
 const complaintTypes = [
-  { value: "product", label: "Product Issue" },
-  { value: "service", label: "Service Issue" },
-  { value: "billing", label: "Billing Problem" },
-  { value: "delivery", label: "Delivery Problem" },
-  { value: "technical", label: "Technical Support" },
-  { value: "feedback", label: "General Feedback" },
-  { value: "other", label: "Other" },
+  { value: "product", label: "Vấn đề về sản phẩm" },
+  { value: "service", label: "Vấn đề về dịch vụ" },
+  { value: "billing", label: "Vấn đề về thanh toán" },
+  { value: "delivery", label: "Vấn đề về giao hàng" },
+  { value: "technical", label: "Hỗ trợ kỹ thuật" },
+  { value: "feedback", label: "Phản hồi chung" },
+  { value: "other", label: "Khác" },
 ]
 
 // Define categories based on type
 const categoryOptions = {
   product: [
-    { value: "defective", label: "Defective Product" },
-    { value: "damaged", label: "Damaged During Shipping" },
-    { value: "wrong_item", label: "Wrong Item Received" },
-    { value: "missing_parts", label: "Missing Parts" },
+    { value: "defective", label: "Sản phẩm lỗi" },
+    { value: "damaged", label: "Hư hỏng trong quá trình vận chuyển" },
+    { value: "wrong_item", label: "Nhận sai sản phẩm" },
+    { value: "missing_parts", label: "Thiếu bộ phận" },
   ],
   service: [
-    { value: "poor_service", label: "Poor Customer Service" },
-    { value: "delayed_response", label: "Delayed Response" },
-    { value: "incorrect_info", label: "Incorrect Information Provided" },
+    { value: "poor_service", label: "Dịch vụ kém chất lượng" },
+    { value: "delayed_response", label: "Phản hồi chậm trễ" },
+    { value: "incorrect_info", label: "Cung cấp thông tin sai" },
   ],
   billing: [
-    { value: "overcharged", label: "Overcharged" },
-    { value: "double_charged", label: "Double Charged" },
-    { value: "refund_issue", label: "Refund Issue" },
-    { value: "subscription", label: "Subscription Problem" },
+    { value: "overcharged", label: "Tính phí quá cao" },
+    { value: "double_charged", label: "Tính phí trùng lặp" },
+    { value: "refund_issue", label: "Vấn đề hoàn tiền" },
+    { value: "subscription", label: "Vấn đề về gói đăng ký" },
   ],
   delivery: [
-    { value: "late", label: "Late Delivery" },
-    { value: "missing", label: "Missing Delivery" },
-    { value: "wrong_address", label: "Wrong Address" },
+    { value: "late", label: "Giao hàng trễ" },
+    { value: "missing", label: "Mất hàng" },
+    { value: "wrong_address", label: "Giao sai địa chỉ" },
   ],
   technical: [
-    { value: "website", label: "Website Issue" },
-    { value: "app", label: "Mobile App Issue" },
-    { value: "account", label: "Account Access Problem" },
+    { value: "website", label: "Vấn đề về website" },
+    { value: "app", label: "Vấn đề về ứng dụng di động" },
+    { value: "account", label: "Vấn đề truy cập tài khoản" },
   ],
   feedback: [
-    { value: "suggestion", label: "Suggestion" },
-    { value: "compliment", label: "Compliment" },
-    { value: "complaint", label: "General Complaint" },
+    { value: "suggestion", label: "Đề xuất" },
+    { value: "compliment", label: "Khen ngợi" },
+    { value: "complaint", label: "Khiếu nại chung" },
   ],
-  other: [{ value: "other", label: "Other Issue" }],
+  other: [{ value: "other", label: "Vấn đề khác" }],
 }
 
 // Define priority levels
 const priorityLevels = [
-  { value: "low", label: "Low - Not urgent" },
-  { value: "medium", label: "Medium - Needs attention" },
-  { value: "high", label: "High - Significant impact" },
-  { value: "critical", label: "Critical - Urgent resolution needed" },
+  { value: "low", label: "Thấp - Không khẩn cấp" },
+  { value: "medium", label: "Trung bình - Cần chú ý" },
+  { value: "high", label: "Cao - Ảnh hưởng đáng kể" },
+  { value: "critical", label: "Rất cao - Cần giải quyết ngay" },
 ]
 
 // Define contact time preferences
 const contactTimeOptions = [
-  { value: "morning", label: "Morning (8AM - 12PM)" },
-  { value: "afternoon", label: "Afternoon (12PM - 5PM)" },
-  { value: "evening", label: "Evening (5PM - 8PM)" },
-  { value: "anytime", label: "Anytime" },
+  { value: "morning", label: "Buổi sáng (8h - 12h)" },
+  { value: "afternoon", label: "Buổi chiều (12h - 17h)" },
+  { value: "evening", label: "Buổi tối (17h - 20h)" },
+  { value: "anytime", label: "Bất kỳ lúc nào" },
 ]
 
 // Define steps for the stepper
-const steps = ["Request Details", "Contact Information", "Review & Submit"]
+const steps = ["Chi tiết yêu cầu", "Thông tin liên hệ", "Xem xét & Gửi"]
 
 const NewSupportRequest = () => {
   const theme = useTheme()
@@ -225,24 +225,6 @@ const NewSupportRequest = () => {
     setLoading(true)
 
     try {
-      // In a real application, you would send the form data to your API
-      // const formDataToSend = new FormData();
-      // Object.entries(formData).forEach(([key, value]) => {
-      //   if (key !== 'files') {
-      //     formDataToSend.append(key, value as string);
-      //   }
-      // });
-      // formData.files.forEach(file => {
-      //   formDataToSend.append('files', file);
-      // });
-
-      // const response = await fetch('/api/support/submit', {
-      //   method: 'POST',
-      //   body: formDataToSend,
-      // });
-
-      // if (!response.ok) throw new Error('Failed to submit support request');
-
       // Mock API call
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
@@ -253,7 +235,7 @@ const NewSupportRequest = () => {
         router.push("/support/request-submitted?id=SR" + Math.floor(Math.random() * 1000000))
       }, 2000)
     } catch (error) {
-      console.error("Error submitting form:", error)
+      console.error("Lỗi khi gửi biểu mẫu:", error)
       setSubmitStatus("error")
     } finally {
       setLoading(false)
@@ -262,11 +244,8 @@ const NewSupportRequest = () => {
 
   // Handle save draft
   const handleSaveDraft = () => {
-    // In a real application, you would save the draft to localStorage or to the server
     localStorage.setItem("supportRequestDraft", JSON.stringify(formData))
-
-    // Show a notification that the draft was saved
-    alert("Draft saved successfully!")
+    alert("Bản nháp đã được lưu thành công!")
   }
 
   // Render step content
@@ -279,12 +258,12 @@ const NewSupportRequest = () => {
               <FormControl fullWidth required>
                 <TextField
                   select
-                  label="Request Type"
+                  label="Loại yêu cầu"
                   name="type"
                   value={formData.type}
                   onChange={handleChange}
                   required
-                  helperText="Select the type of request or issue"
+                  helperText="Chọn loại yêu cầu hoặc vấn đề"
                 >
                   {complaintTypes.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
@@ -299,19 +278,19 @@ const NewSupportRequest = () => {
               <FormControl fullWidth required disabled={!formData.type}>
                 <TextField
                   select
-                  label="Category"
+                  label="Danh mục"
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
                   required
-                  helperText="Select a specific category for your request"
+                  helperText="Chọn danh mục cụ thể cho yêu cầu của bạn"
                 >
                   {formData.type &&
                     categoryOptions[formData.type as keyof typeof categoryOptions]?.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
-                      </MenuItem>
-                    ))}
+                    </MenuItem>
+                  ))}
                 </TextField>
               </FormControl>
             </Grid>
@@ -320,11 +299,11 @@ const NewSupportRequest = () => {
               <FormControl fullWidth>
                 <TextField
                   select
-                  label="Priority"
+                  label="Mức độ ưu tiên"
                   name="priority"
                   value={formData.priority}
                   onChange={handleChange}
-                  helperText="How urgent is your request?"
+                  helperText="Mức độ khẩn cấp của yêu cầu?"
                 >
                   {priorityLevels.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
@@ -338,11 +317,11 @@ const NewSupportRequest = () => {
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
                 <TextField
-                  label="Order/Transaction ID (if applicable)"
+                  label="Mã đơn hàng/Giao dịch (nếu có)"
                   name="orderId"
                   value={formData.orderId}
                   onChange={handleChange}
-                  helperText="If your request is related to a specific order"
+                  helperText="Nếu yêu cầu liên quan đến một đơn hàng cụ thể"
                 />
               </FormControl>
             </Grid>
@@ -350,12 +329,12 @@ const NewSupportRequest = () => {
             <Grid item xs={12}>
               <FormControl fullWidth required>
                 <TextField
-                  label="Subject"
+                  label="Tiêu đề"
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  helperText="Brief summary of your request"
+                  helperText="Tóm tắt ngắn gọn về yêu cầu của bạn"
                 />
               </FormControl>
             </Grid>
@@ -363,7 +342,7 @@ const NewSupportRequest = () => {
             <Grid item xs={12}>
               <FormControl fullWidth required>
                 <TextField
-                  label="Detailed Description"
+                  label="Mô tả chi tiết"
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
@@ -371,7 +350,7 @@ const NewSupportRequest = () => {
                   rows={6}
                   required
                   inputProps={{ maxLength: maxDescriptionChars }}
-                  helperText={`Please provide as much detail as possible. ${descriptionCharsLeft} characters remaining.`}
+                  helperText={`Vui lòng cung cấp chi tiết càng nhiều càng tốt. Còn lại ${descriptionCharsLeft} ký tự.`}
                   FormHelperTextProps={{ sx: { color: descriptionColor === "error" ? "error.main" : "inherit" } }}
                 />
               </FormControl>
@@ -380,10 +359,10 @@ const NewSupportRequest = () => {
             <Grid item xs={12}>
               <Box sx={{ mb: 2 }}>
                 <Typography variant="subtitle2" gutterBottom>
-                  Attachments (Optional)
+                  Tệp đính kèm (Tùy chọn)
                 </Typography>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
-                  Upload screenshots, receipts, or other relevant files (max 5 files, 10MB each)
+                  Tải lên ảnh chụp màn hình, biên lai, hoặc các tệp liên quan khác (tối đa 5 tệp, mỗi tệp 10MB)
                 </Typography>
               </Box>
 
@@ -403,13 +382,13 @@ const NewSupportRequest = () => {
                 disabled={formData.files.length >= 5}
                 sx={{ mb: 2 }}
               >
-                Upload Files
+                Tải lên tệp
               </Button>
 
               {formData.files.length > 0 && (
                 <Box sx={{ mt: 2 }}>
                   <Typography variant="subtitle2" gutterBottom>
-                    Uploaded Files:
+                    Các tệp đã tải lên:
                   </Typography>
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
                     {formData.files.map((file, index) => (
@@ -433,11 +412,11 @@ const NewSupportRequest = () => {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <FormControl component="fieldset">
-                <FormLabel component="legend">Preferred Contact Method</FormLabel>
+                <FormLabel component="legend">Phương thức liên hệ ưu tiên</FormLabel>
                 <RadioGroup row name="contactMethod" value={formData.contactMethod} onChange={handleChange}>
                   <FormControlLabel value="email" control={<Radio />} label="Email" />
-                  <FormControlLabel value="phone" control={<Radio />} label="Phone" />
-                  <FormControlLabel value="both" control={<Radio />} label="Both" />
+                  <FormControlLabel value="phone" control={<Radio />} label="Điện thoại" />
+                  <FormControlLabel value="both" control={<Radio />} label="Cả hai" />
                 </RadioGroup>
               </FormControl>
             </Grid>
@@ -445,7 +424,7 @@ const NewSupportRequest = () => {
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth required={formData.contactMethod === "email" || formData.contactMethod === "both"}>
                 <TextField
-                  label="Email Address"
+                  label="Địa chỉ Email"
                   name="email"
                   type="email"
                   value={formData.email}
@@ -454,8 +433,8 @@ const NewSupportRequest = () => {
                   error={formData.email !== "" && !/\S+@\S+\.\S+/.test(formData.email)}
                   helperText={
                     formData.email !== "" && !/\S+@\S+\.\S+/.test(formData.email)
-                      ? "Please enter a valid email address"
-                      : "We'll send updates about your request to this email"
+                      ? "Vui lòng nhập địa chỉ email hợp lệ"
+                      : "Chúng tôi sẽ gửi cập nhật về yêu cầu của bạn đến email này"
                   }
                 />
               </FormControl>
@@ -464,12 +443,12 @@ const NewSupportRequest = () => {
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth required={formData.contactMethod === "phone" || formData.contactMethod === "both"}>
                 <TextField
-                  label="Phone Number"
+                  label="Số điện thoại"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
                   required={formData.contactMethod === "phone" || formData.contactMethod === "both"}
-                  helperText="Include country code if applicable"
+                  helperText="Bao gồm mã quốc gia nếu cần"
                 />
               </FormControl>
             </Grid>
@@ -478,11 +457,11 @@ const NewSupportRequest = () => {
               <FormControl fullWidth>
                 <TextField
                   select
-                  label="Preferred Contact Time"
+                  label="Thời gian liên hệ ưu tiên"
                   name="contactTime"
                   value={formData.contactTime}
                   onChange={handleChange}
-                  helperText="When would you prefer to be contacted?"
+                  helperText="Bạn muốn được liên hệ vào thời điểm nào?"
                 >
                   {contactTimeOptions.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
@@ -499,15 +478,14 @@ const NewSupportRequest = () => {
         return (
           <Box>
             <Alert severity="info" sx={{ mb: 3 }}>
-              Please review your information before submitting. Once submitted, you'll receive a confirmation email with
-              your request details.
+              Vui lòng xem xét lại thông tin của bạn trước khi gửi. Sau khi gửi, bạn sẽ nhận được email xác nhận với chi tiết yêu cầu của mình.
             </Alert>
 
             <Paper variant="outlined" sx={{ p: 3, mb: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
-                    Request Type
+                    Loại yêu cầu
                   </Typography>
                   <Typography variant="body1">
                     {complaintTypes.find((t) => t.value === formData.type)?.label || ""}
@@ -516,7 +494,7 @@ const NewSupportRequest = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
-                    Category
+                    Danh mục
                   </Typography>
                   <Typography variant="body1">
                     {(formData.type &&
@@ -529,7 +507,7 @@ const NewSupportRequest = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
-                    Priority
+                    Mức độ ưu tiên
                   </Typography>
                   <Typography variant="body1">
                     {priorityLevels.find((p) => p.value === formData.priority)?.label || ""}
@@ -538,7 +516,7 @@ const NewSupportRequest = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
-                    Order/Transaction ID
+                    Mã đơn hàng/Giao dịch
                   </Typography>
                   <Typography variant="body1">{formData.orderId || "N/A"}</Typography>
                 </Grid>
@@ -549,14 +527,14 @@ const NewSupportRequest = () => {
 
                 <Grid item xs={12}>
                   <Typography variant="subtitle2" color="text.secondary">
-                    Subject
+                    Tiêu đề
                   </Typography>
                   <Typography variant="body1">{formData.subject}</Typography>
                 </Grid>
 
                 <Grid item xs={12}>
                   <Typography variant="subtitle2" color="text.secondary">
-                    Description
+                    Mô tả
                   </Typography>
                   <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>
                     {formData.description}
@@ -566,7 +544,7 @@ const NewSupportRequest = () => {
                 {formData.files.length > 0 && (
                   <Grid item xs={12}>
                     <Typography variant="subtitle2" color="text.secondary">
-                      Attachments
+                      Tệp đính kèm
                     </Typography>
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
                       {formData.files.map((file, index) => (
@@ -588,16 +566,16 @@ const NewSupportRequest = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
-                    Contact Method
+                    Phương thức liên hệ
                   </Typography>
                   <Typography variant="body1" sx={{ textTransform: "capitalize" }}>
-                    {formData.contactMethod}
+                    {formData.contactMethod === "email" ? "Email" : formData.contactMethod === "phone" ? "Điện thoại" : "Cả hai"}
                   </Typography>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
-                    Preferred Contact Time
+                    Thời gian liên hệ ưu tiên
                   </Typography>
                   <Typography variant="body1">
                     {contactTimeOptions.find((t) => t.value === formData.contactTime)?.label || ""}
@@ -613,7 +591,7 @@ const NewSupportRequest = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
-                    Phone
+                    Số điện thoại
                   </Typography>
                   <Typography variant="body1">{formData.phone || "N/A"}</Typography>
                 </Grid>
@@ -623,15 +601,15 @@ const NewSupportRequest = () => {
         )
 
       default:
-        return "Unknown step"
+        return "Bước không xác định"
     }
   }
 
   return (
     <>
       <Head>
-        <title>Submit Support Request</title>
-        <meta name="description" content="Submit a new support request or complaint" />
+        <title>Gửi yêu cầu hỗ trợ</title>
+        <meta name="description" content="Gửi yêu cầu hỗ trợ hoặc khiếu nại mới" />
       </Head>
 
       <Container maxWidth="lg">
@@ -643,10 +621,10 @@ const NewSupportRequest = () => {
               onClick={() => router.push("/support")}
               sx={{ mr: 2 }}
             >
-              Back
+              Quay lại
             </Button>
             <Typography variant="h4" fontWeight="bold">
-              Submit Support Request
+              Gửi yêu cầu hỗ trợ
             </Typography>
           </Box>
 
@@ -662,9 +640,9 @@ const NewSupportRequest = () => {
             {submitStatus === "success" ? (
               <Box sx={{ textAlign: "center", py: 4 }}>
                 <CircularProgress sx={{ mb: 2 }} />
-                <Typography variant="h6">Your support request has been submitted successfully!</Typography>
+                <Typography variant="h6">Yêu cầu hỗ trợ của bạn đã được gửi thành công!</Typography>
                 <Typography variant="body1" color="text.secondary">
-                  Redirecting to confirmation page...
+                  Đang chuyển hướng đến trang xác nhận...
                 </Typography>
               </Box>
             ) : submitStatus === "error" ? (
@@ -673,11 +651,11 @@ const NewSupportRequest = () => {
                   severity="error"
                   action={
                     <Button color="inherit" size="small" onClick={() => setSubmitStatus("idle")}>
-                      Try Again
+                      Thử lại
                     </Button>
                   }
                 >
-                  There was an error submitting your request. Please try again.
+                  Có lỗi khi gửi yêu cầu của bạn. Vui lòng thử lại.
                 </Alert>
               </Box>
             ) : (
@@ -690,7 +668,7 @@ const NewSupportRequest = () => {
                     onClick={activeStep === 0 ? handleSaveDraft : handleBack}
                     startIcon={activeStep === 0 ? <Save size={18} /> : undefined}
                   >
-                    {activeStep === 0 ? "Save Draft" : "Back"}
+                    {activeStep === 0 ? "Lưu bản nháp" : "Quay lại"}
                   </Button>
 
                   <Button
@@ -702,9 +680,9 @@ const NewSupportRequest = () => {
                     {loading ? (
                       <CircularProgress size={24} />
                     ) : activeStep === steps.length - 1 ? (
-                      "Submit Request"
+                      "Gửi yêu cầu"
                     ) : (
-                      "Next"
+                      "Tiếp theo"
                     )}
                   </Button>
                 </Box>
@@ -715,41 +693,38 @@ const NewSupportRequest = () => {
           {/* FAQ Section */}
           <Box sx={{ mt: 4 }}>
             <Typography variant="h6" gutterBottom>
-              Frequently Asked Questions
+              Câu hỏi thường gặp
             </Typography>
 
             <Accordion>
               <AccordionSummary expandIcon={<ChevronDown />}>
-                <Typography>How long will it take to get a response?</Typography>
+                <Typography>Mất bao lâu để nhận được phản hồi?</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  We aim to respond to all support requests within 24-48 hours. High priority issues are typically
-                  addressed more quickly.
+                  Chúng tôi cố gắng phản hồi tất cả yêu cầu hỗ trợ trong vòng 24-48 giờ. Các vấn đề ưu tiên cao thường được xử lý nhanh hơn.
                 </Typography>
               </AccordionDetails>
             </Accordion>
 
             <Accordion>
               <AccordionSummary expandIcon={<ChevronDown />}>
-                <Typography>Can I update my request after submission?</Typography>
+                <Typography>Tôi có thể cập nhật yêu cầu sau khi gửi không?</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Yes, you can add additional information to your request by replying to the confirmation email you'll
-                  receive, or by logging into your account and viewing your support requests.
+                  Có, bạn có thể thêm thông tin bổ sung vào yêu cầu của mình bằng cách trả lời email xác nhận bạn nhận được, hoặc bằng cách đăng nhập vào tài khoản và xem các yêu cầu hỗ trợ của bạn.
                 </Typography>
               </AccordionDetails>
             </Accordion>
 
             <Accordion>
               <AccordionSummary expandIcon={<ChevronDown />}>
-                <Typography>What file types can I upload?</Typography>
+                <Typography>Tôi có thể tải lên những loại tệp nào?</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  You can upload images (JPG, PNG, GIF), documents (PDF, DOC, DOCX), and text files (TXT). Each file
-                  must be under 10MB in size.
+                  Bạn có thể tải lên hình ảnh (JPG, PNG, GIF), tài liệu (PDF, DOC, DOCX) và tệp văn bản (TXT). Mỗi tệp phải có kích thước dưới 10MB.
                 </Typography>
               </AccordionDetails>
             </Accordion>

@@ -1,10 +1,7 @@
-// ** React Imports
+"use client"
+
 import { ChangeEvent, useState } from 'react'
-
-// ** Next Import
 import Link from 'next/link'
-
-// ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
@@ -30,11 +27,7 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import DialogContent from '@mui/material/DialogContent'
 import InputAdornment from '@mui/material/InputAdornment'
 import TableContainer from '@mui/material/TableContainer'
-
-// ** Icon Imports
 import Icon from 'src/@core/components/icon'
-
-// ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
 
 interface State {
@@ -57,55 +50,54 @@ const data: DataType[] = [
   {
     iconColor: 'info',
     device: 'HP Spectre 360',
-    location: 'Switzerland',
-    browser: 'Chrome on Windows',
+    location: 'Thụy Sĩ',
+    browser: 'Chrome trên Windows',
     icon: 'bxl:windows',
-    recentActivity: '10, July 2021 20:07'
+    recentActivity: '10, Tháng 7 2021 20:07'
   },
   {
     iconColor: 'error',
     device: 'iPhone 12x',
     icon: 'bx:mobile-alt',
-    location: 'Australia',
-    browser: 'Chrome on iPhone',
-    recentActivity: '13, July 2021 10:10'
+    location: 'Úc',
+    browser: 'Chrome trên iPhone',
+    recentActivity: '13, Tháng 7 2021 10:10'
   },
   {
     location: 'Dubai',
     icon: 'bxl:android',
     iconColor: 'success',
     device: 'Oneplus 9 Pro',
-    browser: 'Chrome on Android',
-    recentActivity: '14, July 2021 15:15'
+    browser: 'Chrome trên Android',
+    recentActivity: '14, Tháng 7 2021 15:15'
   },
   {
-    location: 'India',
+    location: 'Ấn Độ',
     icon: 'bxl:apple',
-    device: 'Apple iMac	',
+    device: 'Apple iMac',
     iconColor: 'secondary',
-    browser: 'Chrome on MacOS',
-    recentActivity: '16, July 2021 16:17'
+    browser: 'Chrome trên MacOS',
+    recentActivity: '16, Tháng 7 2021 16:17'
   },
   {
     iconColor: 'info',
     device: 'HP Spectre 360',
-    location: 'Switzerland',
-    browser: 'Chrome on Windows',
+    location: 'Thụy Sĩ',
+    browser: 'Chrome trên Windows',
     icon: 'bxl:windows',
-    recentActivity: '20, July 2021 21:01'
+    recentActivity: '20, Tháng 7 2021 21:01'
   },
   {
     location: 'Dubai',
     icon: 'bxl:android',
     iconColor: 'success',
     device: 'Oneplus 9 Pro',
-    browser: 'Chrome on Android',
-    recentActivity: '21, July 2021 12:22'
+    browser: 'Chrome trên Android',
+    recentActivity: '21, Tháng 7 2021 12:22'
   }
 ]
 
 const UserViewSecurity = () => {
-  // ** States
   const [defaultValues, setDefaultValues] = useState<any>({ mobile: 'thangnc0401@gmail.com' })
   const [mobileNumber, setMobileNumber] = useState<string>(defaultValues.mobile)
   const [openEditMobileNumber, setOpenEditMobileNumber] = useState<boolean>(false)
@@ -116,7 +108,6 @@ const UserViewSecurity = () => {
     showConfirmNewPassword: false
   })
 
-  // Handle Password
   const handleNewPasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [prop]: event.target.value })
   }
@@ -124,7 +115,6 @@ const UserViewSecurity = () => {
     setValues({ ...values, showNewPassword: !values.showNewPassword })
   }
 
-  // Handle Confirm Password
   const handleConfirmNewPasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [prop]: event.target.value })
   }
@@ -132,11 +122,9 @@ const UserViewSecurity = () => {
     setValues({ ...values, showConfirmNewPassword: !values.showConfirmNewPassword })
   }
 
-  // Handle edit mobile number dialog
   const handleEditMobileNumberClickOpen = () => setOpenEditMobileNumber(true)
   const handleEditMobileNumberClose = () => setOpenEditMobileNumber(false)
 
-  // Handle button click inside the dialog
   const handleCancelClick = () => {
     setMobileNumber(defaultValues.mobile)
     handleEditMobileNumberClose()
@@ -150,22 +138,22 @@ const UserViewSecurity = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
-        <CardHeader title='Change Password' />
+          <CardHeader title='Đổi mật khẩu' />
           <CardContent>
             <Alert icon={false} severity='warning' sx={{ mb: 6 }}>
               <AlertTitle sx={{ fontWeight: 600, mb: theme => `${theme.spacing(1)} !important` }}>
-              Ensure that these requirements are met:
+                Đảm bảo đáp ứng các yêu cầu sau:
               </AlertTitle>
-              Minimum 8 characters long, uppercase and symbols
+              Tối thiểu 8 ký tự, bao gồm chữ hoa và ký hiệu
             </Alert>
 
             <form onSubmit={e => e.preventDefault()}>
               <Grid container spacing={6}>
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
-                    <InputLabel htmlFor='user-view-security-new-password'>New Password</InputLabel>
+                    <InputLabel htmlFor='user-view-security-new-password'>Mật khẩu mới</InputLabel>
                     <OutlinedInput
-                      label='New Password'
+                      label='Mật khẩu mới'
                       value={values.newPassword}
                       id='user-view-security-new-password'
                       onChange={handleNewPasswordChange('newPassword')}
@@ -176,7 +164,7 @@ const UserViewSecurity = () => {
                             edge='end'
                             onClick={handleClickShowNewPassword}
                             onMouseDown={e => e.preventDefault()}
-                            aria-label='toggle password visibility'
+                            aria-label='hiển thị/ẩn mật khẩu'
                           >
                             <Icon icon={values.showNewPassword ? 'bx:show' : 'bx:hide'} />
                           </IconButton>
@@ -188,9 +176,9 @@ const UserViewSecurity = () => {
 
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
-                    <InputLabel htmlFor='user-view-security-confirm-new-password'>Confirm New Password</InputLabel>
+                    <InputLabel htmlFor='user-view-security-confirm-new-password'>Xác nhận mật khẩu mới</InputLabel>
                     <OutlinedInput
-                      label='Confirm New Password'
+                      label='Xác nhận mật khẩu mới'
                       value={values.confirmNewPassword}
                       id='user-view-security-confirm-new-password'
                       type={values.showConfirmNewPassword ? 'text' : 'password'}
@@ -200,7 +188,7 @@ const UserViewSecurity = () => {
                           <IconButton
                             edge='end'
                             onMouseDown={e => e.preventDefault()}
-                            aria-label='toggle password visibility'
+                            aria-label='hiển thị/ẩn mật khẩu'
                             onClick={handleClickShowConfirmNewPassword}
                           >
                             <Icon icon={values.showConfirmNewPassword ? 'bx:show' : 'bx:hide'} />
@@ -213,7 +201,7 @@ const UserViewSecurity = () => {
 
                 <Grid item xs={12}>
                   <Button type='submit' variant='contained'>
-                  Change Password
+                    Đổi mật khẩu
                   </Button>
                 </Grid>
               </Grid>
@@ -225,9 +213,9 @@ const UserViewSecurity = () => {
       <Grid item xs={12}>
         <Card>
           <CardHeader
-            title='Two-Step Verification'
+            title='Xác thực hai bước'
             titleTypographyProps={{ sx: { mb: 1 } }}
-            subheader='Keep your account secure with two-step verification.'
+            subheader='Giữ tài khoản của bạn an toàn với xác thực hai bước.'
           />
           <CardContent>
             <Typography sx={{ mb: 2.5, fontWeight: 500 }}>Gmail</Typography>
@@ -237,13 +225,13 @@ const UserViewSecurity = () => {
               <div>
                 <IconButton
                   size='small'
-                  aria-label='edit'
+                  aria-label='chỉnh sửa'
                   sx={{ color: 'text.secondary' }}
                   onClick={handleEditMobileNumberClickOpen}
                 >
                   <Icon icon='bx:edit' fontSize={20} />
                 </IconButton>
-                <IconButton size='small' aria-label='delete' sx={{ color: 'text.secondary' }}>
+                <IconButton size='small' aria-label='xóa' sx={{ color: 'text.secondary' }}>
                   <Icon icon='bx:trash-alt' fontSize={20} />
                 </IconButton>
               </div>
@@ -259,10 +247,9 @@ const UserViewSecurity = () => {
                 '& a': { color: 'text.secondary', textDecoration: 'none', '&:hover': { color: 'primary.main' } }
               }}
             >
-              Two factor authentication adds an additional layer of security to your account by requiring more than just a
-              password to log in.
+              Xác thực hai yếu tố bổ sung thêm một lớp bảo mật cho tài khoản của bạn bằng cách yêu cầu không chỉ mật khẩu để đăng nhập.
               <Link href='/' onClick={e => e.preventDefault()}>
-              Learn more
+                Tìm hiểu thêm
               </Link>
               .
             </Typography>
@@ -279,28 +266,28 @@ const UserViewSecurity = () => {
               id='user-view-security-edit-mobile-number'
               sx={{ mb: 6, textAlign: 'center', fontSize: '1.625rem !important' }}
             >
-              Enable One Time Password
+              Kích hoạt mật khẩu một lần
             </DialogTitle>
 
             <DialogContent>
-              <Typography sx={{ mb: 4, fontWeight: 500 }}>Verify Your Mobile Number for SMS</Typography>
+              <Typography sx={{ mb: 4, fontWeight: 500 }}>Xác minh số điện thoại của bạn qua SMS</Typography>
               <Typography sx={{ mb: 6, color: 'text.secondary' }}>
-                Enter your mobile phone number with country code and we will send you a verification code.
+                Nhập số điện thoại của bạn kèm mã quốc gia và chúng tôi sẽ gửi mã xác minh cho bạn.
               </Typography>
               <form onSubmit={e => e.preventDefault()}>
                 <TextField
                   autoFocus
                   fullWidth
                   value={mobileNumber}
-                  label='Mobile number with country code'
+                  label='Số điện thoại kèm mã quốc gia'
                   onChange={e => setMobileNumber(e.target.value)}
                 />
                 <Box sx={{ mt: 6, display: 'flex' }}>
                   <Button type='submit' sx={{ mr: 5 }} variant='contained' onClick={handleSubmitClick}>
-                    Submit
+                    Gửi
                   </Button>
                   <Button type='reset' color='secondary' variant='outlined' onClick={handleCancelClick}>
-                    Cancel
+                    Hủy
                   </Button>
                 </Box>
               </form>
@@ -311,7 +298,7 @@ const UserViewSecurity = () => {
 
       <Grid item xs={12}>
         <Card>
-          <CardHeader title='Recent Devices' />
+          <CardHeader title='Thiết bị gần đây' />
 
           <Divider sx={{ m: '0 !important' }} />
 
@@ -321,10 +308,10 @@ const UserViewSecurity = () => {
                 sx={{ backgroundColor: theme => (theme.palette.mode === 'light' ? 'grey.50' : 'background.default') }}
               >
                 <TableRow>
-                  <TableCell>Browser</TableCell>
-                  <TableCell>Device</TableCell>
-                  <TableCell>Location</TableCell>
-                  <TableCell>Recent Activity</TableCell>
+                  <TableCell>Trình duyệt</TableCell>
+                  <TableCell>Thiết bị</TableCell>
+                  <TableCell>Vị trí</TableCell>
+                  <TableCell>Hoạt động gần đây</TableCell>
                 </TableRow>
               </TableHead>
 

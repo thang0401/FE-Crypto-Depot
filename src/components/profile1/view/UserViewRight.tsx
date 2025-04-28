@@ -99,7 +99,7 @@ const UserViewRight = ({ tab, invoiceData }: Props) => {
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
               <Icon icon='bx:lock-alt' />
-              {!hideText && 'Security'}
+              {!hideText && 'BẢO MẬT'}
             </Box>
           }
         />
@@ -109,7 +109,7 @@ const UserViewRight = ({ tab, invoiceData }: Props) => {
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
               <Icon icon='bx:link-alt' />
-              {!hideText && 'Archive Category'}
+              {!hideText && 'Danh mục lưu trữ'}
             </Box>
           }
         />
@@ -119,16 +119,17 @@ const UserViewRight = ({ tab, invoiceData }: Props) => {
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
               <Icon icon='bx:detail' />
-              {!hideText && 'Transaction history'}
+              {!hideText && 'Lịch sử giao dịch'}
             </Box>
           }
         />
+
         <Tab
           value='notification'
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
               <Icon icon='bx:user' />
-              {!hideText && 'Settings'}
+              {!hideText && 'Cài đặt'}
             </Box>
           }
         />

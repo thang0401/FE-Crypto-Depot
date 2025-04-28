@@ -8,14 +8,14 @@ export default function AccountSummary() {
       <AccountCard>
         <Box>
           <Typography variant="subtitle2" sx={{ opacity: 0.8 }}>
-            Main Account
+            Tài khoản chính
           </Typography>
-          <Typography variant="h4" sx={{ my: 1, fontWeight: "bold" , color: "white"}}>
+          <Typography variant="h4" sx={{ my: 1, fontWeight: "bold", color: "white" }}>
             12,580,000 VND
           </Typography>
           <Chip
             icon={<TrendingUp sx={{ color: "white !important" }} />}
-            label="+2.5% this month"
+            label="+2.5% trong tháng này"
             size="small"
             sx={{
               bgcolor: "rgba(255,255,255,0.2)",
@@ -46,14 +46,14 @@ export default function AccountSummary() {
       <CryptoCard>
         <Box>
           <Typography variant="subtitle2" sx={{ opacity: 0.8 }}>
-            USDC Balance
+            Số dư USDC
           </Typography>
-          <Typography variant="h4" sx={{ my: 1, fontWeight: "bold" , color : "white"}}>
+          <Typography variant="h4" sx={{ my: 1, fontWeight: "bold", color: "white" }}>
             500.00 USDC
           </Typography>
           <Chip
             icon={<TrendingUp sx={{ color: "white !important" }} />}
-            label="+5.2% this month"
+            label="+5.2% trong tháng này"
             size="small"
             sx={{
               bgcolor: "rgba(255,255,255,0.2)",
@@ -65,7 +65,7 @@ export default function AccountSummary() {
         </Box>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
           <Typography variant="body2" sx={{ opacity: 0.8 }}>
-            Wallet: 0x8f...3e4a
+            Ví: 0x8f...3e4a
           </Typography>
           <Box sx={{ display: "flex" }}>
             <IconButton size="small" sx={{ color: "white" }}>
@@ -83,4 +83,3 @@ export default function AccountSummary() {
     </Box>
   )
 }
-

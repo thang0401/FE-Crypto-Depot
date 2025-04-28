@@ -28,19 +28,19 @@ const SupportPage = () => {
   const recentRequests = [
     {
       id: "SR123456",
-      subject: "Billing issue with my last invoice",
+      subject: "Vấn đề thanh toán với hóa đơn gần đây",
       status: "open",
       date: "2023-04-10",
     },
     {
       id: "SR123455",
-      subject: "Product not working as expected",
+      subject: "Sản phẩm không hoạt động như kỳ vọng",
       status: "closed",
       date: "2023-03-28",
     },
     {
       id: "SR123454",
-      subject: "Question about shipping options",
+      subject: "Câu hỏi về các tùy chọn giao hàng",
       status: "resolved",
       date: "2023-03-15",
     },
@@ -63,17 +63,17 @@ const SupportPage = () => {
   return (
     <>
       <Head>
-        <title>Customer Support</title>
-        <meta name="description" content="Customer support and help center" />
+        <title>Hỗ trợ khách hàng</title>
+        <meta name="description" content="Trung tâm hỗ trợ và trợ giúp khách hàng" />
       </Head>
 
       <Container maxWidth="lg">
         <Box sx={{ py: 4 }}>
           <Typography variant="h4" fontWeight="bold" gutterBottom>
-            Customer Support
+            Hỗ trợ khách hàng
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-            Get help with your orders, products, and account
+            Nhận hỗ trợ với đơn hàng, sản phẩm và tài khoản của bạn
           </Typography>
 
           <Grid container spacing={4}>
@@ -83,19 +83,19 @@ const SupportPage = () => {
                 <CardContent sx={{ p: 3 }}>
                   <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
                     <Typography variant="h6" fontWeight="bold">
-                      How can we help you?
+                      Chúng tôi có thể giúp gì cho bạn?
                     </Typography>
                     <Button
                       variant="contained"
                       startIcon={<Plus size={18} />}
                       onClick={() => router.push("/support/new-request")}
                     >
-                      New Request
+                      Yêu cầu mới
                     </Button>
                   </Box>
 
                   <Typography variant="body2" color="text.secondary" paragraph>
-                    Choose an option below to get started with your support request
+                    Chọn một tùy chọn bên dưới để bắt đầu với yêu cầu hỗ trợ của bạn
                   </Typography>
 
                   <Grid container spacing={2} sx={{ mt: 1 }}>
@@ -124,10 +124,10 @@ const SupportPage = () => {
                           </Box>
                           <Box>
                             <Typography variant="subtitle1" fontWeight="medium">
-                              Product Support
+                              Hỗ trợ sản phẩm
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                              Issues with products or services
+                              Vấn đề với sản phẩm hoặc dịch vụ
                             </Typography>
                           </Box>
                         </Box>
@@ -159,10 +159,10 @@ const SupportPage = () => {
                           </Box>
                           <Box>
                             <Typography variant="subtitle1" fontWeight="medium">
-                              Billing Support
+                              Hỗ trợ thanh toán
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                              Payment or invoice questions
+                              Câu hỏi về thanh toán hoặc hóa đơn
                             </Typography>
                           </Box>
                         </Box>
@@ -194,10 +194,10 @@ const SupportPage = () => {
                           </Box>
                           <Box>
                             <Typography variant="subtitle1" fontWeight="medium">
-                              Technical Support
+                              Hỗ trợ kỹ thuật
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                              Technical issues or questions
+                              Vấn đề hoặc câu hỏi kỹ thuật
                             </Typography>
                           </Box>
                         </Box>
@@ -229,10 +229,10 @@ const SupportPage = () => {
                           </Box>
                           <Box>
                             <Typography variant="subtitle1" fontWeight="medium">
-                              General Feedback
+                              Phản hồi chung
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                              Suggestions or comments
+                              Đề xuất hoặc bình luận
                             </Typography>
                           </Box>
                         </Box>
@@ -247,10 +247,10 @@ const SupportPage = () => {
                 <CardContent sx={{ p: 3 }}>
                   <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
                     <Typography variant="h6" fontWeight="bold">
-                      Recent Support Requests
+                      Yêu cầu hỗ trợ gần đây
                     </Typography>
                     <Button variant="outlined" size="small" onClick={() => router.push("/support/my-requests")}>
-                      View All
+                      Xem tất cả
                     </Button>
                   </Box>
 
@@ -266,7 +266,7 @@ const SupportPage = () => {
                             <ListItemIcon sx={{ minWidth: 40 }}>{getStatusIcon(request.status)}</ListItemIcon>
                             <ListItemText
                               primary={request.subject}
-                              secondary={`${request.id} • ${new Date(request.date).toLocaleDateString()}`}
+                              secondary={`${request.id} • ${new Date(request.date).toLocaleDateString("vi-VN")}`}
                               primaryTypographyProps={{ fontWeight: "medium" }}
                             />
                           </ListItem>
@@ -276,9 +276,15 @@ const SupportPage = () => {
                     </List>
                   ) : (
                     <Box sx={{ py: 4, textAlign: "center" }}>
-                      <Typography color="text.secondary">You don't have any recent support requests</Typography>
-                      <Button variant="outlined" sx={{ mt: 2 }} onClick={() => router.push("/support/new-request")}>
-                        Create Your First Request
+                      <Typography color="text.secondary">
+                        Bạn chưa có yêu cầu hỗ trợ nào gần đây
+                      </Typography>
+                      <Button
+                        variant="outlined"
+                        sx={{ mt: 2 }}
+                        onClick={() => router.push("/support/new-request")}
+                      >
+                        Tạo yêu cầu đầu tiên của bạn
                       </Button>
                     </Box>
                   )}
@@ -291,7 +297,7 @@ const SupportPage = () => {
               <Card sx={{ mb: 4, borderRadius: 2, boxShadow: theme.shadows[3] }}>
                 <CardContent sx={{ p: 3 }}>
                   <Typography variant="h6" fontWeight="bold" gutterBottom>
-                    Contact Information
+                    Thông tin liên hệ
                   </Typography>
 
                   <List>
@@ -300,7 +306,7 @@ const SupportPage = () => {
                         <Phone color={theme.palette.primary.main} />
                       </ListItemIcon>
                       <ListItemText
-                        primary="Phone Support"
+                        primary="Hỗ trợ qua điện thoại"
                         secondary="+1 (800) 123-4567"
                         primaryTypographyProps={{ fontWeight: "medium" }}
                       />
@@ -311,7 +317,7 @@ const SupportPage = () => {
                         <Mail color={theme.palette.primary.main} />
                       </ListItemIcon>
                       <ListItemText
-                        primary="Email Support"
+                        primary="Hỗ trợ qua email"
                         secondary="support@example.com"
                         primaryTypographyProps={{ fontWeight: "medium" }}
                       />
@@ -324,8 +330,8 @@ const SupportPage = () => {
                         <Clock color={theme.palette.primary.main} />
                       </ListItemIcon>
                       <ListItemText
-                        primary="Business Hours"
-                        secondary="Monday - Friday: 9AM - 6PM EST"
+                        primary="Giờ làm việc"
+                        secondary="Thứ Hai - Thứ Sáu: 9h sáng - 6h tối (EST)"
                         primaryTypographyProps={{ fontWeight: "medium" }}
                       />
                     </ListItem>
@@ -336,7 +342,7 @@ const SupportPage = () => {
               <Card sx={{ borderRadius: 2, boxShadow: theme.shadows[3] }}>
                 <CardContent sx={{ p: 3 }}>
                   <Typography variant="h6" fontWeight="bold" gutterBottom>
-                    Helpful Resources
+                    Tài nguyên hữu ích
                   </Typography>
 
                   <List>
@@ -349,7 +355,7 @@ const SupportPage = () => {
                         <HelpCircle color={theme.palette.primary.main} />
                       </ListItemIcon>
                       <ListItemText
-                        primary="Frequently Asked Questions"
+                        primary="Câu hỏi thường gặp"
                         primaryTypographyProps={{ fontWeight: "medium" }}
                       />
                     </ListItem>
@@ -364,7 +370,10 @@ const SupportPage = () => {
                       <ListItemIcon sx={{ minWidth: 40 }}>
                         <FileText color={theme.palette.primary.main} />
                       </ListItemIcon>
-                      <ListItemText primary="Knowledge Base" primaryTypographyProps={{ fontWeight: "medium" }} />
+                      <ListItemText
+                        primary="Cơ sở kiến thức"
+                        primaryTypographyProps={{ fontWeight: "medium" }}
+                      />
                     </ListItem>
 
                     <Divider component="li" />
@@ -377,7 +386,10 @@ const SupportPage = () => {
                       <ListItemIcon sx={{ minWidth: 40 }}>
                         <MessageSquare color={theme.palette.primary.main} />
                       </ListItemIcon>
-                      <ListItemText primary="Video Tutorials" primaryTypographyProps={{ fontWeight: "medium" }} />
+                      <ListItemText
+                        primary="Hướng dẫn video"
+                        primaryTypographyProps={{ fontWeight: "medium" }}
+                      />
                     </ListItem>
                   </List>
                 </CardContent>

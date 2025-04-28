@@ -4,9 +4,9 @@ import { DashboardCard } from "../styled-components"
 
 // Asset distribution data
 const assetDistributionData = [
-  { name: "Debit Account", value: 250, color: "#2196f3" },
-  { name: "Savings Account", value: 180, color: "#4caf50" },
-  { name: "Loan Account", value: 70, color: "#f44336" },
+  { name: "Tài khoản nợ", value: 250, color: "#2196f3" },
+  { name: "Tài khoản tiết kiệm", value: 180, color: "#4caf50" },
+  { name: "Tài khoản vay", value: 70, color: "#f44336" },
 ]
 
 export default function AssetDistribution() {
@@ -15,7 +15,7 @@ export default function AssetDistribution() {
       <CardContent>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
           <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-            USDC Asset Distribution
+            Phân bổ tài sản USDC
           </Typography>
         </Box>
         <Box sx={{ height: 300, display: "flex", flexDirection: "column" }}>
@@ -34,7 +34,7 @@ export default function AssetDistribution() {
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => [`${value} USDC`, "Amount"]} labelFormatter={() => ""} />
+              <Tooltip formatter={(value) => [`${value} USDC`, "Số tiền"]} labelFormatter={() => ""} />
             </PieChart>
           </ResponsiveContainer>
           <Box sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap", mt: 2 }}>
@@ -68,4 +68,3 @@ export default function AssetDistribution() {
     </DashboardCard>
   )
 }
-

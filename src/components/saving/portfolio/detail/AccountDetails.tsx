@@ -22,7 +22,7 @@ import {
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import UploadIcon from "@mui/icons-material/Upload"
-import { format } from "date-fns" 
+import { format } from "date-fns"
 
 const StyledCard = styled(Card)(({ theme }) => ({
   marginBottom: theme.spacing(2),
@@ -42,7 +42,6 @@ interface SavingsAccount {
   contractUrl: string
   googleDriveUrl: string
 }
-
 
 const formatDate = (dateString: string) => {
   return format(new Date(dateString), "dd/MM/yyyy")
@@ -68,7 +67,7 @@ const AccountDetails: React.FC = () => {
         status: "active",
         heirStatus: "no_heir",
         owner: { id: "USRER001", name: "Nguyen Van Thuan", email: "thuannv.it@gmail.com", phone: "+8434567890" },
-        term: "12 months",
+        term: "12 tháng",
         startDate: "2024-02-24",
         endDate: "2025-02-24",
         balance: "50 USDC",
@@ -81,7 +80,7 @@ const AccountDetails: React.FC = () => {
         status: "pending",
         heirStatus: "has_heir",
         owner: { id: "USRER002", name: "Tran Huu Luan", email: "luantr@gmail.com", phone: "+8434567891" },
-        term: "6 months",
+        term: "6 tháng",
         startDate: "2024-02-25",
         endDate: "2024-08-25",
         balance: "3 USDC",
@@ -115,7 +114,7 @@ const AccountDetails: React.FC = () => {
   }
 
   const handleConfirmSubmit = () => {
-    console.log("Saving changes:", editedAccount)
+    console.log("Lưu thay đổi:", editedAccount)
     setConfirmDialogOpen(false)
     setHasChanges(false)
   }
@@ -165,7 +164,7 @@ const AccountDetails: React.FC = () => {
   }
 
   if (!editedAccount) {
-    return <Typography>Account not found</Typography>
+    return <Typography>Tài khoản không được tìm thấy</Typography>
   }
 
   return (
@@ -175,14 +174,14 @@ const AccountDetails: React.FC = () => {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Typography variant="h6" gutterBottom>
-                Account Details - {editedAccount.id}
+                Chi tiết tài khoản - {editedAccount.id}
               </Typography>
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <Paper sx={{ p: 2 }}>
                 <Typography variant="subtitle1" gutterBottom>
-                  Status
+                  Trạng thái
                 </Typography>
                 <StatusChip status={editedAccount.heirStatus} />
               </Paper>
@@ -191,7 +190,7 @@ const AccountDetails: React.FC = () => {
             <Grid item xs={12} sm={6}>
               <Paper sx={{ p: 2 }}>
                 <Typography variant="subtitle1" gutterBottom>
-                  Current Balance
+                  Số dư hiện tại
                 </Typography>
                 <Typography variant="h5">{editedAccount.balance}</Typography>
               </Paper>
@@ -203,7 +202,7 @@ const AccountDetails: React.FC = () => {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
-                      label="Account ID"
+                      label="Mã tài khoản"
                       value={editedAccount.id}
                       InputProps={{ readOnly: true }}
                     />
@@ -211,7 +210,7 @@ const AccountDetails: React.FC = () => {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
-                      label="Term"
+                      label="Kỳ hạn"
                       value={editedAccount.term}
                       onChange={(e) => handleInputChange("term", e.target.value)}
                     />
@@ -219,7 +218,7 @@ const AccountDetails: React.FC = () => {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
-                      label="Start Date"
+                      label="Ngày bắt đầu"
                       value={formatDate(editedAccount.startDate)}
                       onChange={(e) => handleInputChange("startDate", e.target.value)}
                     />
@@ -227,15 +226,15 @@ const AccountDetails: React.FC = () => {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
-                      label="End Date"
-                      value={formatDate(editedAccount.endDate)} // 
+                      label="Ngày kết thúc"
+                      value={formatDate(editedAccount.endDate)}
                       onChange={(e) => handleInputChange("endDate", e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
-                      label="Support Staff"
+                      label="Nhân viên hỗ trợ"
                       value={editedAccount.supportStaff}
                       onChange={(e) => handleInputChange("supportStaff", e.target.value)}
                     />
@@ -243,10 +242,10 @@ const AccountDetails: React.FC = () => {
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
-                      label="Google Drive URL"
+                      label="URL Google Drive"
                       value={editedAccount.googleDriveUrl}
                       onChange={(e) => handleInputChange("googleDriveUrl", e.target.value)}
-                      placeholder="No URL provided"
+                      placeholder="Chưa cung cấp URL"
                     />
                   </Grid>
                 </Grid>
@@ -256,13 +255,13 @@ const AccountDetails: React.FC = () => {
             <Grid item xs={12}>
               <Paper sx={{ p: 2 }}>
                 <Typography variant="subtitle1" gutterBottom>
-                  Owner Information
+                  Thông tin chủ sở hữu
                 </Typography>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
-                      label="Name"
+                      label="Họ và tên"
                       value={editedAccount.owner.name}
                       InputProps={{ readOnly: true }}
                     />
@@ -270,7 +269,7 @@ const AccountDetails: React.FC = () => {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
-                      label="ID"
+                      label="Mã định danh"
                       value={editedAccount.owner.id}
                       InputProps={{ readOnly: true }}
                     />
@@ -286,7 +285,7 @@ const AccountDetails: React.FC = () => {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
-                      label="Phone"
+                      label="Số điện thoại"
                       value={editedAccount.owner.phone}
                       InputProps={{ readOnly: true }}
                     />
@@ -298,18 +297,27 @@ const AccountDetails: React.FC = () => {
             <Grid item xs={12}>
               <Paper sx={{ p: 2 }}>
                 <Typography variant="subtitle1" gutterBottom>
-                  Contract Document
+                  Tài liệu hợp đồng
                 </Typography>
                 <Box sx={{ mb: 2 }}>
-                  <Button variant="contained" startIcon={<UploadIcon />} onClick={() => setUploadDialogOpen(true)}>
-                    Upload Contract
+                  <Button
+                    variant="contained"
+                    startIcon={<UploadIcon />}
+                    onClick={() => setUploadDialogOpen(true)}
+                  >
+                    Tải lên hợp đồng
                   </Button>
                 </Box>
                 {editedAccount.contractUrl && (
                   <Alert severity="success">
-                    Contract uploaded successfully.
-                    <Button color="inherit" size="small" href={editedAccount.contractUrl} target="_blank">
-                      View Contract
+                    Hợp đồng đã được tải lên thành công.
+                    <Button
+                      color="inherit"
+                      size="small"
+                      href={editedAccount.contractUrl}
+                      target="_blank"
+                    >
+                      Xem hợp đồng
                     </Button>
                   </Alert>
                 )}
@@ -318,11 +326,20 @@ const AccountDetails: React.FC = () => {
 
             <Grid item xs={12}>
               <Box display="flex" justifyContent="flex-end" gap={2}>
-                <Button variant="outlined" color="secondary" onClick={() => router.push("/savings-management")}>
-                  Back
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => router.push("/savings-management")}
+                >
+                  Quay lại
                 </Button>
-                <Button variant="contained" color="primary" onClick={handleSubmit} disabled={!hasChanges}>
-                  Submit Changes
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmit}
+                  disabled={!hasChanges}
+                >
+                  Lưu thay đổi
                 </Button>
               </Box>
             </Grid>
@@ -331,20 +348,22 @@ const AccountDetails: React.FC = () => {
       </StyledCard>
 
       <Dialog open={isConfirmDialogOpen} onClose={() => setConfirmDialogOpen(false)}>
-        <DialogTitle>Confirm Changes</DialogTitle>
+        <DialogTitle>Xác nhận thay đổi</DialogTitle>
         <DialogContent>
-          <DialogContentText>Are you sure you want to save the changes to this savings account?</DialogContentText>
+          <DialogContentText>
+            Bạn có chắc chắn muốn lưu các thay đổi cho tài khoản tiết kiệm này không?
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setConfirmDialogOpen(false)}>Cancel</Button>
+          <Button onClick={() => setConfirmDialogOpen(false)}>Hủy</Button>
           <Button onClick={handleConfirmSubmit} variant="contained" color="primary">
-            Save Changes
+            Lưu thay đổi
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog open={isUploadDialogOpen} onClose={() => setUploadDialogOpen(false)}>
-        <DialogTitle>Upload Contract</DialogTitle>
+        <DialogTitle>Tải lên hợp đồng</DialogTitle>
         <DialogContent>
           <Box sx={{ my: 2 }}>
             <input
@@ -356,7 +375,7 @@ const AccountDetails: React.FC = () => {
             />
             <label htmlFor="contract-file-input">
               <Button variant="outlined" component="span" startIcon={<UploadIcon />}>
-                Choose File
+                Chọn tệp
               </Button>
             </label>
           </Box>
@@ -370,9 +389,13 @@ const AccountDetails: React.FC = () => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setUploadDialogOpen(false)}>Cancel</Button>
-          <Button color="primary" onClick={handleUploadComplete} disabled={uploadProgress > 0 && uploadProgress < 100}>
-            Upload
+          <Button onClick={() => setUploadDialogOpen(false)}>Hủy</Button>
+          <Button
+            color="primary"
+            onClick={handleUploadComplete}
+            disabled={uploadProgress > 0 && uploadProgress < 100}
+          >
+            Tải lên
           </Button>
         </DialogActions>
       </Dialog>

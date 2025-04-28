@@ -27,19 +27,19 @@ const users: UserDataType[] = [
     isReferralCode : false
   },
   {
-    id: 'd0250rm199kgpknaiko0',
+    id: 'd00u8bs5ig8jm25nu6r0',
     role: 'USER',
     password: 'admin',
-    fullName: 'Nguyễn Thăng',
-    username: 'khongbietthang0@gmail.com',
+    fullName: 'Trương Thành',
+    username: 'thanhtdps36968@fpt.edu.vn',
     avatar: 'https://lh3.googleusercontent.com/a/ACg8ocK147PG-EgEuzJHIyGoQLNmCIAEKLeBsXdZ6EhrapUCqDlHkw=s96-c',
-    email: 'khongbietthang0@gmail.com',
-    kycStatus : false,
+    email: 'thanhtdps36968@fpt.edu.vn',
+    kycStatus : true,
     rememberMe : true,
     walletAddress : '0x6d9a981d5C4Df84f57856A2bb9588Cc9966a085C',
-    firstName: 'Thăng',
-    isBankAccount : false,
-    isReferralCode : false
+    firstName: 'Thành',
+    isBankAccount : true,
+    isReferralCode : true
   },
 ]
 

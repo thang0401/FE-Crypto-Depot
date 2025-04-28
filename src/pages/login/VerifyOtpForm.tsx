@@ -95,7 +95,7 @@ const OtpForm = ({ idToken, email, setIdToken, rememberMe }: OtpFormProps) => {
 
   const handleResendOtp = async () => {
     try {
-      await axios.post('/api/auth/resend-otp', { email });
+      await axios.post('https://be-crypto-depot.name.vn/api/auth/resend-otp', { email });
       toast.success('Mã OTP mới đã được gửi đến email của bạn.');
     } catch (error: any) {
       const message = error.response?.status === 429

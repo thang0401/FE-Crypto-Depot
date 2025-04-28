@@ -1,38 +1,38 @@
-import { useState, ReactNode, MouseEvent } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { GoogleLogin } from '@react-oauth/google';
-import { toast } from 'react-hot-toast';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import Checkbox from '@mui/material/Checkbox';
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import IconButton from '@mui/material/IconButton';
-import Box, { BoxProps } from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import FormControl from '@mui/material/FormControl';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import { styled, useTheme } from '@mui/material/styles';
-import FormHelperText from '@mui/material/FormHelperText';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Icon from 'src/@core/components/icon';
-import * as yup from 'yup';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useAuth } from 'src/hooks/useAuth';
-import useBgColor, { UseBgColorType } from 'src/@core/hooks/useBgColor';
-import { useSettings } from 'src/@core/hooks/useSettings';
-import themeConfig from 'src/configs/themeConfig';
-import BlankLayout from 'src/@core/layouts/BlankLayout';
-import OtpForm from './VerifyOtpForm';
+import { useState, ReactNode, MouseEvent } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { GoogleLogin } from '@react-oauth/google'
+import { toast } from 'react-hot-toast'
+import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider'
+import Checkbox from '@mui/material/Checkbox'
+import TextField from '@mui/material/TextField'
+import InputLabel from '@mui/material/InputLabel'
+import IconButton from '@mui/material/IconButton'
+import Box, { BoxProps } from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import FormControl from '@mui/material/FormControl'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import OutlinedInput from '@mui/material/OutlinedInput'
+import { styled, useTheme } from '@mui/material/styles'
+import FormHelperText from '@mui/material/FormHelperText'
+import InputAdornment from '@mui/material/InputAdornment'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Icon from 'src/@core/components/icon'
+import * as yup from 'yup'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useAuth } from 'src/hooks/useAuth'
+import useBgColor, { UseBgColorType } from 'src/@core/hooks/useBgColor'
+import { useSettings } from 'src/@core/hooks/useSettings'
+import themeConfig from 'src/configs/themeConfig'
+import BlankLayout from 'src/@core/layouts/BlankLayout'
+import OtpForm from './VerifyOtpForm'
 
 const LoginIllustration = styled('img')({
   height: 'auto',
-  maxWidth: '100%',
-});
+  maxWidth: '100%'
+})
 
 const RightWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -42,108 +42,108 @@ const RightWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   padding: theme.spacing(6),
   backgroundColor: theme.palette.background.paper,
   [theme.breakpoints.up('lg')]: {
-    maxWidth: 480,
+    maxWidth: 480
   },
   [theme.breakpoints.up('xl')]: {
-    maxWidth: 635,
+    maxWidth: 635
   },
   [theme.breakpoints.up('sm')]: {
-    padding: theme.spacing(12),
-  },
-}));
+    padding: theme.spacing(12)
+  }
+}))
 
 const LinkStyled = styled(Link)(({ theme }) => ({
   fontSize: '0.875rem',
   textDecoration: 'none',
-  color: theme.palette.primary.main,
-}));
+  color: theme.palette.primary.main
+}))
 
 const loginSchema = yup.object().shape({
   email: yup.string().email().required(),
-  password: yup.string().min(5).required(),
-});
+  password: yup.string().min(5).required()
+})
 
 const loginDefaultValues = {
   password: 'admin',
-  email: 'khongbietthang0@gmail.com',
-};
+  email: 'thanhtdps36968@fpt.edu.vn'
+}
 
 interface LoginFormData {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 const LoginPage = () => {
-  const [rememberMe, setRememberMe] = useState<boolean>(true);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [showOtpForm, setShowOtpForm] = useState<boolean>(false);
-  const [idToken, setIdToken] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
+  const [rememberMe, setRememberMe] = useState<boolean>(true)
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [showOtpForm, setShowOtpForm] = useState<boolean>(false)
+  const [idToken, setIdToken] = useState<string | null>(null)
+  const [email, setEmail] = useState<string | null>(null)
 
-  const auth = useAuth();
-  const theme = useTheme();
-  const router = useRouter();
-  const { settings } = useSettings();
-  const bgColors: UseBgColorType = useBgColor();
-  const hidden = useMediaQuery(theme.breakpoints.down('lg'));
+  const auth = useAuth()
+  const theme = useTheme()
+  const router = useRouter()
+  const { settings } = useSettings()
+  const bgColors: UseBgColorType = useBgColor()
+  const hidden = useMediaQuery(theme.breakpoints.down('lg'))
 
-  const { skin } = settings;
+  const { skin } = settings
 
   const {
     control: loginControl,
     setError: setLoginError,
     handleSubmit: handleLoginSubmit,
-    formState: { errors: loginErrors },
+    formState: { errors: loginErrors }
   } = useForm<LoginFormData>({
     defaultValues: loginDefaultValues,
     mode: 'onBlur',
-    resolver: yupResolver(loginSchema),
-  });
+    resolver: yupResolver(loginSchema)
+  })
 
   const onLoginSubmit = (data: LoginFormData) => {
-    const { email, password } = data;
+    const { email, password } = data
     auth.login({ email, password, rememberMe }, () => {
       setLoginError('email', {
         type: 'manual',
-        message: 'Email or Password is invalid',
-      });
-    });
-  };
+        message: 'Email or Password is invalid'
+      })
+    })
+  }
 
   const handleGoogleLogin = async (credentialResponse: any) => {
     try {
-      const token = credentialResponse.credential;
-      setIdToken(token);
-      const response = await auth.googleLogin({ idToken: token, rememberMe }, (err) => {
-        toast.error(err.message || 'Google login failed');
-      });
+      const token = credentialResponse.credential
+      setIdToken(token)
+      const response = await auth.googleLogin({ idToken: token, rememberMe }, err => {
+        toast.error(err.message || 'Google login failed')
+      })
 
       if (response.success) {
         // Redirect handled in AuthContext
       } else if (response.error === 'OTP verification required') {
-        console.log('Setting email:', response.email);
+        console.log('Setting email:', response.email)
         if (!response.email) {
-          console.error('Error: email is missing in Google login response');
-          throw new Error('Email is missing');
+          console.error('Error: email is missing in Google login response')
+          throw new Error('Email is missing')
         }
-        setEmail(response.email);
-        setShowOtpForm(true);
+        setEmail(response.email)
+        setShowOtpForm(true)
         toast('Please enter the OTP sent to your email.', {
           duration: 5000,
-          style: { background: '#e7f5ff', color: '#1c7ed6' },
-        });
+          style: { background: '#e7f5ff', color: '#1c7ed6' }
+        })
       } else {
-        throw new Error(response.error || 'Google login failed');
+        throw new Error(response.error || 'Google login failed')
       }
     } catch (error: any) {
-      console.error('Google login error:', error);
-      setIdToken(null);
-      setEmail(null);
-      const message = error.message || 'Google login failed';
-      toast.error(message);
-      setLoginError('email', { type: 'manual', message });
+      console.error('Google login error:', error)
+      setIdToken(null)
+      setEmail(null)
+      const message = error.message || 'Google login failed'
+      toast.error(message)
+      setLoginError('email', { type: 'manual', message })
     }
-  };
+  }
 
   return (
     <Box className='content-right'>
@@ -152,7 +152,11 @@ const LoginPage = () => {
           <LoginIllustration
             width={700}
             alt={idToken && showOtpForm ? 'otp-illustration' : 'login-illustration'}
-            src={`/images/pages/${idToken && showOtpForm ? `auth-v2-verify-email-illustration-${theme.palette.mode}` : `boy-with-rocket-${theme.palette.mode}`}.png`}
+            src={`/images/pages/${
+              idToken && showOtpForm
+                ? `auth-v2-verify-email-illustration-${theme.palette.mode}`
+                : `boy-with-rocket-${theme.palette.mode}`
+            }.png`}
           />
         </Box>
       ) : null}
@@ -185,7 +189,7 @@ const LoginPage = () => {
                 fontWeight: 700,
                 letterSpacing: '-0.45px',
                 textTransform: 'lowercase',
-                fontSize: '1.75rem !important',
+                fontSize: '1.75rem !important'
               }}
             >
               {themeConfig.templateName}
@@ -200,6 +204,15 @@ const LoginPage = () => {
               </Typography>
               <Typography sx={{ mb: 6, color: 'text.secondary' }}>
                 Please sign-in to your account and start the adventure
+              </Typography>
+              <Typography variant='caption' gutterBottom sx={{ display: 'block' }}>
+                acccount test api và điểu hướng KYC,Thêm bank account, và mã giới thiệu
+              </Typography>
+              <Typography variant='caption' gutterBottom sx={{ display: 'block' }}>
+                username:khongbietthang0@gmail.com
+              </Typography>
+              <Typography variant='caption' gutterBottom sx={{ display: 'block' }}>
+                password:admin
               </Typography>
               <form noValidate autoComplete='off' onSubmit={handleLoginSubmit(onLoginSubmit)}>
                 <FormControl fullWidth sx={{ mb: 4 }}>
@@ -219,7 +232,9 @@ const LoginPage = () => {
                       />
                     )}
                   />
-                  {loginErrors.email && <FormHelperText sx={{ color: 'error.main' }}>{loginErrors.email.message}</FormHelperText>}
+                  {loginErrors.email && (
+                    <FormHelperText sx={{ color: 'error.main' }}>{loginErrors.email.message}</FormHelperText>
+                  )}
                 </FormControl>
                 <FormControl fullWidth sx={{ mb: 2 }}>
                   <InputLabel htmlFor='auth-login-v2-password' error={Boolean(loginErrors.password)}>
@@ -242,7 +257,7 @@ const LoginPage = () => {
                           <InputAdornment position='end'>
                             <IconButton
                               edge='end'
-                              onMouseDown={(e) => e.preventDefault()}
+                              onMouseDown={e => e.preventDefault()}
                               onClick={() => setShowPassword(!showPassword)}
                             >
                               <Icon fontSize={20} icon={showPassword ? 'bx:show' : 'bx:hide'} />
@@ -259,12 +274,18 @@ const LoginPage = () => {
                   )}
                 </FormControl>
                 <Box
-                  sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
+                  sx={{
+                    mb: 4,
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between'
+                  }}
                 >
                   <FormControlLabel
                     label='Remember Me'
                     sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.875rem', color: 'text.secondary' } }}
-                    control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />}
+                    control={<Checkbox checked={rememberMe} onChange={e => setRememberMe(e.target.checked)} />}
                   />
                   <LinkStyled href='/forgot-password'>Forgot Password?</LinkStyled>
                 </Box>
@@ -284,8 +305,8 @@ const LoginPage = () => {
                   <GoogleLogin
                     onSuccess={handleGoogleLogin}
                     onError={() => toast.error('Google login failed')}
-                    theme="filled_blue"
-                    shape="rectangular"
+                    theme='filled_blue'
+                    shape='rectangular'
                   />
                 </Box>
               </form>
@@ -294,11 +315,11 @@ const LoginPage = () => {
         </Box>
       </RightWrapper>
     </Box>
-  );
-};
+  )
+}
 
-LoginPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>;
+LoginPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 
-LoginPage.guestGuard = true;
+LoginPage.guestGuard = true
 
-export default LoginPage;
+export default LoginPage

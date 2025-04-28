@@ -62,7 +62,7 @@ const AclGuard = (props: AclGuardProps) => {
   }
 
   // If guest guard or no guard is true or any error page
-  if (guestGuard || router.route === '/404' || router.route === '/500' || !authGuard) {
+  if (guestGuard || router.route === '/404' || router.route === '/500' ||  !authGuard) {
     // If user is logged in and his ability is built
     if (auth.user && ability) {
       return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>

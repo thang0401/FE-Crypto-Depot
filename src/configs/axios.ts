@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // Base URL from environment variable
-export const BaseURL = process.env.API_URL || 'http://localhost:3000'
+export const BaseURL = process.env.API_URL || 'http://localhost:8000'
 
 // Regular expression to detect ISO date format
 const isoDateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d*)?(?:[-+]\d{2}:?\d{2}|Z)?$/

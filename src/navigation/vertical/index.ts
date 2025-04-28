@@ -29,6 +29,7 @@ const navigation = (): VerticalNavItemsType => {
         }
       ]
     },
+
     {
       icon: 'bx:customize',
       title: 'Tiết kiệm',
@@ -61,14 +62,19 @@ const navigation = (): VerticalNavItemsType => {
       path: '/buy-sell'
     },
     {
-      icon: 'bx:collection',
-      title: 'Vay và trả nợ',
-      path: '/Borrow-and-Repaymnet'
+      icon: 'bx:grid-alt',
+      title: 'Mã giới thiệu',
+      path: '/referral-code'
     },
     {
       icon: 'bx:collection',
       title: 'Hỗ trợ/Khiếu nại',
       path: '/support'
+    },
+    {
+      icon: 'bx:collection',
+      title: 'OTP',
+      path: '/verify-opt'
     },
     {
       icon: 'bx:grid-alt',

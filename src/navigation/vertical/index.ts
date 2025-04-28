@@ -39,6 +39,7 @@ const navigation = (): VerticalNavItemsType => {
         }
       ]
     },
+
     {
       icon: 'bx:customize',
       title: 'Savings',
@@ -62,7 +63,7 @@ const navigation = (): VerticalNavItemsType => {
           title: 'Calculator',
           icon: 'bx:transfer',
           path: '/saving/caculator'
-        },
+        }
         // {
         //   title: 'Child Savings',
         //   icon: 'bx:asset',
@@ -85,16 +86,20 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Buy Sell USDC',
       path: '/buy-sell'
     },
-
     {
-      icon: 'bx:collection',
-      title: 'Borrow and Repaymnet',
-      path: '/Borrow-and-Repaymnet'
+      icon: 'bx:grid-alt',
+      title: 'Mã giới thiệu',
+      path: '/referral-code'
     },
     {
       icon: 'bx:collection',
       title: 'Support/Claim',
       path: '/support'
+    },
+    {
+      icon: 'bx:collection',
+      title: 'OTP',
+      path: '/verify-opt'
     },
     {
       icon: 'bx:grid-alt',
@@ -131,12 +136,11 @@ const navigation = (): VerticalNavItemsType => {
     {
       icon: 'bx:palette',
       title: 'Logout'
-
     },
     {
       icon: 'bx:palette',
       title: 'setting'
-    },
+    }
   ]
 }
 

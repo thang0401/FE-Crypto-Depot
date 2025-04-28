@@ -23,6 +23,9 @@ export type UserDataType = {
   password: string
   avatar?: string | null
   kycStatus?: boolean
+  rememberMe : boolean
+  firstName : string
+  walletAddress : string
   isReferralCode?: boolean
   isBankAccount? : boolean
 }

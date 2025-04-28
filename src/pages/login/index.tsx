@@ -65,7 +65,7 @@ const loginSchema = yup.object().shape({
 
 const loginDefaultValues = {
   password: 'admin',
-  email: 'thangadmin@gmail.com',
+  email: 'khongbietthang0@gmail.com',
 };
 
 interface LoginFormData {

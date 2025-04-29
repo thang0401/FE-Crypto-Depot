@@ -267,7 +267,7 @@ const VerticalNavGroup = (props: Props) => {
                   ...(parent && { mr: 4.25, color: 'text.disabled' })
                 }}
               >
-                <UserIcon icon={icon as string} fontSize={parent ? '0.4375rem' : '1.375rem'} />
+                <UserIcon icon={icon as string} fontSize={parent ? '1.5rem' : '1.5rem'} />
               </ListItemIcon>
             )}
             <MenuItemTextWrapper sx={{ ...menuGroupCollapsedStyles, ...(isSubToSub ? { ml: 9 } : {}) }}>

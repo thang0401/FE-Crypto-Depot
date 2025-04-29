@@ -44,57 +44,108 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import WalletInitializationDialog from './walletInitializationDialog'
 import { usePrivy, useWallets, useCreateWallet, useImportWallet } from '@privy-io/react-auth' ///
+import {
+  Avatar,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Input,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow
+} from '@mui/material'
+import { tw, css } from 'twind/css'
+import router from 'next/router'
+import { Connection, PublicKey } from '@solana/web3.js'
+const SOLANA_MAINNET = 'https://api.mainnet-beta.solana.com' //
+const SOLANA_DEVNET = 'https://api.devnet.solana.com'
+import InfoOutlined from '@mui/icons-material/InfoOutlined'
+import { TokenData, assetType } from './type'
+import { auto } from '@popperjs/core'
+import themeConfig from 'src/configs/themeConfig'
+import { getLocalstorage } from 'src/utils/localStorageSide'
 
 const Dashboard = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false)
-  // // const theme = useTheme()
-  // // const isMobile = useMediaQuery(theme.breakpoints.down("md"))
-  // const router = useRouter()
-  // const [openKycDialog, setOpenKycDialog] = useState(false)
-  // const [openWalletDialog, setOpenWalletDialog] = useState(false);
-  // // Set kycStatus = false
-  // const [kycStatus, setKycStatus] = useState(false) // Assuming this status comes from an API
-  // const [walletInitialized, setWalletInitialized] = useState(false);
-  // const [privateKey, setPrivateKey] = useState('') ///
-  // // Simulate checking kyc_status on login
-  // useEffect(() => {
-  //   // Replace with an actual API call to get kyc_status
-  //   // Set kycStatus = false
-  //   const storedData = localStorage.getItem("userKycStatus");
-  //   const userKycStatus = storedData ? JSON.parse(storedData) : false;
-  //   setKycStatus(userKycStatus)
 
-  //   // Kiểm tra xem ví đã được khởi tạo chưa
-  //   const walletInit = localStorage.getItem("walletInitialized") === "true";
-  //   setWalletInitialized(walletInit);
+ // eslint-disable-next-line react-hooks/rules-of-hooks
+ const [currentIndex, setCurrentIndex]: any = useState(0)
 
-  //   if (!userKycStatus) {
-  //     setOpenKycDialog(true)
-  //   } else if (!walletInit){
-  //     setOpenWalletDialog(true);
-  //   }
-  // }, [])
+ const [publicKey, setPublicKey] = useState('9d5jmHCZT3hqDmjtLsdYnJoktdnF77pxDbEWkGmMi9gG')
+ // eslint-disable-next-line react-hooks/rules-of-hooks
+ const [error, setError] = useState('')
+ // eslint-disable-next-line react-hooks/rules-of-hooks
+ const [tokens, setTokens] = useState<TokenData[]>([])
 
-  // // const handleConfirmKyc = () => {
-  // //   setOpenKycDialog(false)
-  // //   router.push("/kyc-center")
-  // // }
+ const tokenNameMap = {
+   '4TndGJA5DeL6xZgdPLK3VETy6MVVuZgUWEdPk4KUMNCQ': 'SFC-VND',
+   '8aHXuC6HjPNQYiBxNhqHD2CN5RxvcqRu5hvKhWHF6He': 'LPSFC'
+ }
 
-  // // const handleSkipKyc = () => {
-  // //   setOpenKycDialog(false)
-  // // }
+ // Hàm gọi API lấy token
+ const fetchTokenData = async (pubKey: string) => {
+   try {
+     setError('') // Clear lỗi trước
+     const connection = new Connection(SOLANA_DEVNET)
 
-  // // const handleCloseWalletDialog = () => {
-  // //   setOpenWalletDialog(false);
-  // // };
+     // Kiểm tra xem publicKey có hợp lệ không
+     const userPublicKey = new PublicKey(pubKey)
 
-  // const handleWalletInitialized = () => {
-  //   setWalletInitialized(true);
-  //   setOpenWalletDialog(false);
-  // };
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen)
-  }
+     const solBalanceLamports = await connection.getBalance(userPublicKey)
+     const solBalance = solBalanceLamports / 1e9 // Chuyển đổi từ lamports sang SOL
+
+     // Lấy danh sách token accounts thuộc về public key
+     const tokenAccounts = await connection.getParsedTokenAccountsByOwner(userPublicKey, {
+       programId: new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA') // Token Program ID
+     })
+
+     const tokensData: TokenData[] = tokenAccounts.value.map(accountInfo => {
+       const tokenAmount = accountInfo.account.data.parsed.info.tokenAmount.uiAmountString
+       const tokenMint = accountInfo.account.data.parsed.info.mint
+       return {
+         mint: tokenMint,
+         amount: tokenAmount,
+         symbol: tokenMint in tokenNameMap ? tokenNameMap[tokenMint as keyof typeof tokenNameMap] : 'Unknown'
+       }
+     })
+     const allTokens = [
+       {
+         mint: 'SOL',
+         amount: solBalance.toString(),
+         symbol: 'SOL'
+       },
+       ...tokensData
+     ]
+     setTokens(allTokens) // Cập nhật dữ liệu bảng với thông tin token
+   } catch (err) {
+     setError('Không tìm thấy public key hoặc xảy ra lỗi khi tra cứu.')
+     setTokens([]) // Xóa dữ liệu bảng nếu lỗi
+   }
+ }
+
+ // Xử lý sự kiện submit form
+ const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+   event.preventDefault()
+   if (publicKey.trim() === '') {
+     setError('Public key không được để trống.')
+     return
+   }
+
+   fetchTokenData(publicKey)
+ }
+
+ const previous = () => {
+   if (currentIndex - 1 >= 0) {
+     setCurrentIndex(currentIndex - 1)
+   }
+ }
+ const handleRedirectRegister = () => {
+   router.push('/register')
+ }
+ console.log(getLocalstorage('settings'))
 
   const navigationLinks = ['Tính năng', 'Giải pháp', 'Giá cả', 'Về chúng tôi']
 
@@ -108,74 +159,113 @@ const Dashboard = () => {
     </List>
   )
 
-  // /// Thêm Privy hooks
-  // const { ready, authenticated, user } = usePrivy();
-  // const { wallets } = useWallets();
-  // const { createWallet } = useCreateWallet({
-  //   onSuccess: () => {
-  //     console.log('Ví được tạo thành công');
-  //     setWalletInitialized(true);
-  //     localStorage.setItem('walletInitialized', 'true');
-  //     router.push('/fingerprint');
-  //   },
-  //   onError: (error) => console.error('Tạo ví thất bại:', error),
-  // });
-  // const { importWallet } = useImportWallet();
-
-  // useEffect(() => {
-  //   if (!ready) return;
-
-  //   const storedKycStatus = localStorage.getItem('userKycStatus');
-  //   const userKycStatus = storedKycStatus ? JSON.parse(storedKycStatus) : false;
-  //   setKycStatus(userKycStatus);
-
-  //   const walletInit = authenticated && !!user?.wallet && user?.mfaMethods?.includes('passkey');
-  //   setWalletInitialized(walletInit);
-
-  //   console.log('authenticated:', authenticated);
-  //   console.log('user?.wallet:', user?.wallet);
-  //   console.log('walletInitialized:', walletInit);
-  //   console.log('mfaMethods:', user?.mfaMethods);
-
-  //   if (!userKycStatus) {
-  //     setOpenKycDialog(true);
-  //   } else if (!walletInit) {
-  //     setOpenWalletDialog(true);
-  //   }
-  // }, [ready, authenticated, user, router]);
-
-  // const handleConfirmKyc = () => {
-  //   setOpenKycDialog(false);
-  //   router.push('/kyc-center');
-  // };
-
-  // const handleSkipKyc = () => {
-  //   setOpenKycDialog(false);
-  // };
-
-  // const handleCloseWalletDialog = () => {
-  //   setOpenWalletDialog(false);
-  // };
-
-  // const handleCreateWallet = () => {
-  //   createWallet();
-  // };
-
-  // const handleImportWallet = async () => {
-  //   try {
-  //     await importWallet({ privateKey });
-  //     console.log('Ví được nhập thành công');
-  //     setWalletInitialized(true);
-  //     localStorage.setItem('walletInitialized', 'true');
-  //     router.push('/fingerprint');
-  //   } catch (error) {
-  //     console.error('Nhập ví thất bại:', error);
-  //   }
-  // };
-
   return (
     <Box>
-      <Drawer
+      <Grid
+        container
+        width={'100%'}
+        sx={
+          getLocalstorage('settings')?.mode === 'dark'
+            ? { background: '#2B2C40', color: 'white' }
+            : { background: '#fff' }
+        }
+      >
+        <Box sx={{ mx: auto, p: 4 }}>
+          <Typography
+            sx={
+              getLocalstorage('settings')?.mode === 'dark'
+                ? { background: '#2B2C40', color: 'white' }
+                : { background: '#fff' }
+            }
+            variant='h1'
+            style={{ textAlign: 'center', fontFamily: 'sans-serif' }}
+          >
+            Bảo vệ tài sản số của bạn với Crypto Depot
+          </Typography>
+          <div className={tw(`max-w-xl mx-auto`)}>
+            <p className={tw(`mt-10 text-gray-500 text-center text-xl lg:text-3xl`)}>
+              Cung cấp giải pháp lưu trữ và giao dịch đơn giản, an toàn và bảo mật số dư số dư tiền điện tử của bạn.
+            </p>
+          </div>
+        </Box>
+      </Grid>
+
+      <Grid container spacing={3} display={'flex'} width={'100%'} marginTop={4}>
+        <Grid item xs={12} sm={8}>
+          <Card sx={{ padding: 3, boxShadow: 3 }}>
+            <Typography sx={{ mt: 2, mb: 2, fontWeight: 500, color: 'primary.main' }}>Bạn có biết?</Typography>
+            <Typography sx={{ mb: 3, color: 'text.secondary' }}>
+              Nếu bạn lưu trữ tiền ở các ví web3 truyền thống, bất kỳ ai publickey ví của bạn cũng sẽ biết được số dư
+              trong tài khoản của bạn, Ứng dụng chúng tôi giấu đi số dư của bạn, đảm bảo không ai ngoài bạn có thể biết
+              về số lượng tài sản bạn sở hữu.
+            </Typography>
+            <Grid>
+              <Typography sx={{ fontWeight: 500, mb: 2 }}>Nhập public key bạn muốn kiểm tra số dư tại đây</Typography>
+              <form onSubmit={handleSubmit}>
+                <Stack spacing={2}>
+                  <FormControl error={Boolean(error)} sx={{ maxWidth: '100%' }}>
+                    <Input
+                      placeholder='Dùng Devnet publickey không dùng Mainnet publickey'
+                      value={publicKey}
+                      onChange={e => setPublicKey(e.target.value)}
+                      sx={{
+                        padding: '10px',
+                        border: '1px solid',
+                        borderColor: error ? 'error.main' : 'divider',
+                        borderRadius: 1,
+                        width: '100%'
+                      }}
+                    />
+                    {error && (
+                      <FormHelperText sx={{ mt: 1, color: 'error.main' }}>
+                        <InfoOutlined sx={{ verticalAlign: 'middle', mr: 1 }} />
+                        {error}
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                  <Button type='submit' variant='contained' color='primary' sx={{ alignSelf: 'flex-start' }}>
+                    Tra cứu
+                  </Button>
+                </Stack>
+              </form>
+            </Grid>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} sm={4}>
+          <Card sx={{ padding: 3, boxShadow: 3 }}>
+            <Typography sx={{ fontWeight: 500, mb: 2 }}>Số dư của tài khoản tra cứu bao gồm:</Typography>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ py: 2, fontWeight: 600 }}>STT</TableCell>
+                  <TableCell sx={{ py: 2, fontWeight: 600 }}>Loại tài sản</TableCell>
+                  <TableCell sx={{ py: 2, fontWeight: 600 }}>Số lượng</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {tokens.length > 0 ? (
+                  tokens.map((token, index) => (
+                    <TableRow key={index}>
+                      <TableCell sx={{ py: 2 }}>{index + 1}</TableCell>
+                      <TableCell sx={{ py: 2 }}>{token.symbol}</TableCell>
+                      <TableCell sx={{ py: 2 }}>{token.amount}</TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={3} sx={{ py: 2, textAlign: 'center', color: 'text.secondary' }}>
+                      Tra cứu tài sản ngay!
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </Card>
+        </Grid>
+      </Grid>
+
+      {/* <Drawer
         variant='temporary'
         anchor='right'
         open={mobileOpen}
@@ -185,10 +275,10 @@ const Dashboard = () => {
         }}
       >
         {drawer}
-      </Drawer>
+      </Drawer> */}
 
       {/* Phần Giới Thiệu */}
-      <Box sx={{ pt: 16, pb: 10 }}>
+      {/* <Box sx={{ pt: 16, pb: 10 }}>
         <Container maxWidth='lg'>
           <Grid container spacing={6} alignItems='center'>
             <Grid item xs={12} md={6}>
@@ -245,33 +335,28 @@ const Dashboard = () => {
                       overflow: 'hidden'
                     }}
                   >
-                    {/* 1st Image dashboard */}
-                    {/* <img
-                      src="/placeholder.svg?height=400&width=600"
-                      alt="Bảng Điều Khiển Ngân Hàng"
-                      style={{ width: "100%", height: "auto", display: "block" }}
-                    /> */}
+
                   </Paper>
                 </Box>
               </motion.div>
             </Grid>
           </Grid>
         </Container>
-      </Box>
+      </Box> */}
 
       {/* Phần Tính Năng */}
-      <Box sx={{ py: 12 }}>
+      {/* <Box sx={{ py: 12 }}>
         <Container maxWidth='lg'>
           <Typography variant='h3' component='h2' align='center' gutterBottom sx={{ mb: 8, fontWeight: 'bold', mt: 0 }}>
             Không rủi ro, chỉ tốc độ - Chúng tôi sẽ dẫn đầu
           </Typography>
           <Grid container spacing={4}>
             {[
-              // {
-              //   icon: <Activity className="w-12 h-12" />,
-              //   title: "Giao dịch tức thời",
-              //   description: "Thực hiện giao dịch ngay lập tức với tỷ giá cạnh tranh và phí tối thiểu.",
-              // },
+              {
+                icon: <Activity className="w-12 h-12" />,
+                title: "Giao dịch tức thời",
+                description: "Thực hiện giao dịch ngay lập tức với tỷ giá cạnh tranh và phí tối thiểu.",
+              },
               {
                 icon: <KeyRound className='w-12 h-12' />,
                 title: 'Ví có thể khôi phục',
@@ -315,7 +400,7 @@ const Dashboard = () => {
             ))}
           </Grid>
         </Container>
-      </Box>
+      </Box> */}
 
       {/* Phần Lợi Ích */}
       <Box sx={{ py: 12 }}>
@@ -434,7 +519,9 @@ const Dashboard = () => {
                   Sẵn sàng tạo tài khoản?
                 </Typography>
                 <Typography variant='body1' sx={{ mb: 4, textAlign: 'justify', mr: 5 }}>
-                  Bắt đầu hành trình đầu tư tiền mã hóa của bạn một cách an toàn với CryptoBank. Bạn đã sẵn sàng bảo vệ tài sản số của mình khỏi các rủi ro thị trường phổ biến chưa? CryptoBank cung cấp giải pháp lưu ký toàn diện, cho phép bạn quản lý tài sản dễ dàng mà không lo lắng về bảo mật hay các thủ tục phức tạp.
+                  Bắt đầu hành trình đầu tư tiền mã hóa của bạn một cách an toàn với CryptoBank. Bạn đã sẵn sàng bảo vệ
+                  tài sản số của mình khỏi các rủi ro thị trường phổ biến chưa? CryptoBank cung cấp giải pháp lưu ký
+                  toàn diện, cho phép bạn quản lý tài sản dễ dàng mà không lo lắng về bảo mật hay các thủ tục phức tạp.
                 </Typography>
               </motion.div>
             </Grid>
@@ -488,12 +575,12 @@ const Dashboard = () => {
                 },
                 {
                   question: 'Làm thế nào để đăng ký và sử dụng CryptoBank?',
-                  answer:
-                    'Chỉ cần đăng ký với Tên người dùng và Mật khẩu. Không cần tạo ví hoặc quản lý khóa riêng.'
+                  answer: 'Chỉ cần đăng ký với Tên người dùng và Mật khẩu. Không cần tạo ví hoặc quản lý khóa riêng.'
                 },
                 {
                   question: 'Tôi có thể nhận tài sản Web3 từ các ví khác không?',
-                  answer: 'Có, bạn có thể nhận tài sản từ bất kỳ ví Web3 nào chỉ bằng Tên người dùng—không cần đăng nhập.'
+                  answer:
+                    'Có, bạn có thể nhận tài sản từ bất kỳ ví Web3 nào chỉ bằng Tên người dùng—không cần đăng nhập.'
                 },
                 {
                   question: 'Làm thế nào để chuyển tài sản giữa các Tên người dùng?',

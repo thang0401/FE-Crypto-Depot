@@ -11,22 +11,27 @@ const navigation = (): VerticalNavItemsType => {
     {
       icon: 'bx:home-circle', // Giữ nguyên icon nhà cho Trang chủ
       title: 'Trang chủ',
-      path: '/home',
+      path: '/dashboard',
     },
     {
       icon: 'bx:transfer', // Icon giao dịch cho Giao dịch nhanh
       title: 'Giao dịch nhanh',
       children: [
         {
-          title: 'Nạp tài sản',
+          title: 'Nạp USDC vào TK',
           icon: 'bx:plus-circle', // Icon thêm/nạp
           path: '/make-transaction/deposit-asset',
         },
         {
-          title: 'Chuyển khoản nợ',
+          title: 'Chuyển USDC trong System',
           icon: 'bx:transfer-alt', // Icon chuyển khoản
           path: '/make-transaction/transfer-debit',
         },
+        {
+          title: 'Rút USDC ra',
+          icon: 'bx:plus-circle', // Icon thêm/nạp
+          path: '/make-transaction/withdraw-asset/add',
+        }
       ],
     },
     {
@@ -71,11 +76,6 @@ const navigation = (): VerticalNavItemsType => {
       path: '/support',
     },
     {
-      icon: 'bx:lock-alt', // Icon bảo mật/mã cho OTP
-      title: 'OTP',
-      path: '/verify-opt',
-    },
-    {
       icon: 'bx:user', // Icon người dùng cho Trang cá nhân
       title: 'Trang cá nhân',
       children: [
@@ -95,7 +95,7 @@ const navigation = (): VerticalNavItemsType => {
           path: '/user-profile/billing-plan/',
         },
         {
-          title: 'Thông báo',
+          title: 'Nhân thưởng',
           icon: 'bx:bell', // Icon thông báo
           path: '/user-profile/notification/',
         },

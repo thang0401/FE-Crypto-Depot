@@ -13,6 +13,7 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import AddBankAccount from './AddBankAccount'; // Import AddBankAccount component
 
 // Styled components (giữ nguyên)
 const StyledCard = styled(Paper)(({ theme }) => ({
@@ -71,7 +72,7 @@ const CryptoIcon = styled('div')(({ theme }) => ({
 
 const USDCIcon = () => (
   <CryptoIcon>
-   <img src="/images/logos/usdc-logo-removebg-preview.png" alt="USDC" width={24} height={24} />
+    <img src="/images/logos/usdc-logo-removebg-preview.png" alt="USDC" width={24} height={24} />
   </CryptoIcon>
 );
 
@@ -102,6 +103,7 @@ const CryptoExchangeForm = () => {
   const [loading, setLoading] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [openBankAccountDialog, setOpenBankAccountDialog] = useState(false); // State cho dialog AddBankAccount
 
   // State để lưu userId, số dư, và frozenBalance
   const [userId, setUserId] = useState<string | null>(null);
@@ -265,29 +267,55 @@ const CryptoExchangeForm = () => {
       router.push('/login');
       return;
     }
-
+  
     setLoading(true);
     setError(null);
     setSuccessMessage(null);
+  
     try {
       if (tradeType === 'buy') {
-        const orderId = `ORDER_${Date.now()}`;
-        const response = await axios.post(`${BACKEND_API_URL}/payment/deposit`, {
+        const orderId = `ORDER_${Date.now()}`; // Dùng tạm để gửi lên API
+        const amount = parseFloat(payAmount.replace(/,/g, ''));
+  
+        // Gọi API /payment/deposit
+        // const response = await axios.post(`${BACKEND_API_URL}/payment/deposit`, {
+        const response = await axios.post('http://localhost:8000/api/payment/deposit', {
           orderId,
-          amount: parseFloat(payAmount.replace(/,/g, '')),
+          amount,
           description: `Nạp`,
           returnUrl: `${window.location.origin}/payment/success`,
           cancelUrl: `${window.location.origin}/payment/cancel`,
-          userId
+          userId,
         });
+  
+        // Lấy orderCode từ response (kiểm tra cấu trúc response từ PayOS)
+        const orderCode = response.data.orderCode || orderId; // Fallback về orderId nếu không có orderCode
+  
+        // Lưu thông tin vào localStorage
+        localStorage.setItem('lastOrderCode', orderCode); // Lưu orderCode thay vì orderId
+        localStorage.setItem('lastAmount', amount.toString());
+        localStorage.setItem('lastUserId', userId);
+  
+        // Redirect đến checkoutUrl
         window.location.href = response.data.checkoutUrl;
       } else {
+        // Kiểm tra isBankAccount trong localStorage
+        const userData = localStorage.getItem('userData');
+        if (userData) {
+          const parsedData = JSON.parse(userData);
+          if (!parsedData.isBankAccount) {
+            setOpenBankAccountDialog(true);
+            setLoading(false);
+            return;
+          }
+        }
+  
+        // Tiếp tục xử lý yêu cầu rút tiền
         const response = await axios.post('/api/withdraw', {
           userId,
-          amount: parseFloat(payAmount)
+          amount: parseFloat(payAmount),
         });
         setSuccessMessage('Yêu cầu rút tiền đã được gửi và đang chờ phê duyệt. Vui lòng kiểm tra trạng thái sau.');
-        // Lấy số dư và frozenBalance mới
         const balanceResponse = await axios.post('/api/get-balance', { userId });
         const { balance, frozenBalance } = balanceResponse.data;
         setUsdcBalance(balance || 0);
@@ -301,6 +329,12 @@ const CryptoExchangeForm = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Hàm xử lý khi thêm tài khoản ngân hàng thành công
+  const handleBankAccountSuccess = () => {
+    setSuccessMessage('Tài khoản ngân hàng đã được thêm thành công. Vui lòng tiếp tục giao dịch.');
+    setTimeout(() => setSuccessMessage(null), 3000);
   };
 
   const toggleRateDisplayMode = () => {
@@ -338,7 +372,7 @@ const CryptoExchangeForm = () => {
   };
 
   if (isCheckingAuth) {
-    return <Box>Đang kiểm tra đăng nhập và số dư...</Box>;
+    return <Box>Loading...</Box>;
   }
 
   return (
@@ -508,6 +542,13 @@ const CryptoExchangeForm = () => {
           </StyledCard>
         </motion.div>
       </Container>
+
+      {/* Thêm dialog AddBankAccount */}
+      <AddBankAccount
+        open={openBankAccountDialog}
+        onOpenChange={setOpenBankAccountDialog}
+        onSuccess={handleBankAccountSuccess}
+      />
     </Box>
   );
 };

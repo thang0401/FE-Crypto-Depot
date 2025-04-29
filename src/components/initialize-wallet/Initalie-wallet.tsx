@@ -27,10 +27,10 @@ export default function InitializeWallet() {
 
   const web3 = new Web3()
 
-  // Hàm gọi API để cập nhật wallet_address với kiểu rõ ràng
+  // Hàm gọi API để cập nhật wallet_address
   const updateWalletAddress = async (id: string, walletAddress: string) => {
     try {
-      const response = await fetch('http://localhost:8000/api/users/initialize-wallet', {
+      const response = await fetch('/api/users/initialize-wallet', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,14 +84,12 @@ export default function InitializeWallet() {
       const account = web3.eth.accounts.create()
       const { address } = account
 
-      console.log('Wallet created successfully:')
-      console.log('Address:', address)
-      console.log('Seed Phrase:', seedPhrase)
+      console.log('Wallet created successfully:', { address, seedPhrase })
 
       localStorage.setItem('walletInitialized', 'true')
       localStorage.setItem('walletAddress', address)
 
-      const userId = localStorage.getItem('userId') || 'user_002' // Thay bằng cách lấy id thực tế
+      const userId = localStorage.getItem('userId') || 'user_002'
       await updateWalletAddress(userId, address)
 
       setOpenConfirmDialog(false)
@@ -121,13 +119,12 @@ export default function InitializeWallet() {
       const account = web3.eth.accounts.privateKeyToAccount(normalizedPrivateKey)
       const importingAddress = account.address
 
-      console.log('Wallet imported successfully:')
-      console.log('Address:', importingAddress)
+      console.log('Wallet imported successfully:', { importingAddress })
 
       localStorage.setItem('walletInitialized', 'true')
       localStorage.setItem('walletAddress', importingAddress)
 
-      const userId = localStorage.getItem('userId') || 'user_002' // Thay bằng cách lấy id thực tế
+      const userId = localStorage.getItem('userId') || 'user_002'
       await updateWalletAddress(userId, importingAddress)
 
       setErrorMessage(null)
@@ -139,13 +136,43 @@ export default function InitializeWallet() {
   }
 
   return (
-    <Box>
-      <h2>Initialize Your Wallet</h2>
-      <Box>
-        <Typography sx={{ mb: 2 }}>Please select an option to initialize your wallet.</Typography>
-        <Button variant="contained" fullWidth sx={{ mb: 2 }} onClick={handleCreateWallet}>
-          Create New Wallet
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        // justifyContent: 'center',
+        minHeight: '100vh',
+        bgcolor: '#f0f2f5',
+        p: 3,
+      }}
+    >
+      <Box
+        sx={{
+          maxWidth: 500,
+          width: '100%',
+          bgcolor: 'white',
+          p: 4,
+          borderRadius: 2,
+          boxShadow: 3,
+        }}
+      >
+        <Typography variant="h5" align="center" gutterBottom>
+          Khởi tạo ví của bạn
+        </Typography>
+        <Typography variant="body1" align="center" sx={{ mb: 3 }}>
+          Vui lòng chọn một tùy chọn để khởi tạo ví của bạn.
+        </Typography>
+
+        <Button
+          variant="contained"
+          fullWidth
+          sx={{ mb: 2, py: 1.5, fontWeight: 'bold' }}
+          onClick={handleCreateWallet}
+        >
+          Tạo ví mới
         </Button>
+
         <TextField
           fullWidth
           label="Private Key"
@@ -154,64 +181,88 @@ export default function InitializeWallet() {
           onChange={e => setPrivateKey(e.target.value)}
           sx={{ mb: 2 }}
         />
+
         <Button
           variant="contained"
           fullWidth
           disabled={!privateKey}
+          sx={{ py: 1.5, fontWeight: 'bold' }}
           onClick={handleImportWallet}
         >
-          Import Wallet
+          Nhập ví
         </Button>
+
         {errorMessage && (
-          <Typography color="error" sx={{ mt: 2 }}>
+          <Typography color="error" align="center" sx={{ mt: 2 }}>
             {errorMessage}
           </Typography>
         )}
       </Box>
 
-      <Dialog open={openSeedDialog} onClose={() => setOpenSeedDialog(false)}>
-        <DialogTitle>Your Recovery Phrase</DialogTitle>
+      <Dialog
+        open={openSeedDialog}
+        onClose={() => setOpenSeedDialog(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle align="center">Cụm từ khôi phục của bạn</DialogTitle>
         <DialogContent>
-          <Typography>
-            Please write down the following 12 words and keep them safe. You will need them to recover your wallet.
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            Vui lòng ghi lại 12 từ sau đây và giữ chúng ở nơi an toàn. Bạn sẽ cần chúng để khôi phục ví của mình.
           </Typography>
-          <Typography sx={{ mt: 2, p: 2, backgroundColor: '#f5f5f5', borderRadius: 1 }}>
-            {seedPhrase}
-          </Typography>
-          <Typography color="warning" sx={{ mt: 2 }}>
-            Warning: Never share your recovery phrase with anyone!
+          <Box
+            sx={{
+              p: 2,
+              bgcolor: '#f5f5f5',
+              borderRadius: 1,
+              wordBreak: 'break-word',
+            }}
+          >
+            <Typography variant="body2">{seedPhrase}</Typography>
+          </Box>
+          <Typography color="error" variant="body2" sx={{ mt: 2 }}>
+            Cảnh báo: Không bao giờ chia sẻ cụm từ khôi phục của bạn với bất kỳ ai!
           </Typography>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenSeedDialog(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleSeedDialogNext}>Next</Button>
+        <DialogActions sx={{ justifyContent: 'space-between', px: 3, pb: 2 }}>
+          <Button onClick={() => setOpenSeedDialog(false)}>Hủy</Button>
+          <Button variant="contained" onClick={handleSeedDialogNext}>
+            Tiếp theo
+          </Button>
         </DialogActions>
       </Dialog>
 
-      <Dialog open={openConfirmDialog} onClose={() => setOpenConfirmDialog(false)}>
-        <DialogTitle>Confirm Your Recovery Phrase</DialogTitle>
+      <Dialog
+        open={openConfirmDialog}
+        onClose={() => setOpenConfirmDialog(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle align="center">Xác nhận cụm từ khôi phục</DialogTitle>
         <DialogContent>
-          <Typography>
-            Please enter the following words from your recovery phrase to confirm you have saved it correctly.
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            Vui lòng nhập các từ sau từ cụm từ khôi phục của bạn để xác nhận bạn đã lưu đúng.
           </Typography>
           {confirmWords.map((item, idx) => (
             <TextField
               key={item.index}
               fullWidth
-              label={`Word #${item.index + 1}`}
+              label={`Từ số ${item.index + 1}`}
               value={userConfirmInputs[idx]}
               onChange={e => {
                 const newInputs = [...userConfirmInputs]
                 newInputs[idx] = e.target.value
                 setUserConfirmInputs(newInputs)
               }}
-              sx={{ mt: 2 }}
+              sx={{ mb: 2 }}
             />
           ))}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenConfirmDialog(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleConfirmSeed}>Confirm</Button>
+        <DialogActions sx={{ justifyContent: 'space-between', px: 3, pb: 2 }}>
+          <Button onClick={() => setOpenConfirmDialog(false)}>Hủy</Button>
+          <Button variant="contained" onClick={handleConfirmSeed}>
+            Xác nhận
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>

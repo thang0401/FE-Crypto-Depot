@@ -205,15 +205,21 @@ const LoginPage = () => {
               <Typography sx={{ mb: 6, color: 'text.secondary' }}>
                 Please sign-in to your account and start the adventure
               </Typography>
-              <Typography variant='caption' gutterBottom sx={{ display: 'block' }}>
-                acccount test api và điểu hướng KYC,Thêm bank account, và mã giới thiệu
-              </Typography>
-              <Typography variant='caption' gutterBottom sx={{ display: 'block' }}>
-                username:khongbietthang0@gmail.com
-              </Typography>
-              <Typography variant='caption' gutterBottom sx={{ display: 'block' }}>
-                password:admin
-              </Typography>
+
+
+            <Typography variant='caption' sx={{  display: 'block', color: 'primary.main' }}>
+            acc test api và điểu hướng KYC,Thêm bank account,mã giới thiệu
+            </Typography>
+            <Typography variant='caption' sx={{mb: 2, display: 'block', color: 'primary.main' }}>
+              Account: <strong>khongbietthang0@gmail.com</strong> / Pass: <strong>admin</strong>
+            </Typography>
+            <Typography variant='caption' sx={{ mt: 2, display: 'block', color: 'primary.main' }}>
+            acc test api những page còn lại
+            </Typography>
+            <Typography variant='caption' sx={{ display: 'block', color: 'primary.main' }}>
+              Account: <strong>thanhtdps36968@fpt.edu.vn</strong> / Pass: <strong>admin</strong>
+            </Typography>
+
               <form noValidate autoComplete='off' onSubmit={handleLoginSubmit(onLoginSubmit)}>
                 <FormControl fullWidth sx={{ mb: 4 }}>
                   <Controller

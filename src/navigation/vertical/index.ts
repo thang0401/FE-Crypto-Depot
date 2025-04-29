@@ -1,122 +1,125 @@
 // ** Type import
-import { VerticalNavItemsType } from 'src/@core/layouts/types'
+import { VerticalNavItemsType } from 'src/@core/layouts/types';
 
 const navigation = (): VerticalNavItemsType => {
   return [
     {
-      icon: 'bx:palette',
+      icon: 'bx:dashboard', // Icon bảng điều khiển cho Dashboard
       title: 'Dashboard',
-      path: '/myDashboard'
+      path: '/myDashboard',
     },
     {
-      icon: 'bx:home-circle',
+      icon: 'bx:home-circle', // Giữ nguyên icon nhà cho Trang chủ
       title: 'Trang chủ',
-      path: '/home'
+      path: '/home',
     },
     {
-      icon: 'bx:customize',
+      icon: 'bx:transfer', // Icon giao dịch cho Giao dịch nhanh
       title: 'Giao dịch nhanh',
       children: [
         {
           title: 'Nạp tài sản',
-          icon: 'bx:send',
-          path: '/make-transaction/deposit-asset'
+          icon: 'bx:plus-circle', // Icon thêm/nạp
+          path: '/make-transaction/deposit-asset',
         },
-  {
+        {
           title: 'Chuyển khoản nợ',
-          icon: 'bx:transfer',
-          path: '/make-transaction/transfer-debit'
-        }
-      ]
+          icon: 'bx:transfer-alt', // Icon chuyển khoản
+          path: '/make-transaction/transfer-debit',
+        },
+      ],
     },
-
     {
-      icon: 'bx:customize',
+      icon: 'bx:coin-stack', // Icon tiền/tiết kiệm cho Tiết kiệm
       title: 'Tiết kiệm',
       children: [
         {
           title: 'Danh mục tiết kiệm của tôi',
-          icon: 'bx:envelope',
-          path: '/saving/my-portfolios'
+          icon: 'bx:folder', // Icon danh mục
+          path: '/saving/my-portfolios',
         },
         {
           title: 'Tạo danh mục tiết kiệm',
-          icon: 'bx:send',
-          path: '/saving/add-saving-asset/open'
+          icon: 'bx:plus-circle', // Icon thêm/tạo
+          path: '/saving/add-saving-asset/open',
         },
         {
           title: 'Tính lãi suất',
-          icon: 'bx:transfer',
-          path: '/saving/caculator'
-        }
-      ]
+          icon: 'bx:calculator', // Icon máy tính
+          path: '/saving/caculator',
+        },
+      ],
     },
     {
-      icon: 'bx:collection',
+      icon: 'bx:history', // Icon lịch sử cho Lịch sử giao dịch
       title: 'Lịch sử giao dịch',
-      path: '/transaction-history'
+      path: '/transaction-history',
     },
     {
-      icon: 'bx:collection',
+      icon: 'bx:cart', // Icon mua bán cho Mua bán USDC
       title: 'Mua bán USDC',
-      path: '/buy-sell'
+      path: '/buy-sell',
     },
     {
-      icon: 'bx:grid-alt',
+      icon: 'bx:link', // Icon liên kết cho Mã giới thiệu
       title: 'Mã giới thiệu',
-      path: '/referral-code'
+      path: '/referral-code',
     },
     {
-      icon: 'bx:collection',
+      icon: 'bx:support', // Icon hỗ trợ cho Hỗ trợ/Khiếu nại
       title: 'Hỗ trợ/Khiếu nại',
-      path: '/support'
+      path: '/support',
     },
     {
-      icon: 'bx:collection',
+      icon: 'bx:lock-alt', // Icon bảo mật/mã cho OTP
       title: 'OTP',
-      path: '/verify-opt'
+      path: '/verify-opt',
     },
     {
-      icon: 'bx:grid-alt',
+      icon: 'bx:user', // Icon người dùng cho Trang cá nhân
       title: 'Trang cá nhân',
       children: [
         {
           title: 'Bảo mật',
-          path: '/user-profile/security'
+          icon: 'bx:shield', // Icon bảo mật
+          path: '/user-profile/security',
         },
         {
           title: 'Tài khoản',
-          path: '/user-profile/account'
+          icon: 'bx:user-circle', // Icon tài khoản
+          path: '/user-profile/account',
         },
         {
           title: 'Lịch sử thanh toán',
-          path: '/user-profile/billing-plan/'
+          icon: 'bx:history', // Icon lịch sử
+          path: '/user-profile/billing-plan/',
         },
         {
           title: 'Thông báo',
-          path: '/user-profile/notification/'
-        }
-      ]
+          icon: 'bx:bell', // Icon thông báo
+          path: '/user-profile/notification/',
+        },
+      ],
     },
     {
       title: 'Blog',
-      icon: 'bx:bar-chart-square',
-      path: '/blog'
+      icon: 'bx:book', // Icon sách/bài viết cho Blog
+      path: '/blog',
     },
     {
-      icon: 'bx:palette',
+      icon: 'bx:info-circle', // Icon thông tin cho Về chúng tôi
       title: 'Về chúng tôi',
-      path: '/about-us'
+      path: '/about-us',
     },
     {
-      icon: 'bx:palette',
-      title: 'Đăng xuất'
+      icon: 'bx:log-out', // Icon đăng xuất cho Đăng xuất
+      title: 'Đăng xuất',
     },
     {
-      icon: 'bx:palette',
-      title: 'Cài đặt'
-    }
-  ]
-}
+      icon: 'bx:cog', // Icon cài đặt cho Cài đặt
+      title: 'Cài đặt',
+    },
+  ];
+};
 
-export default navigation
+export default navigation;

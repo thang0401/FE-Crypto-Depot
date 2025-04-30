@@ -87,7 +87,7 @@ const AuthProvider = ({ children }: Props) => {
     errorCallback?: ErrCallbackType
   ): Promise<{ success: boolean; email?: string; error?: string }> => {
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/login/google', params);
+      const response = await axios.post('https://be-crypto-depot.name.vn/api/auth/login/google', params);
       console.log('Response from /api/auth/login/google:', response.data);
       if (response.status === 200) {
         if (params.rememberMe) {
@@ -126,7 +126,7 @@ const AuthProvider = ({ children }: Props) => {
   ): Promise<void> => {
     try {
       console.log('Sending OTP verification with params:', params);
-      const response = await axios.post('http://localhost:8000/api/auth/login/google/OTP', params);
+      const response = await axios.post('https://be-crypto-depot.name.vn/api/auth/login/google/OTP', params);
       console.log('Response from /api/auth/login/google/OTP:', response.data);
       if (response.status === 200) {
         const decodedToken = jwtDecode<{ [key: string]: any }>(response.data.accessToken);

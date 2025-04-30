@@ -121,3 +121,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res.status(500).json({ message: "Không thể upload lên Google Drive" })
   }
 }
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "4mb", // Tăng giới hạn lên 4MB
+    },
+  },
+};

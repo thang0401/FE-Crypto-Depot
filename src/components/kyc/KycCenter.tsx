@@ -336,7 +336,7 @@ const KycCenter: React.FC = () => {
               </Button>
               {!kycData.frontImage && (
                 <Typography variant="caption" sx={{ mt: 10, display: "block", textAlign: "center", pt: 5 }}>
-                  Tải lên tối đa 50MB, định dạng: .jpg, .png, .pdf
+                  Tải lên tối đa 1.5MB, định dạng: .jpg, .png, .pdf
                 </Typography>
               )}
             </Box>
@@ -388,7 +388,7 @@ const KycCenter: React.FC = () => {
               </Button>
               {!kycData.backImage && (
                 <Typography variant="caption" sx={{ mt: 10, display: "block", textAlign: "center", pt: 5 }}>
-                  Tải lên tối đa 50MB, định dạng: .jpg, .png, .pdf
+                  Tải lên tối đa 1.5MB, định dạng: .jpg, .png, .pdf
                 </Typography>
               )}
             </Box>

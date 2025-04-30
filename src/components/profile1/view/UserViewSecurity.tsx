@@ -1,6 +1,6 @@
 "use client"
 
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -29,6 +29,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import TableContainer from '@mui/material/TableContainer'
 import Icon from 'src/@core/components/icon'
 import { ThemeColor } from 'src/@core/layouts/types'
+import { Email } from '@mui/icons-material'
 
 interface State {
   newPassword: string
@@ -99,15 +100,16 @@ const data: DataType[] = [
 
 const UserViewSecurity = () => {
   const [defaultValues, setDefaultValues] = useState<any>({ mobile: 'thangnc0401@gmail.com' })
-  const [mobileNumber, setMobileNumber] = useState<string>(defaultValues.mobile)
+  const [mobileNumber, setMobileNumber] = useState<string>('09123456789')
   const [openEditMobileNumber, setOpenEditMobileNumber] = useState<boolean>(false)
+  const [email, setEmail] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
   const [values, setValues] = useState<State>({
     newPassword: '',
     showNewPassword: false,
     confirmNewPassword: '',
     showConfirmNewPassword: false
   })
-
   const handleNewPasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [prop]: event.target.value })
   }
@@ -133,10 +135,24 @@ const UserViewSecurity = () => {
     setDefaultValues({ ...defaultValues, mobile: mobileNumber })
     handleEditMobileNumberClose()
   }
-
+  useEffect(() => {
+    const userData = localStorage.getItem('userData');
+    if(userData){
+      try{
+        const userJson = JSON.parse(userData)
+        setEmail(userJson.email)
+      }catch (error){
+        setError('Không tìm thấy email')
+        return
+      }
+    }else{
+      setError('Không tìm thấy userData')
+      return
+    }
+  })
   return (
     <Grid container spacing={6}>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <Card>
           <CardHeader title='Đổi mật khẩu' />
           <CardContent>
@@ -208,7 +224,7 @@ const UserViewSecurity = () => {
             </form>
           </CardContent>
         </Card>
-      </Grid>
+      </Grid> */}
 
       <Grid item xs={12}>
         <Card>
@@ -221,7 +237,7 @@ const UserViewSecurity = () => {
             <Typography sx={{ mb: 2.5, fontWeight: 500 }}>Gmail</Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Typography sx={{ color: 'text.secondary' }}>{mobileNumber}</Typography>
+              <Typography sx={{ color: 'text.secondary' }}>{email}</Typography>
               <div>
                 <IconButton
                   size='small'
@@ -272,7 +288,7 @@ const UserViewSecurity = () => {
             <DialogContent>
               <Typography sx={{ mb: 4, fontWeight: 500 }}>Xác minh số điện thoại của bạn qua SMS</Typography>
               <Typography sx={{ mb: 6, color: 'text.secondary' }}>
-                Nhập số điện thoại của bạn kèm mã quốc gia và chúng tôi sẽ gửi mã xác minh cho bạn.
+                Nhập Emai của bạn kèm mã quốc gia và chúng tôi sẽ gửi mã xác minh cho bạn.
               </Typography>
               <form onSubmit={e => e.preventDefault()}>
                 <TextField

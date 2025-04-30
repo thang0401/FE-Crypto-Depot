@@ -267,16 +267,16 @@ const CryptoExchangeForm = () => {
       router.push('/login');
       return;
     }
-  
+
     setLoading(true);
     setError(null);
     setSuccessMessage(null);
-  
+
     try {
       if (tradeType === 'buy') {
         const orderId = `ORDER_${Date.now()}`; // Dùng tạm để gửi lên API
         const amount = parseFloat(payAmount.replace(/,/g, ''));
-  
+
         // Gọi API /payment/deposit
         const response = await axios.post(`${BACKEND_API_URL}/payment/deposit`, {
         // const response = await axios.post('http://localhost:8000/api/payment/deposit', {
@@ -287,15 +287,15 @@ const CryptoExchangeForm = () => {
           cancelUrl: `${window.location.origin}/payment/cancel`,
           userId,
         });
-  
+
         // Lấy orderCode từ response (kiểm tra cấu trúc response từ PayOS)
         const orderCode = response.data.orderCode || orderId; // Fallback về orderId nếu không có orderCode
-  
+
         // Lưu thông tin vào localStorage
         localStorage.setItem('lastOrderCode', orderCode); // Lưu orderCode thay vì orderId
         localStorage.setItem('lastAmount', amount.toString());
         localStorage.setItem('lastUserId', userId);
-  
+
         // Redirect đến checkoutUrl
         window.location.href = response.data.checkoutUrl;
       } else {
@@ -309,7 +309,7 @@ const CryptoExchangeForm = () => {
             return;
           }
         }
-  
+
         // Tiếp tục xử lý yêu cầu rút tiền
         const response = await axios.post('/api/withdraw', {
           userId,

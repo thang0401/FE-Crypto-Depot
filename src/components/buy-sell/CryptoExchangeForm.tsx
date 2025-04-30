@@ -1,19 +1,21 @@
+// /components/CryptoExchangeForm.tsx
 'use client'
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Box, Container, Typography, Paper, Grid,
-  TextField, FormControl, InputLabel,
-  Select, MenuItem, Button, ToggleButton,
-  ToggleButtonGroup, InputAdornment, IconButton, Alert
+  TextField, Button, ToggleButton, ToggleButtonGroup,
+  InputAdornment, IconButton, Alert
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import AddBankAccount from './AddBankAccount'; // Import AddBankAccount component
 
-// Styled components (giữ nguyên như code gốc)
+// Styled components (giữ nguyên)
 const StyledCard = styled(Paper)(({ theme }) => ({
   borderRadius: '16px',
   boxShadow: '0 4px 20px 0 rgba(0,0,0,0.1)',
@@ -70,7 +72,7 @@ const CryptoIcon = styled('div')(({ theme }) => ({
 
 const USDCIcon = () => (
   <CryptoIcon>
-   <img src="/images/logos/usdc-logo-removebg-preview.png" alt="USDC" width={24} height={24} />
+    <img src="/images/logos/usdc-logo-removebg-preview.png" alt="USDC" width={24} height={24} />
   </CryptoIcon>
 );
 
@@ -99,42 +101,78 @@ const CryptoExchangeForm = () => {
   const [insufficientBalance, setInsufficientBalance] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [openBankAccountDialog, setOpenBankAccountDialog] = useState(false); // State cho dialog AddBankAccount
 
-  // Giả định userId lấy từ context hoặc auth
-  const userId = 'cvc142nsillh6aihs0g0'; // Thay bằng logic lấy userId từ token/auth
+  // State để lưu userId, số dư, và frozenBalance
+  const [userId, setUserId] = useState<string | null>(null);
+  const [usdcBalance, setUsdcBalance] = useState<number>(0);
+  const [frozenBalance, setFrozenBalance] = useState<number>(0);
 
-  // Số dư và tỷ giá (lấy từ API thay vì hard-code)
-  const [usdcBalance, setUsdcBalance] = useState(0);
-  const [vndBalance, setVndBalance] = useState(0);
-  const [exchangeRate, setExchangeRate] = useState(0);
-  const [rateDisplayMode, setRateDisplayMode] = useState('normal');
+  const BACKEND_API_URL = 'https://be-crypto-depot.name.vn/api';
 
-  // Base URL của backend
-  const API_BASE_URL = 'https://be-crypto-depot.name.vn/api/payment'; // Thay bằng URL thực tế
-
-  // Hàm lấy số dư và tỷ giá từ API
+  // Lấy userId và số dư ban đầu
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Giả định có API lấy số dư (cần xác nhận với backend)
-        // const balanceResponse = await axios.get(`${API_BASE_URL}/balance/${userId}`);
-        // setUsdcBalance(balanceResponse.data.usdcBalance);
-        // setVndBalance(balanceResponse.data.vndBalance);
+    const fetchUserDataAndBalance = async () => {
+      setIsCheckingAuth(true);
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        try {
+          const parsedData = JSON.parse(userData);
+          const id = parsedData.id;
+          setUserId(id);
 
-        // Giả định có API lấy tỷ giá
-        // const rateResponse = await axios.get(`${API_BASE_URL}/exchange-rate`);
-        // setExchangeRate(rateResponse.data.rate);
-
-        // Tạm thời dùng giá trị hard-coded
-        setUsdcBalance(98.55);
-        setVndBalance(1555235);
-        setExchangeRate(26003.73);
-      } catch (err) {
-        setError('Không thể tải dữ liệu số dư hoặc tỷ giá');
+          // Gọi API để lấy số dư và frozenBalance
+          const response = await axios.post('/api/get-balance', { userId: id });
+          const { balance, frozenBalance } = response.data;
+          setUsdcBalance(balance || 0);
+          setFrozenBalance(frozenBalance || 0);
+        } catch (err) {
+          console.error('Lỗi khi lấy dữ liệu:', err);
+          setError('Không thể lấy thông tin người dùng hoặc số dư. Vui lòng thử lại.');
+        } finally {
+          setIsCheckingAuth(false);
+        }
+      } else {
+        setIsCheckingAuth(false);
+        router.push('/login');
       }
     };
-    fetchData();
-  }, []);
+
+    fetchUserDataAndBalance();
+  }, [router]);
+
+  // Hàm làm mới số dư
+  const handleRefreshBalance = async () => {
+    if (!userId) {
+      router.push('/login');
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    setSuccessMessage(null);
+    try {
+      const response = await axios.post('/api/refresh-balance', { userId });
+      const { balance, frozenBalance } = response.data;
+      setUsdcBalance(balance || 0);
+      setFrozenBalance(frozenBalance || 0);
+      setSuccessMessage('Số dư đã được cập nhật!');
+      setTimeout(() => setSuccessMessage(null), 3000);
+    } catch (err) {
+      console.error('Lỗi khi làm mới số dư:', err);
+      setError('Không thể làm mới số dư. Vui lòng thử lại.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Tỷ giá và giới hạn
+  const buyExchangeRate = 25850;
+  const sellExchangeRate = 0.0000383;
+  const [rateDisplayMode, setRateDisplayMode] = useState('normal');
+  const MIN_ORDER = 2000;
+  const MAX_ORDER = 200000000;
 
   // Hàm định dạng số
   const formatNumber = (num: number | string): string => {
@@ -160,6 +198,7 @@ const CryptoExchangeForm = () => {
       setHasUserTyped(false);
       setInsufficientBalance(false);
       setError(null);
+      setSuccessMessage(null);
     }
   };
 
@@ -182,10 +221,10 @@ const CryptoExchangeForm = () => {
       setPayAmount(formattedValue);
 
       const numericValue = parseFloat(inputValue);
-      setInsufficientBalance(!isNaN(numericValue) && numericValue > usdcBalance);
+      setInsufficientBalance(!isNaN(numericValue) && numericValue > (usdcBalance - frozenBalance));
 
       if (!isNaN(numericValue)) {
-        const calculated = (numericValue * exchangeRate).toFixed(2);
+        const calculated = (numericValue / sellExchangeRate).toFixed(2);
         setReceiveAmount(formatNumber(calculated));
       } else {
         setReceiveAmount('0.00');
@@ -193,11 +232,13 @@ const CryptoExchangeForm = () => {
     } else {
       inputValue = inputValue.replace(/[^0-9,]/g, '');
       const numericValue = parseFloat(inputValue.replace(/,/g, ''));
-      setInsufficientBalance(!isNaN(numericValue) && numericValue > vndBalance);
+      setInsufficientBalance(
+        !isNaN(numericValue) && (numericValue < MIN_ORDER || numericValue > MAX_ORDER)
+      );
 
       if (!isNaN(numericValue)) {
         setPayAmount(formatNumber(numericValue));
-        const calculated = (numericValue / exchangeRate).toFixed(2);
+        const calculated = (numericValue / buyExchangeRate).toFixed(2);
         setReceiveAmount(calculated);
       } else {
         setPayAmount(inputValue);
@@ -207,50 +248,78 @@ const CryptoExchangeForm = () => {
   };
 
   const handleMaxClick = () => {
-    const maxAmount = tradeType === 'buy' ? vndBalance : usdcBalance;
+    const maxAmount = tradeType === 'buy' ? MAX_ORDER : (usdcBalance - frozenBalance);
     if (tradeType === 'buy') {
       setPayAmount(formatNumber(maxAmount));
+      const calculated = (maxAmount / buyExchangeRate).toFixed(2);
+      setReceiveAmount(calculated);
     } else {
       setPayAmount(maxAmount.toString());
+      const calculated = (maxAmount / sellExchangeRate).toFixed(2);
+      setReceiveAmount(formatNumber(calculated));
     }
     setHasUserTyped(true);
     setInsufficientBalance(false);
-
-    if (tradeType === 'buy') {
-      const calculated = (maxAmount / exchangeRate).toFixed(2);
-      setReceiveAmount(calculated);
-    } else {
-      const calculated = (maxAmount * exchangeRate).toFixed(2);
-      setReceiveAmount(formatNumber(calculated));
-    }
   };
 
   const handleSubmit = async () => {
+    if (!userId) {
+      router.push('/login');
+      return;
+    }
+  
     setLoading(true);
     setError(null);
+    setSuccessMessage(null);
+  
     try {
       if (tradeType === 'buy') {
-        // Gọi API deposit
-        const orderId = `ORDER_${Date.now()}`; // Tạo orderId duy nhất
-        const response = await axios.post(`${API_BASE_URL}/deposit`, {
+        const orderId = `ORDER_${Date.now()}`; // Dùng tạm để gửi lên API
+        const amount = parseFloat(payAmount.replace(/,/g, ''));
+  
+        // Gọi API /payment/deposit
+        const response = await axios.post(`${BACKEND_API_URL}/payment/deposit`, {
+        // const response = await axios.post('http://localhost:8000/api/payment/deposit', {
           orderId,
-          amount: parseFloat(payAmount.replace(/,/g, '')),
+          amount,
           description: `Nạp`,
           returnUrl: `${window.location.origin}/payment/success`,
           cancelUrl: `${window.location.origin}/payment/cancel`,
-          userId
-        });
-        // Chuyển hướng đến URL thanh toán từ PayOS
-        window.location.href = response.data.checkoutUrl; // Giả định response trả về paymentUrl
-      } else {
-        // Gọi API withdraw
-        const response = await axios.post(`${API_BASE_URL}/withdraw`, {
           userId,
-          amount: parseFloat(payAmount)
         });
-        // Hiển thị thông báo thành công
-        alert('Yêu cầu rút tiền đã được gửi!');
-        // Reset form
+  
+        // Lấy orderCode từ response (kiểm tra cấu trúc response từ PayOS)
+        const orderCode = response.data.orderCode || orderId; // Fallback về orderId nếu không có orderCode
+  
+        // Lưu thông tin vào localStorage
+        localStorage.setItem('lastOrderCode', orderCode); // Lưu orderCode thay vì orderId
+        localStorage.setItem('lastAmount', amount.toString());
+        localStorage.setItem('lastUserId', userId);
+  
+        // Redirect đến checkoutUrl
+        window.location.href = response.data.checkoutUrl;
+      } else {
+        // Kiểm tra isBankAccount trong localStorage
+        const userData = localStorage.getItem('userData');
+        if (userData) {
+          const parsedData = JSON.parse(userData);
+          if (!parsedData.isBankAccount) {
+            setOpenBankAccountDialog(true);
+            setLoading(false);
+            return;
+          }
+        }
+  
+        // Tiếp tục xử lý yêu cầu rút tiền
+        const response = await axios.post('/api/withdraw', {
+          userId,
+          amount: parseFloat(payAmount),
+        });
+        setSuccessMessage('Yêu cầu rút tiền đã được gửi và đang chờ phê duyệt. Vui lòng kiểm tra trạng thái sau.');
+        const balanceResponse = await axios.post('/api/get-balance', { userId });
+        const { balance, frozenBalance } = balanceResponse.data;
+        setUsdcBalance(balance || 0);
+        setFrozenBalance(frozenBalance || 0);
         setPayAmount('');
         setReceiveAmount('0.00');
         setHasUserTyped(false);
@@ -262,24 +331,49 @@ const CryptoExchangeForm = () => {
     }
   };
 
+  // Hàm xử lý khi thêm tài khoản ngân hàng thành công
+  const handleBankAccountSuccess = () => {
+    setSuccessMessage('Tài khoản ngân hàng đã được thêm thành công. Vui lòng tiếp tục giao dịch.');
+    setTimeout(() => setSuccessMessage(null), 3000);
+  };
+
   const toggleRateDisplayMode = () => {
     setRateDisplayMode(rateDisplayMode === 'normal' ? 'inverse' : 'normal');
   };
 
   const getFormattedRate = () => {
-    if (rateDisplayMode === 'normal') {
-      return `1 USDC = ${formatNumber(exchangeRate)} VND`;
+    if (tradeType === 'buy') {
+      return rateDisplayMode === 'normal'
+        ? `1 USDC = ${formatNumber(buyExchangeRate)} VND`
+        : `1 VND = ${(1 / buyExchangeRate).toFixed(8)} USDC`;
     } else {
-      const inverseRate = (1 / exchangeRate).toFixed(8);
-      return `1 VND = ${inverseRate} USDC`;
+      return rateDisplayMode === 'normal'
+        ? `1 VND = ${sellExchangeRate} USDC`
+        : `1 USDC = ${formatNumber(1 / sellExchangeRate)} VND`;
     }
   };
 
   const getCurrentBalance = () => {
-    return payingCurrency === 'VND'
-      ? `${formatNumber(vndBalance)} VND`
-      : `${usdcBalance} USDC`;
+    if (payingCurrency === 'USDC') {
+      return (
+        <Box>
+          <Typography variant="body2" color="text.secondary">
+            Khả dụng: {usdcBalance - frozenBalance} USDC
+          </Typography>
+          {frozenBalance > 0 && (
+            <Typography variant="body2" color="text.secondary">
+              Đang chờ rút: {frozenBalance} USDC
+            </Typography>
+          )}
+        </Box>
+      );
+    }
+    return `Giới hạn: ${formatNumber(MIN_ORDER)} - ${formatNumber(MAX_ORDER)} VND`;
   };
+
+  if (isCheckingAuth) {
+    return <Box>Loading...</Box>;
+  }
 
   return (
     <Box sx={{
@@ -325,6 +419,11 @@ const CryptoExchangeForm = () => {
                 {error}
               </Alert>
             )}
+            {successMessage && (
+              <Alert severity="success" sx={{ mb: 2 }}>
+                {successMessage}
+              </Alert>
+            )}
             <StyledToggleButtonGroup
               value={tradeType}
               exclusive
@@ -348,7 +447,7 @@ const CryptoExchangeForm = () => {
                 variant="outlined"
                 value={payAmount}
                 onChange={handlePayAmountChange}
-                placeholder={tradeType === 'buy' ? "Tối thiểu: 2.600" : "Tối thiểu: 0.1"}
+                placeholder={tradeType === 'buy' ? "2,000 - 200,000,000" : "Tối thiểu: 0.1"}
                 error={insufficientBalance}
                 InputProps={{
                   endAdornment: (
@@ -376,12 +475,23 @@ const CryptoExchangeForm = () => {
               />
               {insufficientBalance && (
                 <Typography color="error" variant="body2">
-                  Số dư {payingCurrency} không đủ
+                  {tradeType === 'buy'
+                    ? `Số tiền phải từ ${formatNumber(MIN_ORDER)} đến ${formatNumber(MAX_ORDER)} VND`
+                    : 'Số dư khả dụng không đủ'}
                 </Typography>
               )}
-              <Typography variant="body2" color="text.secondary">
-                Số dư: {getCurrentBalance()}
-              </Typography>
+              <Box display="flex" justifyContent="space-between" alignItems="center">
+                {getCurrentBalance()}
+                <Button
+                  size="small"
+                  startIcon={<RefreshIcon />}
+                  onClick={handleRefreshBalance}
+                  disabled={loading}
+                  sx={{ color: '#0292B1' }}
+                >
+                  Làm mới
+                </Button>
+              </Box>
             </Box>
 
             <Box mb={3}>
@@ -432,6 +542,13 @@ const CryptoExchangeForm = () => {
           </StyledCard>
         </motion.div>
       </Container>
+
+      {/* Thêm dialog AddBankAccount */}
+      <AddBankAccount
+        open={openBankAccountDialog}
+        onOpenChange={setOpenBankAccountDialog}
+        onSuccess={handleBankAccountSuccess}
+      />
     </Box>
   );
 };

@@ -22,7 +22,7 @@ const StyledCardContent = styled(CardContent)(({ theme }) => ({
 const blogPosts = [
   { id: 4, title: 'SUI: Hệ Sinh Thái Phi Tập Trung Hiệu Quả và An Toàn', excerpt: 'Dự án SUI là một blockchain hiệu suất cao, mang lại bảo mật và khả năng mở rộng vượt trội nhờ mô hình dữ liệu đối tượng.', image: '/sui-placeholder.svg?height=200&width=300' },
   { id: 5, title: 'NEAR: Blockchain Thân Thiện Với Nhà Phát Triển và Người Dùng', excerpt: 'NEAR Protocol là một blockchain hiệu suất cao, thân thiện với cả nhà phát triển và người dùng.', image: '/near-placeholder.svg?height=200&width=300' },
-  { id: 6, title: 'SOLANA: Blockchain Nhanh và Chi Phí Thấp', excerpt: 'Solana là một blockchain cực nhanh với chi phí giao dịch cực thấp, thu hút nhiều dự án DeFi, NFT và Web3.', image: '/solana-placeholder.svg?height=200&width=300' },
+  { id: 6, title: 'USDC: Blockchain Nhanh và Chi Phí Thấp', excerpt: 'USDC là một blockchain cực nhanh với chi phí giao dịch cực thấp, thu hút nhiều dự án DeFi, NFT và Web3.', image: '/USDC-placeholder.svg?height=200&width=300' },
   { id: 1, title: 'Tương Lai của Tài Chính Phi Tập Trung', excerpt: 'Khám phá tiềm năng của tài chính phi tập trung.', image: '/placeholder.svg?height=200&width=300' },
   { id: 2, title: 'NFT: Nghệ Thuật Kỹ Thuật Số', excerpt: 'Cách các mã thông báo không thể thay thế đang cách mạng hóa nhiều ngành công nghiệp...', image: '/placeholder.svg?height=200&width=300' },
   { id: 3, title: 'Web3 và Kinh Tế Sáng Tạo', excerpt: 'Cách blockchain đang trao quyền cho các nhà sáng tạo nội dung.', image: '/placeholder.svg?height=200&width=300' },
@@ -68,7 +68,7 @@ export default function Blog() {
           </Grid>
           <Grid item xs={12} md={4}>
             <Typography variant="h5" gutterBottom>
-              Danh Mục
+              Tài khoản
             </Typography>
             <Card>
               <List>

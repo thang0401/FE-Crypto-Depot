@@ -112,7 +112,7 @@ export default function FullScreenDialog() {
                                     <FolderIcon />
                                   </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary='Solana' secondary={secondary ? 'Secondary text' : null} />
+                                <ListItemText primary='USDC' secondary={secondary ? 'Secondary text' : null} />
                               </ListItem>
                             )}
                           </List>
@@ -145,7 +145,7 @@ export default function FullScreenDialog() {
                           <Grid item xs={3}>
                             <Autocomplete
                               options={getCommodityGroup}
-                              renderInput={params => <TextField {...params} label='Quantity' placeholder='Quantity' />}
+                              renderInput={params => <TextField {...params} label='Số lượng' placeholder='Số lượng' />}
                             />
                           </Grid>
                           {/* <Button
@@ -165,7 +165,7 @@ export default function FullScreenDialog() {
                         </Grid>
                         <Grid>
                           <h2> TO Account</h2>
-                          
+
                         </Grid>
                       </Card>
                     </Grid>

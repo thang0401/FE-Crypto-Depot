@@ -92,7 +92,7 @@ const AddActions = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời: Transfer là tính năng cho phép bạn chuyển tài sản Web 3 từ tài khoản CryptoDepot của mình sang một tài khoản CryptoDepot khác chỉ bằng ID danh mục của người nhận.
+                Trả lời: Transfer là tính năng cho phép bạn chuyển tài sản Web 3 từ tài khoản CryptoDepot của mình sang một tài khoản CryptoDepot khác chỉ bằng ID Tài khoản của người nhận.
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -102,7 +102,7 @@ const AddActions = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời: Để chuyển tài sản, bạn chỉ cần nhập ID danh mục của người nhận, chọn số lượng tài sản bạn muốn chuyển và xác nhận giao dịch. Sau khi xác nhận, tài sản sẽ được chuyển ngay lập tức giữa các danh mục tài sản Web 3 trong hệ thống CryptoDepot.
+                Trả lời: Để chuyển tài sản, bạn chỉ cần nhập ID Tài khoản của người nhận, chọn số lượng tài sản bạn muốn chuyển và xác nhận giao dịch. Sau khi xác nhận, tài sản sẽ được chuyển ngay lập tức giữa các Tài khoản tài sản Web 3 trong hệ thống CryptoDepot.
               </Typography>
             </AccordionDetails>
           </Accordion>

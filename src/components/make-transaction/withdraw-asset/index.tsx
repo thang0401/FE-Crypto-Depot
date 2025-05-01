@@ -147,13 +147,13 @@ export default function Withdraw() {
       flex: 0.25,
       minWidth: 80,
       field: 'portfolioID',
-      headerName: 'Mã danh mục'
+      headerName: 'Mã Tài khoản'
     },
     {
       flex: 0.25,
       minWidth: 200,
       field: 'portfolio',
-      headerName: 'Tên danh mục'
+      headerName: 'Tên Tài khoản'
     },
     {
       flex: 0.25,
@@ -238,7 +238,7 @@ export default function Withdraw() {
             <Autocomplete
               options={getCommodities}
               renderInput={params => (
-                <TextField {...params} label='Tìm bằng mã danh mục' placeholder='Tìm bằng mã danh mục' />
+                <TextField {...params} label='Tìm bằng mã Tài khoản' placeholder='Tìm bằng mã Tài khoản' />
               )}
             />
           </Grid>
@@ -246,7 +246,7 @@ export default function Withdraw() {
             <Autocomplete
               options={getCommodityGroup}
               renderInput={params => (
-                <TextField {...params} label='Tìm bằng tên danh mục' placeholder='Tìm bằng tên danh mục' />
+                <TextField {...params} label='Tìm bằng tên Tài khoản' placeholder='Tìm bằng tên Tài khoản' />
               )}
             />
           </Grid>

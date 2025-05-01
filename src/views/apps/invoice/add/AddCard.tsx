@@ -297,7 +297,7 @@ const AddCard = (props: Props) => {
                     <MUITableCell sx={{ pb: '0 !important' }}>Paul Nguyen</MUITableCell>
                   </TableRow>
                   <TableRow>
-                    <MUITableCell sx={{ pb: '0 !important' }}>Portfolio Owner:</MUITableCell>
+                    <MUITableCell sx={{ pb: '0 !important' }}>Tên Khách Hàng:</MUITableCell>
                     <MUITableCell sx={{ pb: '0 !important' }}>Nguyen Cao Thang</MUITableCell>
                   </TableRow>
                   <TableRow>
@@ -305,7 +305,7 @@ const AddCard = (props: Props) => {
                     <MUITableCell sx={{ pb: '0 !important' }}>Thangnc0401@gmail.com</MUITableCell>
                   </TableRow>
                   <TableRow>
-                    <MUITableCell sx={{ pb: '0 !important' }}>Phone Number:</MUITableCell>
+                    <MUITableCell sx={{ pb: '0 !important' }}>Số điện thoại:</MUITableCell>
                     <MUITableCell sx={{ pb: '0 !important' }}>0123456789</MUITableCell>
                   </TableRow>
                   <TableRow>
@@ -322,12 +322,9 @@ const AddCard = (props: Props) => {
               <TableContainer>
                 <Table>
                   <TableBody>
+
                     <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Portfolio Name:</MUITableCell>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Paul Nguyen</MUITableCell>
-                    </TableRow>
-                    <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Portfolio Owner:</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>Tên Khách Hàng:</MUITableCell>
                       <MUITableCell sx={{ pb: '0 !important' }}>Nguyen Cao Thang</MUITableCell>
                     </TableRow>
                     <TableRow>
@@ -335,13 +332,10 @@ const AddCard = (props: Props) => {
                       <MUITableCell sx={{ pb: '0 !important' }}>Thangnc0401@gmail.com</MUITableCell>
                     </TableRow>
                     <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Phone Number:</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>Số điện thoại:</MUITableCell>
                       <MUITableCell sx={{ pb: '0 !important' }}>0123456789</MUITableCell>
                     </TableRow>
-                    <TableRow>
-                      <MUITableCell>Country:</MUITableCell>
-                      <MUITableCell>Vietnam</MUITableCell>
-                    </TableRow>
+
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -368,19 +362,19 @@ const AddCard = (props: Props) => {
                         <Typography className='col-title' sx={{ mb: { md: 2, xs: 0 } }}>
                           Transfer Detail
                         </Typography>
-                        <Select fullWidth size='small' defaultValue='SOLANA' placeholder='Select your Portfolio'>
-                          <MenuItem value='SOLANA'>Portfolio default</MenuItem>
-                          <MenuItem value='SFC-VND'>Portfolio 1</MenuItem>
+                        <Select fullWidth size='small' defaultValue='USDC' placeholder='Select your Portfolio'>
+                          <MenuItem value='USDC'>Portfolio default</MenuItem>
+                          <MenuItem value='USDC'>Portfolio 1</MenuItem>
                           <MenuItem value='Ethereum'>Portfolio 2</MenuItem>
                           <MenuItem value='Bitcoin'>Portfolio 3</MenuItem>
-                          <MenuItem value='LPSFC'>Portfolio 4</MenuItem>
+                          <MenuItem value=''>Portfolio 4</MenuItem>
                         </Select>
                         <Select fullWidth size='small' defaultValue='App Design' placeholder='Select asset type'>
-                          <MenuItem value='App Design'>Solana</MenuItem>
+                          <MenuItem value='App Design'>USDC</MenuItem>
                           <MenuItem value='App Development'>Bitcoin</MenuItem>
                           <MenuItem value='ABC Template'>Ethereum</MenuItem>
-                          <MenuItem value='App Customization'>SFC-VND</MenuItem>
-                          <MenuItem value='App Development'>LPSFC</MenuItem>
+                          <MenuItem value='App Customization'>USDC</MenuItem>
+                          <MenuItem value='App Development'></MenuItem>
                         </Select>
                         {/* <TextField
                           rows={2}
@@ -393,7 +387,7 @@ const AddCard = (props: Props) => {
                       </Grid>
                       <Grid item lg={2} md={3} xs={12} sx={{ px: 4, my: { lg: 0, xs: 4 } }}>
                         <Typography className='col-title' sx={{ mb: { md: 2, xs: 0 } }}>
-                          Quantity
+                          Số lượng
                         </Typography>
                         <TextField
                           size='small'

@@ -39,12 +39,12 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Tiết kiệm',
       children: [
         {
-          title: 'Danh mục tiết kiệm của tôi',
-          icon: 'bx:folder', // Icon danh mục
+          title: 'Tài khoản tiết kiệm của tôi',
+          icon: 'bx:folder', // Icon Tài khoản
           path: '/saving/my-portfolios',
         },
         {
-          title: 'Tạo danh mục tiết kiệm',
+          title: 'Tạo Tài khoản tiết kiệm',
           icon: 'bx:plus-circle', // Icon thêm/tạo
           path: '/saving/add-saving-asset/open',
         },

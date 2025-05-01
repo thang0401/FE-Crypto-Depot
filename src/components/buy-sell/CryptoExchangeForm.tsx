@@ -153,7 +153,7 @@ const CryptoExchangeForm = () => {
     setSuccessMessage(null);
     try {
       // Thay đổi từ /api/refresh-balance sang /api/get-balance
-      const response = await axios.post('/refresh-balance', { userId });
+      const response = await axios.post('/api/refresh-balance', { userId });
       const { balance, frozenBalance } = response.data;
       setUsdcBalance(balance || 0);
       setFrozenBalance(frozenBalance || 0);

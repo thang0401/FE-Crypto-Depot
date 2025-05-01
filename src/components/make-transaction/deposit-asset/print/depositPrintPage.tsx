@@ -149,12 +149,9 @@ const InvoicePrint = ({ id }: InvoiceLayoutProps) => {
               <TableContainer>
                 <Table>
                   <TableBody>
+
                     <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Portfolio Name:</MUITableCell>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Paul Nguyen</MUITableCell>
-                    </TableRow>
-                    <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Portfolio Owner:</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>Tên Khách Hàng:</MUITableCell>
                       <MUITableCell sx={{ pb: '0 !important' }}>Nguyen Cao Thang</MUITableCell>
                     </TableRow>
                     <TableRow>
@@ -162,13 +159,10 @@ const InvoicePrint = ({ id }: InvoiceLayoutProps) => {
                       <MUITableCell sx={{ pb: '0 !important' }}>Thangnc0401@gmail.com</MUITableCell>
                     </TableRow>
                     <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Phone Number:</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>Số điện thoại:</MUITableCell>
                       <MUITableCell sx={{ pb: '0 !important' }}>0123456789</MUITableCell>
                     </TableRow>
-                    <TableRow>
-                      <MUITableCell>Country:</MUITableCell>
-                      <MUITableCell>Vietnam</MUITableCell>
-                    </TableRow>
+
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -180,12 +174,9 @@ const InvoicePrint = ({ id }: InvoiceLayoutProps) => {
               <TableContainer>
                 <Table>
                   <TableBody>
+
                     <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Portfolio Name:</MUITableCell>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Paul Nguyen</MUITableCell>
-                    </TableRow>
-                    <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Portfolio Owner:</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>Tên Khách Hàng:</MUITableCell>
                       <MUITableCell sx={{ pb: '0 !important' }}>Nguyen Cao Thang</MUITableCell>
                     </TableRow>
                     <TableRow>
@@ -193,13 +184,10 @@ const InvoicePrint = ({ id }: InvoiceLayoutProps) => {
                       <MUITableCell sx={{ pb: '0 !important' }}>Thangnc0401@gmail.com</MUITableCell>
                     </TableRow>
                     <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Phone Number:</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>Số điện thoại:</MUITableCell>
                       <MUITableCell sx={{ pb: '0 !important' }}>0123456789</MUITableCell>
                     </TableRow>
-                    <TableRow>
-                      <MUITableCell>Country:</MUITableCell>
-                      <MUITableCell>Vietnam</MUITableCell>
-                    </TableRow>
+
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -223,25 +211,25 @@ const InvoicePrint = ({ id }: InvoiceLayoutProps) => {
               <TableBody>
                 <TableRow>
                   <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>1</TableCell>
-                  <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Solana</TableCell>
+                  <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
                   <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>4.8</TableCell>
                   <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Success</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>2</TableCell>
-                  <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Ethereum</TableCell>
+                  <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
                   <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>2.2</TableCell>
                   <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Success</TableCell>{' '}
                 </TableRow>
                 <TableRow>
                   <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>3</TableCell>
-                  <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>SFC-VND</TableCell>
+                  <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
                   <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>460</TableCell>
                   <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Success</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>4</TableCell>
-                  <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>LPSFC</TableCell>
+                  <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
                   <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>70</TableCell>
                   <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Success</TableCell>
                 </TableRow>

@@ -258,7 +258,7 @@ const SavingsManagement: React.FC = () => {
                 color="primary"
                 onClick={() => router.push("/saving/add-saving-asset/open/")}
               >
-                Thêm danh mục tiết kiệm mới
+                Thêm Tài khoản tiết kiệm mới
               </Button>
             </Grid>
           </Grid>

@@ -662,7 +662,7 @@ const SavingsPortfolioForm = () => {
         </Box>
         <DialogTitle sx={{ fontSize: "20px", fontWeight: "bold" }}>Thành công!</DialogTitle>
         <DialogContent sx={{ px: 2 }}>
-          <Typography sx={{ fontSize: "15px" }}>Việc tạo danh mục đầu tư của bạn đã hoàn tất!</Typography>
+          <Typography sx={{ fontSize: "15px" }}>Việc tạo Tài khoản đầu tư của bạn đã hoàn tất!</Typography>
         </DialogContent>
         <DialogActions sx={{ justifyContent: "center", mt: 2 }}>
           <Button onClick={() => router.push("/saving/my-portfolios")} variant="contained">

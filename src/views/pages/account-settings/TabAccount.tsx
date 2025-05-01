@@ -206,7 +206,7 @@ const TabAccount = () => {
                   <TextField
                     fullWidth
                     type='number'
-                    label='Phone Number'
+                    label='Số điện thoại'
                     value={formData.number}
                     placeholder='202 555 0111'
                     onChange={e => handleFormChange('number', e.target.value)}

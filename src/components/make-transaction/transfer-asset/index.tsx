@@ -175,7 +175,7 @@ const Transfer = () => {
     {
       flex: 0.15,
       minWidth: 150,
-      headerName: 'Phone Number',
+      headerName: 'Số điện thoại',
       field: 'phone'
       // valueGetter: params => new Date(params.value)
     },
@@ -213,12 +213,12 @@ const Transfer = () => {
       <Grid container>
         <Grid item xs={12}>
           <Grid display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-          <h2 style={{ textAlign: 'center', textTransform: 'uppercase', marginLeft: 30 }}>Chuyền tài sản giữa các danh mục trong hệ thống</h2>
+          <h2 style={{ textAlign: 'center', textTransform: 'uppercase', marginLeft: 30 }}>Chuyền tài sản giữa các Tài khoản trong hệ thống</h2>
 
             {/* <button onClick={handleTransferClick}> transfer </button> */}
           </Grid>
           {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <h2 style={{ textAlign: 'center', textTransform: 'uppercase', marginLeft: 30 }}>Chuyền tài sản giữa các danh mục trong hệ thống</h2>
+            <h2 style={{ textAlign: 'center', textTransform: 'uppercase', marginLeft: 30 }}>Chuyền tài sản giữa các Tài khoản trong hệ thống</h2>
             <Box sx={{ display: 'flex', gap: '11px' }}>
               <Box sx={{ display: 'flex', gap: '11px' }}></Box>
             </Box>

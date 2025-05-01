@@ -235,7 +235,7 @@ const DialogAuthentication = () => {
                 <div>
                   <Typography variant='h6'>Verify Your Mobile Number for SMS</Typography>
                   <Typography variant='body2'>
-                    Enter your mobile phone number with country code and we will send you a verification code.
+                    Enter your mobile Số điện thoại with country code and we will send you a verification code.
                   </Typography>
                   <TextField fullWidth sx={{ my: 4 }} label='Mobile Number' placeholder='+1 123 456 7890' />
                   <Grid container spacing={6}>

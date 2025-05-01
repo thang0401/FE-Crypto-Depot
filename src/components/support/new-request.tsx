@@ -278,12 +278,12 @@ const NewSupportRequest = () => {
               <FormControl fullWidth required disabled={!formData.type}>
                 <TextField
                   select
-                  label="Danh mục"
+                  label="Tài khoản"
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
                   required
-                  helperText="Chọn danh mục cụ thể cho yêu cầu của bạn"
+                  helperText="Chọn Tài khoản cụ thể cho yêu cầu của bạn"
                 >
                   {formData.type &&
                     categoryOptions[formData.type as keyof typeof categoryOptions]?.map((option) => (
@@ -494,7 +494,7 @@ const NewSupportRequest = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
-                    Danh mục
+                    Tài khoản
                   </Typography>
                   <Typography variant="body1">
                     {(formData.type &&

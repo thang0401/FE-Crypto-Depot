@@ -30,7 +30,7 @@ const columns: GridColDef[] = [
   {
     flex: 0.15,
     minWidth: 130,
-    headerName: 'Phone Number',
+    headerName: 'Số điện thoại',
     field: 'Phone',
     valueGetter: params => new Date(params.value)
   },

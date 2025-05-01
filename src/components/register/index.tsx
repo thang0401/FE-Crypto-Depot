@@ -116,7 +116,7 @@ const Register = () => {
       <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
         <TextField autoFocus fullWidth sx={{ mb: 4 }} label='Fullname' placeholder='Nguyễn Văn A' />
         <TextField fullWidth label='Email' sx={{ mb: 4 }} placeholder='user@gmail.com' />
-        <TextField fullWidth label='Phone number' sx={{ mb: 4 }} placeholder='0123456789' />
+        <TextField fullWidth label='Số điện thoại' sx={{ mb: 4 }} placeholder='0123456789' />
         <FormControl fullWidth sx={{ mb: 4 }}>
           <InputLabel htmlFor='auth-login-v2-password'>Password</InputLabel>
           <OutlinedInput

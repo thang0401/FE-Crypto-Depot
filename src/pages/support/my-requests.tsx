@@ -247,7 +247,7 @@ const MyRequests = () => {
                   Không tìm thấy yêu cầu nào
                 </Typography>
                 <Typography variant="body2" color="text.secondary" paragraph>
-                  Bạn chưa có yêu cầu hỗ trợ nào trong danh mục này
+                  Bạn chưa có yêu cầu hỗ trợ nào trong Tài khoản này
                 </Typography>
                 <Button variant="contained" onClick={() => router.push("/support/new-request")}>
                   Tạo yêu cầu mới

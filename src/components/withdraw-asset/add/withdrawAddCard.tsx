@@ -118,16 +118,13 @@ const WithdrawAddCard = () => {
               sx={{ p: { sm: 4, xs: 0 }, pb: theme => `${theme.spacing(1)} !important` }}
             >
               <Grid item sx={{ mb: { lg: 0, xs: 5 } }}>
-                <Typography sx={{ mb: 4, fontWeight: 500 }}>Rút từ danh mục mục</Typography>
+                <Typography sx={{ mb: 4, fontWeight: 500 }}>Rút từ Tài khoản mục</Typography>
 
                 <Table>
                   <TableBody>
+
                     <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Portfolio Name:</MUITableCell>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Paul Nguyen</MUITableCell>
-                    </TableRow>
-                    <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Portfolio Owner:</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>Tên Khách Hàng:</MUITableCell>
                       <MUITableCell sx={{ pb: '0 !important' }}>Nguyen Cao Thang</MUITableCell>
                     </TableRow>
                     <TableRow>
@@ -135,13 +132,10 @@ const WithdrawAddCard = () => {
                       <MUITableCell sx={{ pb: '0 !important' }}>Thangnc0401@gmail.com</MUITableCell>
                     </TableRow>
                     <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Phone Number:</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>Số điện thoại:</MUITableCell>
                       <MUITableCell sx={{ pb: '0 !important' }}>0123456789</MUITableCell>
                     </TableRow>
-                    <TableRow>
-                      <MUITableCell>Country:</MUITableCell>
-                      <MUITableCell>Vietnam</MUITableCell>
-                    </TableRow>
+
                   </TableBody>
                 </Table>
               </Grid>
@@ -156,7 +150,7 @@ const WithdrawAddCard = () => {
                     <TableRow>
                       <TableCell sx={{ py: 2 }}>index</TableCell>
                       <TableCell sx={{ py: 2 }}>Asset Type</TableCell>
-                      <TableCell sx={{ py: 2 }}>Quantity</TableCell>
+                      <TableCell sx={{ py: 2 }}>Số lượng</TableCell>
                       <TableCell sx={{ pu: 2 }}> Unit</TableCell>
                       <TableCell sx={{ py: 2 }}>Status</TableCell>
                     </TableRow>
@@ -164,30 +158,26 @@ const WithdrawAddCard = () => {
                   <TableBody>
                     <TableRow>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>1</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Solana</TableCell>
+                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>4.8</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>SOL</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Success</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>2</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Ethereum</TableCell>
+                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>2.2</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>ETH</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Success</TableCell>{' '}
                     </TableRow>
                     <TableRow>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>3</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>SFC-VND</TableCell>
+                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>460</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>SFC-VND</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Success</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>4</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>LPSFC</TableCell>
+                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>70</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>LPSFC</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Success</TableCell>
                     </TableRow>
                   </TableBody>
@@ -214,7 +204,7 @@ const WithdrawAddCard = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời: Để rút tiền, bạn chỉ cần nhập địa chỉ ví đích mà bạn muốn rút tài sản, chọn ID danh mục bạn muốn rút tài sản Web 3 ra, chọn loại tài sản và số lượng muốn rút, sau đó xác nhận giao dịch. Sau khi giao dịch được xác nhận, tài sản sẽ được gửi đến ví đích.
+                Trả lời: Để rút tiền, bạn chỉ cần nhập địa chỉ ví đích mà bạn muốn rút tài sản, chọn ID Tài khoản bạn muốn rút tài sản Web 3 ra, chọn loại tài sản và số lượng muốn rút, sau đó xác nhận giao dịch. Sau khi giao dịch được xác nhận, tài sản sẽ được gửi đến ví đích.
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -224,7 +214,7 @@ const WithdrawAddCard = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời:Thời gian rút tiền phụ thuộc vào mạng blockchain mà bạn sử dụng. Thông thường, các giao dịch Ethereum có thể mất từ vài phút đến vài giờ để xác nhận tùy vào mức độ tắc nghẽn của mạng. Còn những giao dịch trên Solana sẽ nhanh hơn.
+                Trả lời:Thời gian rút tiền phụ thuộc vào mạng blockchain mà bạn sử dụng. Thông thường, các giao dịch Ethereum có thể mất từ vài phút đến vài giờ để xác nhận tùy vào mức độ tắc nghẽn của mạng. Còn những giao dịch trên USDC sẽ nhanh hơn.
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -244,7 +234,7 @@ const WithdrawAddCard = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời: Hiện tại giới hạn của hoạt động rút tài sản là số lượng tài sản Web 3 trong danh mục của bạn.
+                Trả lời: Hiện tại giới hạn của hoạt động rút tài sản là số lượng tài sản Web 3 trong Tài khoản của bạn.
               </Typography>
             </AccordionDetails>
           </Accordion>

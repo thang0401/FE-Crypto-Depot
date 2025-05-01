@@ -19,7 +19,7 @@ const InputMaskExamples = () => {
       </Grid>
       <Grid item xs={12} sm={6} lg={4}>
         <InputLabel htmlFor='phone-number' sx={{ mb: 2, fontSize: '.75rem', maxWidth: 'max-content' }}>
-          Phone Number
+          Số điện thoại
         </InputLabel>
         <Cleave id='phone-number' placeholder='1 234 567 8900' options={{ phone: true, phoneRegionCode: 'US' }} />
       </Grid>
@@ -107,7 +107,7 @@ const InputMaskExamples = () => {
       </Grid>
       <Grid item xs={12} sm={6} lg={4}>
         <InputLabel htmlFor='phone-number' sx={{ mb: 2, fontSize: '.75rem', maxWidth: 'max-content' }}>
-          Phone Number
+          Số điện thoại
         </InputLabel>
         <Cleave id='phone-number' placeholder='1 234 567 8900' options={{ phone: true, phoneRegionCode: 'US' }} />
       </Grid>

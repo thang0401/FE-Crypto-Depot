@@ -1,197 +1,335 @@
-// ** Next Import
-import Link from 'next/link'
+import React, { useState } from 'react';
+import {
+  Grid,
+  Typography,
+  Button,
+  Paper,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Snackbar,
+  Alert,
+  IconButton,
+  Tooltip,
+  Divider
+} from '@mui/material';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CloseIcon from '@mui/icons-material/Close';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import { LocalOffer as DiscordIcon } from '@mui/icons-material';
 
-// ** MUI Imports
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Card from '@mui/material/Card'
-import Switch from '@mui/material/Switch'
-import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
-
-// ** Icon Imports
-import Icon from 'src/@core/components/icon'
-
-interface ConnectedAccountsType {
-  title: string
-  logo: string
-  checked: boolean
-  subtitle: string
+// Define the type for referral history items
+interface ReferralHistoryItem {
+  no: number;
+  address: string;
+  joinDate: string;
+  referrerBonus: string;
+  referrerEarning: string;
+  status: string;
 }
 
-interface SocialAccountsType {
-  title: string
-  logo: string
-  username?: string
-  isConnected: boolean
-}
+const UserViewRefferal = () => {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [referralLink] = useState('https://client-crypto-bank.vercel.app/?referral_code=c525wsnyya');
 
-const connectedAccountsArr: ConnectedAccountsType[] = [
-  {
-    checked: true,
-    title: 'Google',
-    logo: '/images/logos/google.png',
-    subtitle: 'Calendar and Contacts'
-  },
-  {
-    checked: false,
-    title: 'Slack',
-    logo: '/images/logos/slack.png',
-    subtitle: 'Communications'
-  },
-  {
-    checked: true,
-    title: 'Github',
-    logo: '/images/logos/github.png',
-    subtitle: 'Manage your Git repositories'
-  },
-  {
-    checked: true,
-    title: 'Mailchimp',
-    subtitle: 'Email marketing service',
-    logo: '/images/logos/mail-chimp.png'
-  },
-  {
-    title: 'Asana',
-    checked: false,
-    subtitle: 'Communication',
-    logo: '/images/logos/asana.png'
-  }
-]
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(referralLink);
+    setSnackbarOpen(true);
+  };
 
-const socialAccountsArr: SocialAccountsType[] = [
-  {
-    title: 'Facebook',
-    isConnected: false,
-    logo: '/images/logos/facebook.png'
-  },
-  {
-    title: 'Twitter',
-    isConnected: true,
-    username: '@ThemeSelection',
-    logo: '/images/logos/twitter.png'
-  },
-  {
-    title: 'Instagram',
-    isConnected: true,
-    username: '@ThemeSelection',
-    logo: '/images/logos/instagram.png'
-  },
-  {
-    title: 'Dribbble',
-    isConnected: false,
-    logo: '/images/logos/dribbble.png'
-  },
-  {
-    title: 'Behance',
-    isConnected: false,
-    logo: '/images/logos/behance.png'
-  }
-]
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
-const UserViewConnection = () => {
+  // Sample data for the referral history table with proper typing
+  const referralHistory: ReferralHistoryItem[] = [];
+
   return (
     <Grid container spacing={6}>
-      {/* Connected Accounts Cards */}
-      {/* Connected Accounts Cards */}
+      {/* Referral System */}
       <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Connected Accounts' />
-          <CardContent>
-            <Typography sx={{ mb: 4, color: 'text.secondary' }}>
-              Display content from your connected accounts on your site
+      <Paper
+        sx={{
+          p: 3,
+          background: 'linear-gradient(135deg, #ff8a00 0%, #e52e71 100%)',
+          color: 'white',
+          borderRadius: 2,
+          display: 'flex', // Use flex to split left and right sections
+          gap: 2,
+        }}
+      >
+        {/* Left Section: Referral System */}
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="h4" component="h1">
+              Referral System
             </Typography>
+            <Tooltip title="Earn points by referring friends">
+              <InfoOutlinedIcon sx={{ ml: 1 }} />
+            </Tooltip>
+          </Box>
 
-            {connectedAccountsArr.map(account => {
-              return (
-                <Box
-                  key={account.title}
-                  sx={{
-                    gap: 2,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    '&:not(:last-of-type)': { mb: 4 }
-                  }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Box sx={{ mr: 4, display: 'flex', justifyContent: 'center' }}>
-                      <img src={account.logo} alt={account.title} height='30' width='30' />
-                    </Box>
-                    <div>
-                      <Typography sx={{ fontWeight: 500 }}>{account.title}</Typography>
-                      <Typography variant='body2' sx={{ color: 'text.disabled' }}>
-                        {account.subtitle}
-                      </Typography>
-                    </div>
-                  </Box>
-                  <Switch defaultChecked={account.checked} />
-                </Box>
-              )
-            })}
-          </CardContent>
-        </Card>
-      </Grid>
-      {/* Social Accounts Cards */}
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Social Accounts' />
-          <CardContent>
-            <Typography sx={{ mb: 4, color: 'text.secondary' }}>
-              Display content from social accounts on your site
+          <Typography variant="h6">
+            Refer a Friend to Earn <Box component="span" sx={{ fontWeight: 'bold' }}>5 USDC!</Box>
+          </Typography>
+
+          <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+              variant="contained"
+              startIcon={<ContentCopyIcon />}
+              onClick={handleCopyLink}
+              sx={{
+                bgcolor: 'white',
+                color: 'black',
+                width: '60%',
+                '&:hover': { bgcolor: '#f0f0f0' },
+              }}
+            >
+              Copy Link
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: 'black',
+                color: 'white',
+                width: '60%',
+                '&:hover': { bgcolor: '#333' },
+              }}
+            >
+              Nhận USDC
+            </Button>
+          </Box>
+        </Box>
+
+        {/* Right Section: Stats (Stacked Vertically) */}
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {/* Referral Points */}
+          <Paper
+            sx={{
+              p: 2,
+              bgcolor: 'rgba(0, 0, 0, 0.2)',
+              color: 'white',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: 2,
+              textAlign: 'center',
+            }}
+          >
+            <Typography variant="h4" sx={{ color: '#ff6b00', fontWeight: 'bold' }}>
+              0 USDC
             </Typography>
+            <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+              Referral Points
+            </Typography>
+          </Paper>
 
-            {socialAccountsArr.map(account => {
-              return (
-                <Box
-                  key={account.title}
-                  sx={{
-                    gap: 2,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    '&:not(:last-of-type)': { mb: 4 }
-                  }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Box sx={{ mr: 4, minWidth: 45, display: 'flex', justifyContent: 'center' }}>
-                      <img src={account.logo} alt={account.title} height='30' />
-                    </Box>
-                    <div>
-                      <Typography sx={{ fontWeight: 500 }}>{account.title}</Typography>
-                      {account.isConnected ? (
-                        <Typography
-                          href='/'
-                          component={Link}
-                          onClick={e => e.preventDefault()}
-                          sx={{ color: 'primary.main', textDecoration: 'none' }}
-                        >
-                          {account.username}
-                        </Typography>
-                      ) : (
-                        <Typography variant='body2' sx={{ color: 'text.disabled' }}>
-                          Not Connected
-                        </Typography>
-                      )}
-                    </div>
-                  </Box>
-                  <Button
-                    variant='outlined'
-                    sx={{ p: 1.5, minWidth: 38 }}
-                    color={account.isConnected ? 'error' : 'secondary'}
-                  >
-                    <Icon icon={account.isConnected ? 'bx:trash-alt' : 'bx:link'} />
-                  </Button>
-                </Box>
-              )
-            })}
-          </CardContent>
-        </Card>
-      </Grid>
+          {/* Total Referrals */}
+          <Paper
+            sx={{
+              p: 2,
+              bgcolor: 'rgba(0, 0, 0, 0.2)',
+              color: 'white',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: 2,
+              textAlign: 'center',
+            }}
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                0
+              </Typography>
+              <Tooltip title="Number of successful referrals">
+                <InfoOutlinedIcon sx={{ ml: 1 }} />
+              </Tooltip>
+            </Box>
+            <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+              Total Referrals
+            </Typography>
+          </Paper>
+        </Box>
+      </Paper>
     </Grid>
-  )
-}
 
-export default UserViewConnection
+      {/* Tasks Section - Full width */}
+      <Grid item xs={12}>
+        <Paper 
+          sx={{ 
+            p: 3, 
+            bgcolor: '#1a1a1a',
+            color: 'white',
+            border: '1px solid #333',
+            borderRadius: 2
+          }}
+        >
+          <Typography variant="h6" sx={{ mb: 3 }}>
+            Nhiệm vụ
+          </Typography>
+          
+          <Box sx={{ mb: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <TwitterIcon sx={{ mr: 1 }} />
+                <Typography variant="body1">Follow us on X</Typography>
+              </Box>
+              <Button 
+                variant="contained" 
+                startIcon={<CheckCircleOutlineIcon />}
+                sx={{ 
+                  bgcolor: '#10b981', 
+                  '&:hover': { bgcolor: '#0e9f6e' }
+                }}
+                disabled
+              >
+                Completed
+              </Button>
+            </Box>
+            <Typography variant="body2" color="text.secondary">
+              Follow us on X to earn <Box component="span" sx={{ color: '#ff6b00', fontWeight: 'bold' }}>5 USDC</Box>.
+            </Typography>
+          </Box>
+          
+          <Divider sx={{ my: 2, bgcolor: '#333' }} />
+          
+          <Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <DiscordIcon sx={{ mr: 1 }} />
+                <Typography variant="body1">Join our Discord</Typography>
+              </Box>
+              <Button 
+                variant="contained" 
+                startIcon={<CheckCircleOutlineIcon />}
+                sx={{ 
+                  bgcolor: '#10b981', 
+                  '&:hover': { bgcolor: '#0e9f6e' }
+                }}
+                disabled
+              >
+                Completed
+              </Button>
+            </Box>
+            <Typography variant="body2" color="text.secondary">
+              Join our Discord community to earn <Box component="span" sx={{ color: '#ff6b00', fontWeight: 'bold' }}>5 USDC</Box>.
+            </Typography>
+          </Box>
+        </Paper>
+      </Grid>
+
+      {/* Referral History Section - Full width */}
+      <Grid item xs={12}>
+        <Paper 
+          sx={{ 
+            p: 3, 
+            bgcolor: '#1a1a1a',
+            color: 'white',
+            border: '1px solid #333',
+            borderRadius: 2
+          }}
+        >
+          <Typography variant="h6" sx={{ mb: 3 }}>
+            Referral History
+          </Typography>
+          
+          <TableContainer>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ color: 'text.secondary' }}>No</TableCell>
+                  <TableCell sx={{ color: 'text.secondary' }}>Address</TableCell>
+                  <TableCell sx={{ color: 'text.secondary' }}>Join Date</TableCell>
+                  <TableCell sx={{ color: 'text.secondary' }}>Referrer Bonus</TableCell>
+                  <TableCell sx={{ color: 'text.secondary' }}>Referrer Earning</TableCell>
+                  <TableCell sx={{ color: 'text.secondary' }}>Status</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {referralHistory.length > 0 ? (
+                  referralHistory.map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{row.no}</TableCell>
+                      <TableCell>{row.address}</TableCell>
+                      <TableCell>{row.joinDate}</TableCell>
+                      <TableCell>{row.referrerBonus}</TableCell>
+                      <TableCell>{row.referrerEarning}</TableCell>
+                      <TableCell>{row.status}</TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={6} align="center" sx={{ py: 3 }}>
+                      No referral history to display.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      </Grid>
+
+      {/* Snackbar for copy notification */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert 
+          severity="success" 
+          icon={false} // Hide the default success icon
+          sx={{ 
+            width: '100%', 
+            bgcolor: 'white',
+            color: 'black',
+            border: '1px solid #e0e0e0',
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {/* Removed the CheckCircleOutlineIcon component from here */}
+            <CheckCircleOutlineIcon sx={{ color: '#10b981', mr: 1 }} />
+            <Typography 
+              variant="body1" 
+              component="span" 
+              sx={{ 
+                fontWeight: 'medium',
+                color: 'black'
+              }}
+            >
+              <Box component="span" sx={{ fontWeight: 'bold' }}>Link copied</Box> to clipboard!
+            </Typography>
+            <Button 
+              color="warning" 
+              sx={{ 
+                ml: 2, 
+                color: '#ff6b00', 
+                fontWeight: 'bold',
+                '&:hover': { bgcolor: 'rgba(255, 107, 0, 0.1)' }
+              }}
+            >
+              SEND IT TO EVERYONE
+            </Button>
+          </Box>
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              mt: 1, 
+              color: 'black',
+              opacity: 0.8,
+              fontFamily: 'monospace',
+              fontSize: '0.9rem'
+            }}
+          >
+            {referralLink}
+          </Typography>
+        </Alert>
+      </Snackbar>
+    </Grid>
+  );
+};
+
+export default UserViewRefferal;

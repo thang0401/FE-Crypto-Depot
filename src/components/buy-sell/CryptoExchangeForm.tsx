@@ -1,4 +1,3 @@
-// /components/CryptoExchangeForm.tsx
 'use client'
 
 import React, { useState, useEffect } from 'react';
@@ -13,7 +12,7 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import AddBankAccount from './AddBankAccount'; // Import AddBankAccount component
+import AddBankAccount from './AddBankAccount';
 
 // Styled components (giữ nguyên)
 const StyledCard = styled(Paper)(({ theme }) => ({
@@ -103,7 +102,7 @@ const CryptoExchangeForm = () => {
   const [loading, setLoading] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [openBankAccountDialog, setOpenBankAccountDialog] = useState(false); // State cho dialog AddBankAccount
+  const [openBankAccountDialog, setOpenBankAccountDialog] = useState(false);
 
   // State để lưu userId, số dư, và frozenBalance
   const [userId, setUserId] = useState<string | null>(null);
@@ -153,7 +152,8 @@ const CryptoExchangeForm = () => {
     setError(null);
     setSuccessMessage(null);
     try {
-      const response = await axios.post('/api/refresh-balance', { userId });
+      // Thay đổi từ /api/refresh-balance sang /api/get-balance
+      const response = await axios.post('/refresh-balance', { userId });
       const { balance, frozenBalance } = response.data;
       setUsdcBalance(balance || 0);
       setFrozenBalance(frozenBalance || 0);
@@ -161,17 +161,17 @@ const CryptoExchangeForm = () => {
       setTimeout(() => setSuccessMessage(null), 3000);
     } catch (err) {
       console.error('Lỗi khi làm mới số dư:', err);
-      setError('Không thể làm mới số dư. Vui lòng thử lại.');
+      setError('Không thể làm mới số dư. Vui lòng liên hệ hỗ trợ.');
+      return
     } finally {
       setLoading(false);
     }
   };
 
-  // Tỷ giá và giới hạn
-  const buyExchangeRate = 25850;
-  const sellExchangeRate = 0.0000383;
-  const [rateDisplayMode, setRateDisplayMode] = useState('normal');
-  const MIN_ORDER = 2000;
+  // Tỷ giá cố định
+  const buyExchangeRate = 0.0000383; // 1 VND = 0.0000383 USDC
+  const sellExchangeRate = 25850; // 1 USDC = 25,850 VND
+  const MIN_ORDER = 30000; 
   const MAX_ORDER = 200000000;
 
   // Hàm định dạng số
@@ -224,7 +224,7 @@ const CryptoExchangeForm = () => {
       setInsufficientBalance(!isNaN(numericValue) && numericValue > (usdcBalance - frozenBalance));
 
       if (!isNaN(numericValue)) {
-        const calculated = (numericValue / sellExchangeRate).toFixed(2);
+        const calculated = (numericValue * sellExchangeRate).toFixed(2);
         setReceiveAmount(formatNumber(calculated));
       } else {
         setReceiveAmount('0.00');
@@ -238,7 +238,7 @@ const CryptoExchangeForm = () => {
 
       if (!isNaN(numericValue)) {
         setPayAmount(formatNumber(numericValue));
-        const calculated = (numericValue / buyExchangeRate).toFixed(2);
+        const calculated = (numericValue * buyExchangeRate).toFixed(2);
         setReceiveAmount(calculated);
       } else {
         setPayAmount(inputValue);
@@ -251,11 +251,11 @@ const CryptoExchangeForm = () => {
     const maxAmount = tradeType === 'buy' ? MAX_ORDER : (usdcBalance - frozenBalance);
     if (tradeType === 'buy') {
       setPayAmount(formatNumber(maxAmount));
-      const calculated = (maxAmount / buyExchangeRate).toFixed(2);
+      const calculated = (maxAmount * buyExchangeRate).toFixed(2);
       setReceiveAmount(calculated);
     } else {
       setPayAmount(maxAmount.toString());
-      const calculated = (maxAmount / sellExchangeRate).toFixed(2);
+      const calculated = (maxAmount * sellExchangeRate).toFixed(2);
       setReceiveAmount(formatNumber(calculated));
     }
     setHasUserTyped(true);
@@ -274,12 +274,11 @@ const CryptoExchangeForm = () => {
 
     try {
       if (tradeType === 'buy') {
-        const orderId = `ORDER_${Date.now()}`; // Dùng tạm để gửi lên API
+        const orderId = `ORDER_${Date.now()}`;
         const amount = parseFloat(payAmount.replace(/,/g, ''));
 
         // Gọi API /payment/deposit
-        const response = await axios.post(`${BACKEND_API_URL}/payment/deposit`, {
-        // const response = await axios.post('http://localhost:8000/api/payment/deposit', {
+        const response = await axios.post('http://localhost:8000/api/payment/deposit', {
           orderId,
           amount,
           description: `Nạp`,
@@ -288,11 +287,11 @@ const CryptoExchangeForm = () => {
           userId,
         });
 
-        // Lấy orderCode từ response (kiểm tra cấu trúc response từ PayOS)
-        const orderCode = response.data.orderCode || orderId; // Fallback về orderId nếu không có orderCode
+        // Lấy orderCode từ response
+        const orderCode = response.data.orderCode || orderId;
 
         // Lưu thông tin vào localStorage
-        localStorage.setItem('lastOrderCode', orderCode); // Lưu orderCode thay vì orderId
+        localStorage.setItem('lastOrderCode', orderCode);
         localStorage.setItem('lastAmount', amount.toString());
         localStorage.setItem('lastUserId', userId);
 
@@ -337,19 +336,11 @@ const CryptoExchangeForm = () => {
     setTimeout(() => setSuccessMessage(null), 3000);
   };
 
-  const toggleRateDisplayMode = () => {
-    setRateDisplayMode(rateDisplayMode === 'normal' ? 'inverse' : 'normal');
-  };
-
   const getFormattedRate = () => {
     if (tradeType === 'buy') {
-      return rateDisplayMode === 'normal'
-        ? `1 USDC = ${formatNumber(buyExchangeRate)} VND`
-        : `1 VND = ${(1 / buyExchangeRate).toFixed(8)} USDC`;
+      return `1 VND = ${buyExchangeRate} USDC`;
     } else {
-      return rateDisplayMode === 'normal'
-        ? `1 VND = ${sellExchangeRate} USDC`
-        : `1 USDC = ${formatNumber(1 / sellExchangeRate)} VND`;
+      return `1 USDC = ${formatNumber(sellExchangeRate)} VND`;
     }
   };
 
@@ -447,7 +438,7 @@ const CryptoExchangeForm = () => {
                 variant="outlined"
                 value={payAmount}
                 onChange={handlePayAmountChange}
-                placeholder={tradeType === 'buy' ? "2,000 - 200,000,000" : "Tối thiểu: 0.1"}
+                placeholder={tradeType === 'buy' ? "30,000 - 200,000,000" : "Tối thiểu: 0.1"}
                 error={insufficientBalance}
                 InputProps={{
                   endAdornment: (
@@ -521,13 +512,6 @@ const CryptoExchangeForm = () => {
               <Typography variant="body2" color="text.secondary">
                 Với tỷ giá: {getFormattedRate()}
               </Typography>
-              <IconButton
-                onClick={toggleRateDisplayMode}
-                size="small"
-                sx={{ ml: 1, color: '#0292B1' }}
-              >
-                <SwapHorizIcon fontSize="small" />
-              </IconButton>
             </Box>
 
             <StyledButton
@@ -543,7 +527,6 @@ const CryptoExchangeForm = () => {
         </motion.div>
       </Container>
 
-      {/* Thêm dialog AddBankAccount */}
       <AddBankAccount
         open={openBankAccountDialog}
         onOpenChange={setOpenBankAccountDialog}

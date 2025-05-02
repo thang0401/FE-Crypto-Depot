@@ -278,7 +278,7 @@ const CryptoExchangeForm = () => {
         const amount = parseFloat(payAmount.replace(/,/g, ''));
 
         // Gọi API /payment/deposit
-        const response = await axios.post('http://localhost:8000/api/payment/deposit', {
+        const response = await axios.post('https://be-crypto-depot.name.vn/api/payment/deposit', {
           orderId,
           amount,
           description: `Nạp`,

@@ -1,6 +1,6 @@
 // /pages/api/withdraw.js
 import axios from 'axios';
-import redisClient from '../../utils/redis';
+import { getRedisClient } from '../../utils/redis'; // Sửa đường dẫn nếu cần
 
 const BACKEND_API_URL = 'https://be-crypto-depot.name.vn/api';
 
@@ -33,8 +33,11 @@ export default async function handler(req, res) {
   const frozenBalanceKey = `user:${userId}:frozenBalance`;
 
   try {
+    // Lấy client Redis
+    const client = await getRedisClient();
+
     // Thử khóa với SET NX (timeout 5 giây)
-    const lockAcquired = await redisClient.set(lockKey, 'locked', {
+    const lockAcquired = await client.set(lockKey, 'locked', {
       NX: true,
       PX: 5000 // TTL 5 giây
     });
@@ -44,13 +47,13 @@ export default async function handler(req, res) {
     }
 
     try {
-      let balance = await redisClient.get(balanceKey);
-      let frozenBalance = parseFloat((await redisClient.get(frozenBalanceKey)) || '0');
+      let balance = await client.get(balanceKey);
+      let frozenBalance = parseFloat((await client.get(frozenBalanceKey)) || '0');
 
       // Nếu không có balance trong Redis, lấy từ DB
       if (balance === null) {
         balance = await getBalanceFromDB(userId);
-        await redisClient.set(balanceKey, balance.toString());
+        await client.set(balanceKey, balance.toString());
       } else {
         balance = parseFloat(balance);
       }
@@ -62,8 +65,8 @@ export default async function handler(req, res) {
       }
 
       // Tăng frozenBalance và đặt TTL 24 giờ
-      await redisClient.incrByFloat(frozenBalanceKey, amount);
-      await redisClient.expire(frozenBalanceKey, 86400);
+      await client.incrByFloat(frozenBalanceKey, amount);
+      await client.expire(frozenBalanceKey, 900);
 
       // Forward yêu cầu tới backend gốc
       const response = await axios.post(`${BACKEND_API_URL}/payment/withdraw`, {
@@ -77,7 +80,7 @@ export default async function handler(req, res) {
       });
     } finally {
       // Mở khóa bằng cách xóa lockKey
-      await redisClient.del(lockKey).catch((err) => console.error('Lỗi khi mở khóa:', err));
+      await client.del(lockKey).catch((err) => console.error('Lỗi khi mở khóa:', err));
     }
   } catch (err) {
     console.error('Lỗi khi xử lý yêu cầu rút:', err);

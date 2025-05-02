@@ -1,6 +1,6 @@
 // /pages/api/refresh-balance.js
 import axios from 'axios';
-import redisClient from '../../utils/redis';
+import { getRedisClient } from '../../utils/redis'; // Sửa đường dẫn nếu cần
 
 const BACKEND_API_URL = 'https://be-crypto-depot.name.vn/api';
 
@@ -32,9 +32,12 @@ export default async function handler(req, res) {
     const balanceKey = `user:${userId}:balance`;
     const frozenBalanceKey = `user:${userId}:frozenBalance`;
 
+    // Lấy client Redis
+    const client = await getRedisClient();
+
     // Cập nhật balance và xóa frozenBalance
-    await redisClient.set(balanceKey, balance.toString());
-    await redisClient.del(frozenBalanceKey);
+    await client.set(balanceKey, balance.toString());
+    await client.del(frozenBalanceKey);
 
     res.status(200).json({ balance, frozenBalance: 0 });
   } catch (err) {

@@ -1,5 +1,5 @@
 // /pages/api/get-balance.js
-import redisClient from '../../utils/redis';
+import { getRedisClient } from '../../utils/redis'; // Điều chỉnh đường dẫn nếu cần
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -16,9 +16,12 @@ export default async function handler(req, res) {
     const balanceKey = `user:${userId}:balance`;
     const frozenBalanceKey = `user:${userId}:frozenBalance`;
 
-    // Sử dụng redisClient.get với cú pháp redis@4.x
-    const balance = parseFloat((await redisClient.get(balanceKey)) || '0');
-    const frozenBalance = parseFloat((await redisClient.get(frozenBalanceKey)) || '0');
+    // Lấy client Redis
+    const client = await getRedisClient();
+
+    // Sử dụng client.get để lấy số dư
+    const balance = parseFloat((await client.get(balanceKey)) || '0');
+    const frozenBalance = parseFloat((await client.get(frozenBalanceKey)) || '0');
 
     res.status(200).json({ balance, frozenBalance });
   } catch (err) {

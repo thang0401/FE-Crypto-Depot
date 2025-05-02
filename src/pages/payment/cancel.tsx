@@ -92,7 +92,7 @@ const PayOSWebhookSimulator: React.FC = () => {
 
       try {
         // Gửi yêu cầu POST đến webhook endpoint
-        const result = await axios.post('http://localhost:8000/api/payment/webhook/payos', payload);
+        const result = await axios.post('https://be-crypto-depot.name.vn/api/payment/webhook/payos', payload);
         
         // Xử lý kết quả thành công
         setResponse({

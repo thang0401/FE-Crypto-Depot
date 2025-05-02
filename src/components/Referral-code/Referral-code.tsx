@@ -13,6 +13,9 @@ import { styled } from '@mui/material/styles'
 import Icon from 'src/@core/components/icon'
 import themeConfig from 'src/configs/themeConfig'
 import CustomAvatar from 'src/@core/components/mui/avatar'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import { useEffect, useState } from 'react'
+import { Tooltip } from '@mui/material'
 
 const FacebookBtn = styled(IconButton)<IconButtonProps>(({ theme }) => ({
   color: theme.palette.common.white,
@@ -32,8 +35,29 @@ const LinkedInBtn = styled(IconButton)<IconButtonProps>(({ theme }) => ({
   backgroundColor: '#007BB6 !important',
   borderRadius: theme.shape.borderRadius,
 }))
-
+  
 const ReferEarnPage = () => {
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    const userData = localStorage.getItem('userData')
+    if (userData) {
+      try {
+        const parsedData = JSON.parse(userData)
+        if(parsedData.email){
+          setEmail(parsedData.email)
+        }
+      }catch (err){
+        console.log('Error parsing userData from localStorage:', err);
+      }
+    }
+  })
+
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(email);
+  }
+
   return (
     <Card>
       <CardContent
@@ -114,7 +138,7 @@ const ReferEarnPage = () => {
               size="small"
               id="refer-email"
               sx={{ mr: { xs: 0, sm: 4 } }}
-              placeholder="thangncps34441@fpt.edu.vn"
+              placeholder= {email}
             />
             <Button variant="contained" sx={{ mt: { xs: 2, sm: 0 }, width: { xs: '100%', sm: 'auto' } }}>
               Send
@@ -126,7 +150,14 @@ const ReferEarnPage = () => {
             Thực hiện giao dịch đầu tiên và nhận ngay 5 đô tiền thưởng 🥳
           </Typography>
           <Typography variant="h6" sx={{ mb: 4 }}>
-            Mã giới thiệu của bạn là :...
+              Mã giới thiệu của bạn là : <em>{email}</em>
+            {email && (
+              <Tooltip title = "Copy email">
+                <IconButton onClick={handleCopy} sx={{ml : 2}}>
+                  <ContentCopyIcon fontSize='small'/>
+                </IconButton>
+              </Tooltip>
+            )}
           </Typography>
         </div>
       </CardContent>

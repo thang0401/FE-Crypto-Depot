@@ -1,151 +1,235 @@
-'use client';
-import React, { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+"use client"
+import type React from "react"
+import { useEffect, useState, useRef } from "react"
+import axios from "axios"
+import { useRouter } from "next/navigation"
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Alert,
+  AlertTitle,
+  Container,
+  Card,
+  CardContent,
+  Fade,
+  Backdrop,
+  LinearProgress,
+} from "@mui/material"
+import PaymentIcon from "@mui/icons-material/Payment"
+import ErrorIcon from "@mui/icons-material/Error"
+import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 
 interface PayOSWebhookResponse {
-  message: string;
-  status: 'loading' | 'success' | 'error';
+  message: string
+  status: "loading" | "success" | "error"
 }
 
 interface WebhookPayload {
-  code: string;
-  desc: string;
+  code: string
+  desc: string
   data: {
-    orderCode: number;
-    amount: number;
-    description: string;
-    accountNumber: string;
-    reference: string;
-    transactionDateTime: string;
-    currency: string;
-    paymentLinkId: string;
-    code: string;
-    desc: string;
-  };
-  signature: string;
+    orderCode: number
+    amount: number
+    description: string
+    accountNumber: string
+    reference: string
+    transactionDateTime: string
+    currency: string
+    paymentLinkId: string
+    code: string
+    desc: string
+  }
+  signature: string
 }
 
 const PayOSWebhookSimulator: React.FC = () => {
   const [response, setResponse] = useState<PayOSWebhookResponse>({
-    message: 'Đang gửi yêu cầu...',
-    status: 'loading'
-  });
-  const router = useRouter();
-  const hasCalledWebhook = useRef(false); // Theo dõi trạng thái gọi webhook
+    message: "Đang gửi yêu cầu...",
+    status: "loading",
+  })
+  const router = useRouter()
+  const hasCalledWebhook = useRef(false)
 
   useEffect(() => {
-    if (hasCalledWebhook.current) return; // Không gọi lại nếu đã gọi
+    if (hasCalledWebhook.current) return
 
     const simulateWebhook = async () => {
-      hasCalledWebhook.current = true; // Đánh dấu webhook đã được gọi
+      hasCalledWebhook.current = true
 
-      let lastOrderCode: number;
-      let lastAmount: number;
-      let lastUserId: string;
+      let lastOrderCode: number
+      let lastAmount: number
+      let lastUserId: string
 
-      // Sử dụng try-catch để lấy dữ liệu từ localStorage
       try {
-        const orderCode = localStorage.getItem('lastOrderCode');
-        const amount = localStorage.getItem('lastAmount');
-        const userId = localStorage.getItem('lastUserId');
+        const orderCode = localStorage.getItem("lastOrderCode")
+        const amount = localStorage.getItem("lastAmount")
+        const userId = localStorage.getItem("lastUserId")
 
         if (!orderCode || !amount || !userId) {
-          throw new Error('Dữ liệu trong localStorage không đầy đủ');
+          throw new Error("Dữ liệu trong localStorage không đầy đủ")
         }
 
-        lastOrderCode = parseInt(orderCode);
-        lastAmount = parseInt(amount);
-        lastUserId = userId;
+        lastOrderCode = Number.parseInt(orderCode)
+        lastAmount = Number.parseInt(amount)
+        lastUserId = userId
 
         if (isNaN(lastOrderCode) || isNaN(lastAmount)) {
-          throw new Error('Dữ liệu orderCode hoặc amount không hợp lệ');
+          throw new Error("Dữ liệu orderCode hoặc amount không hợp lệ")
         }
       } catch (error) {
-        // Không gán giá trị mặc định, cập nhật trạng thái lỗi và dừng thực thi
-        const errorMessage = error instanceof Error ? `Lỗi: ${error.message}` : 'Lỗi không xác định khi lấy dữ liệu từ localStorage';
+        const errorMessage =
+          error instanceof Error ? `Lỗi: ${error.message}` : "Lỗi không xác định khi lấy dữ liệu từ localStorage"
         setResponse({
           message: errorMessage,
-          status: 'error'
-        });
-        return; // Dừng hàm simulateWebhook
+          status: "error",
+        })
+        return
       }
 
-      // Payload mẫu cho webhook, sử dụng dữ liệu từ localStorage
       const payload: WebhookPayload = {
-        code: '00',
-        desc: 'Success',
+        code: "00",
+        desc: "Success",
         data: {
           orderCode: lastOrderCode,
           amount: lastAmount,
-          description: lastUserId, // userId
-          accountNumber: '1234567890',
-          reference: 'REF123456',
-          transactionDateTime: new Date().toISOString(), // Lấy thời gian hiện tại
-          currency: 'VND',
-          paymentLinkId: 'PAYLINK123',
-          code: '01',
-          desc: 'Payment successful'
+          description: lastUserId,
+          accountNumber: "1234567890",
+          reference: "REF123456",
+          transactionDateTime: new Date().toISOString(),
+          currency: "VND",
+          paymentLinkId: "PAYLINK123",
+          code: "01",
+          desc: "Payment successful",
         },
-        signature: 'abc123xyz'
-      };
+        signature: "abc123xyz",
+      }
 
       try {
-        // Gửi yêu cầu POST đến webhook endpoint
-        const result = await axios.post('https://be-crypto-depot.name.vn/api/payment/webhook/payos', payload);
-        
-        // Xử lý kết quả thành công
+        const result = await axios.post("https://be-crypto-depot.name.vn/api/payment/webhook/payos", payload)
+
         setResponse({
           message: result.data,
-          status: 'success'
-        });
-
-        // Chuyển hướng và xóa localStorage sau khi thành công
-       
+          status: "success",
+        })
       } catch (error) {
-        // Xử lý lỗi
-        let errorMessage = 'Đã xảy ra lỗi không xác định';
-        
+        let errorMessage = "Đã xảy ra lỗi không xác định"
+
         if (axios.isAxiosError(error) && error.response) {
-          errorMessage = `Lỗi: ${error.response.status} - ${error.response.data || error.message}`;
+          errorMessage = `Lỗi: ${error.response.status} - ${error.response.data || error.message}`
         } else if (error instanceof Error) {
-          errorMessage = `Lỗi: ${error.message}`;
+          errorMessage = `Lỗi: ${error.message}`
         }
-        
+
         setResponse({
           message: errorMessage,
-          status: 'error'
-        });
-
+          status: "error",
+        })
+        //Cancel set Timeout ở đây
         setTimeout(() => {
-          router.push('/buy-sell');
-          localStorage.removeItem('lastOrderCode');
-          localStorage.removeItem('lastAmount');
-          localStorage.removeItem('lastUserId');
-        }, 3000); // Trì hoãn 1 giây (có thể điều chỉnh thời gian)
-
+          router.push("/buy-sell")
+          localStorage.removeItem("lastOrderCode")
+          localStorage.removeItem("lastAmount")
+          localStorage.removeItem("lastUserId")
+        }, 5000)
       }
-    };
+    }
 
-  
-    // Gọi hàm gửi webhook khi component mount
-    simulateWebhook();
-  }, []); // Loại bỏ dependency [router]
+    simulateWebhook()
+  }, [])
+
+  const getStatusIcon = () => {
+    switch (response.status) {
+      case "loading":
+        return <PaymentIcon sx={{ fontSize: 60, color: "#1976d2" }} />
+      case "success":
+        return <CheckCircleIcon sx={{ fontSize: 60, color: "#2e7d32" }} />
+      case "error":
+        return <ErrorIcon sx={{ fontSize: 60, color: "#d32f2f" }} />
+      default:
+        return null
+    }
+  }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="text-center bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-bold mb-4">Gọi Webhook PayOS</h2>
-        <div className={`text-lg ${
-          response.status === 'loading' ? 'text-gray-600' :
-          response.status === 'success' ? 'text-green-600' :
-          'text-red-600'
-        }`}>
-          Giao dịch bị hủy
-        </div>
-      </div>
-    </div>
-  );
-};
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        // alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Container maxWidth="sm">
+        <Fade in={true} timeout={800}>
+          <Card
+            elevation={6}
+            sx={{
+              borderRadius: 4,
+              overflow: "hidden",
+              position: "relative",
+            }}
+          >
+            {response.status === "loading" && (
+              <LinearProgress
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 4,
+                }}
+              />
+            )}
+            <CardContent sx={{ p: 4, textAlign: "center" }}>
+              <Box sx={{ mb: 3, display: "flex", justifyContent: "center" }}>{getStatusIcon()}</Box>
 
-export default PayOSWebhookSimulator;
+              <Typography variant="h5" component="h2" gutterBottom fontWeight="bold">
+                {response.status === "loading"
+                  ? "Đang xử lý giao dịch..."
+                  : response.status === "success"
+                    ? "Giao dịch thành công"
+                    : "Giao dịch bị hủy"}
+              </Typography>
+
+              {response.status === "loading" && (
+                <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+                  <CircularProgress size={36} />
+                </Box>
+              )}
+
+              {/* {response.status === "error" && (
+                <Alert severity="error" sx={{ mt: 2, textAlign: "left" }}>
+                  <AlertTitle>Lỗi</AlertTitle>
+                  {response.message}
+                </Alert>
+              )} */}
+
+              {response.status === "success" && (
+                <Alert severity="success" sx={{ mt: 2, textAlign: "left" }}>
+                  <AlertTitle>Thành công</AlertTitle>
+                  Giao dịch đã được xử lý thành công
+                </Alert>
+              )}
+
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 3 }}>
+                {response.status === "loading"
+                  ? "Vui lòng đợi trong khi chúng tôi xử lý giao dịch của bạn..."
+                  : "Bạn sẽ được chuyển hướng trong vài giây..."}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Fade>
+
+        <Backdrop
+          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={response.status === "loading"}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </Container>
+    </Box>
+  )
+}
+
+export default PayOSWebhookSimulator

@@ -124,7 +124,7 @@ const UserViewRight = ({ tab, invoiceData }: Props) => {
           }
         />
 
-        <Tab
+        {/* <Tab
           value='notification'
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
@@ -132,13 +132,13 @@ const UserViewRight = ({ tab, invoiceData }: Props) => {
               {!hideText && 'Cài đặt'}
             </Box>
           }
-        />
+        /> */}
         <Tab
           value='connection'
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
               <Icon icon='bx:link-alt' />
-              {!hideText && 'Connections'}
+              {!hideText && 'Referrals'}
             </Box>
           }
         />

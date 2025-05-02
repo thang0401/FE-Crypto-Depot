@@ -109,7 +109,7 @@ const UserViewRight = ({ tab, invoiceData }: Props) => {
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
               <Icon icon='bx:link-alt' />
-              {!hideText && 'Danh mục lưu trữ'}
+              {!hideText && 'Tài khoản lưu trữ'}
             </Box>
           }
         />

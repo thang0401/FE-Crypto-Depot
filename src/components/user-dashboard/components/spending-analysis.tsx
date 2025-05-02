@@ -53,7 +53,7 @@ export default function SpendingAnalysis() {
         </Typography>
         <Tabs value={tabValue} onChange={handleTabChange} variant="fullWidth" sx={{ mb: 2 }}>
           <Tab label="Hàng tháng" />
-          <Tab label="Danh mục" />
+          <Tab label="Tài khoản" />
         </Tabs>
         {tabValue === 0 ? (
           <Box sx={{ height: 250 }}>

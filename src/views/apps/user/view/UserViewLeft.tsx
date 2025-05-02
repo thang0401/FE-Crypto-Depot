@@ -295,7 +295,7 @@ const UserViewLeft = () => {
                       <TextField fullWidth label='TAX ID' defaultValue='Tax-8894' />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <TextField fullWidth label='Phone Number' defaultValue={`+1 ${data.contact}`} />
+                      <TextField fullWidth label='Số điện thoại' defaultValue={`+1 ${data.contact}`} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>

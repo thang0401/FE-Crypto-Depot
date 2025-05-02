@@ -122,16 +122,9 @@ const DepositAddCard = () => {
 
                 <Table>
                   <TableBody>
-                  <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Mã sổ tiết kiệm:</MUITableCell>
-                      <MUITableCell sx={{ pb: '0 !important' }}>pf00001</MUITableCell>
-                    </TableRow>
+
                     <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Tên sổ tiết kiệm:</MUITableCell>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Paul Nguyen</MUITableCell>
-                    </TableRow>
-                    <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Tên chủ sở hữu:</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>Tên khách hàng:</MUITableCell>
                       <MUITableCell sx={{ pb: '0 !important' }}>Nguyen Cao Thang</MUITableCell>
                     </TableRow>
                     <TableRow>
@@ -142,10 +135,10 @@ const DepositAddCard = () => {
                       <MUITableCell sx={{ pb: '0 !important' }}>Số điện thoại:</MUITableCell>
                       <MUITableCell sx={{ pb: '0 !important' }}>0123456789</MUITableCell>
                     </TableRow>
-                    <TableRow>
+                    {/* <TableRow>
                       <MUITableCell>Quốc gia:</MUITableCell>
                       <MUITableCell>Vietnam</MUITableCell>
-                    </TableRow>
+                    </TableRow> */}
                   </TableBody>
                 </Table>
               </Grid>
@@ -161,37 +154,32 @@ const DepositAddCard = () => {
                       <TableCell sx={{ py: 2 }}>STT</TableCell>
                       <TableCell sx={{ py: 2 }}>Loại tài sản</TableCell>
                       <TableCell sx={{ py: 2 }}>Số lượng</TableCell>
-                      <TableCell sx={{ pu: 2 }}> Đơn vị</TableCell>
                       <TableCell sx={{ py: 2 }}>Trạng thái</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>1</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Solana</TableCell>
+                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>4.8</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>SOL</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Thành công</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>2</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Ethereum</TableCell>
+                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>2.2</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>ETH</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Thành công</TableCell>{' '}
                     </TableRow>
                     <TableRow>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>3</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>SFC-VND</TableCell>
+                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>460</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>SFC-VND</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Thành công</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>4</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>LPSFC</TableCell>
+                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>70</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>LPSFC</TableCell>
                       <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Thành công</TableCell>
                     </TableRow>
                   </TableBody>
@@ -218,7 +206,7 @@ const DepositAddCard = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời: Để nạp tiền vào tài khoản CryptoDepot, bạn chỉ cần kết nối ví Web 3, chọn tài sản, gõ số lượng và cung cấp ID danh mục nhận tài sản. Sau đó, ví Web 3 của bạn sẽ hiện lên giao dịch và bạn chỉ cần phê duyệt giao dịch đó thôi.
+                Trả lời: Để nạp tiền vào tài khoản CryptoDepot, bạn chỉ cần kết nối ví Web 3, chọn tài sản, gõ số lượng và cung cấp ID Tài khoản nhận tài sản. Sau đó, ví Web 3 của bạn sẽ hiện lên giao dịch và bạn chỉ cần phê duyệt giao dịch đó thôi.
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -228,7 +216,7 @@ const DepositAddCard = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời: CryptoDepot hỗ trợ nhiều loại tiền điện tử phổ biến như Ethereum, Solana và nhiều loại token ERC-20 và SPL-20 khác nhau. Danh sách đầy đủ các loại tài sản được hỗ trợ sẽ được cập nhật thường xuyên trên nền tảng.
+                Trả lời: CryptoDepot hỗ trợ nhiều loại tiền điện tử phổ biến như Ethereum, USDC và nhiều loại token ERC-20 và SPL-20 khác nhau. Danh sách đầy đủ các loại tài sản được hỗ trợ sẽ được cập nhật thường xuyên trên nền tảng.
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -238,7 +226,7 @@ const DepositAddCard = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời: Thời gian nạp tiền phụ thuộc vào loại blockchain mà bạn sử dụng. Các giao dịch trên Ethereum có thể mất từ vài phút đến vài giờ tùy thuộc vào trạng thái của mạng, trong khi giao dịch trên Solana sẽ nhanh chóng hơn. Tuy nhiên, CryptoDepot sẽ cập nhật số dư ngay khi giao dịch được xác nhận trên blockchain.
+                Trả lời: Thời gian nạp tiền phụ thuộc vào loại blockchain mà bạn sử dụng. Các giao dịch trên Ethereum có thể mất từ vài phút đến vài giờ tùy thuộc vào trạng thái của mạng, trong khi giao dịch trên USDC sẽ nhanh chóng hơn. Tuy nhiên, CryptoDepot sẽ cập nhật số dư ngay khi giao dịch được xác nhận trên blockchain.
               </Typography>
             </AccordionDetails>
           </Accordion>

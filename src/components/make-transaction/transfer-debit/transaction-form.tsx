@@ -141,19 +141,8 @@ export default function TransactionForm({
               </Box>
             </Grid>
           </Grid>
-        </SectionContainer>
-
-        {/* Phần bảo mật & xác nhận */}
-        <SectionContainer>
-          <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-            <SectionNumber>3</SectionNumber>
-            <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-              Bảo mật & Xác nhận
-            </Typography>
-          </Box>
-
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
+          <Grid>
+          <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Ghi chú giao dịch (Tùy chọn)"
@@ -165,8 +154,22 @@ export default function TransactionForm({
                 variant="outlined"
               />
             </Grid>
+          </Grid>
+        </SectionContainer>
+
+        {/* Phần bảo mật & xác nhận */}
+        <SectionContainer>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+            {/* <SectionNumber>3</SectionNumber> */}
+            {/* <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+              Bảo mật & Xác nhận
+            </Typography> */}
+          </Box>
+
+          <Grid container spacing={2}>
+
             <Grid item xs={12} sm={6}>
-              <TextField
+              {/* <TextField
                 fullWidth
                 type={showPasscode ? "text" : "password"}
                 label="Mã xác minh giao dịch"
@@ -183,16 +186,13 @@ export default function TransactionForm({
                     </InputAdornment>
                   ),
                 }}
-              />
+              /> */}
             </Grid>
           </Grid>
         </SectionContainer>
 
         <Dialog open={passcodeErrorDialog} onClose={onClosePasscodeError}>
-          <DialogTitle>Mã xác minh không đúng</DialogTitle>
-          <DialogContent>
-            <Typography>Mã xác minh bạn nhập không đúng. Vui lòng thử lại.</Typography>
-          </DialogContent>
+
           <DialogActions>
             <Button onClick={onClosePasscodeError} color="primary">
               OK
@@ -207,25 +207,17 @@ export default function TransactionForm({
         )}
 
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
-          <Box>
-            <Typography variant="subtitle2">Tổng số tiền:</Typography>
-            <Typography variant="h6">
-              {!formErrors.amount && transaction.amount
-                ? (Number.parseFloat(transaction.amount) + Number.parseFloat(transaction.fee)).toFixed(2)
-                : "0.00"}{" "}
-              USDC
-            </Typography>
-          </Box>
+
           <Button
             variant="contained"
             color="primary"
-            size="large"
-            disabled={isSubmitting || !transaction.amount || !transaction.passCode}
+
+
             onClick={onSubmit}
             startIcon={<SendIcon />}
             sx={{ borderRadius: "28px", px: 3 }}
           >
-            {isSubmitting ? "Đang xử lý..." : "Xác nhận chuyển khoản"}
+            Xác nhận
           </Button>
         </Box>
       </CardContent>

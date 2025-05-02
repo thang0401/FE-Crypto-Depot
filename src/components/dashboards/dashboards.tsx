@@ -82,7 +82,7 @@ const Dashboard = () => {
 
  const tokenNameMap = {
    '4TndGJA5DeL6xZgdPLK3VETy6MVVuZgUWEdPk4KUMNCQ': 'SFC-VND',
-   '8aHXuC6HjPNQYiBxNhqHD2CN5RxvcqRu5hvKhWHF6He': 'LPSFC'
+   '8aHXuC6HjPNQYiBxNhqHD2CN5RxvcqRu5hvKhWHF6He': ''
  }
 
  // Hàm gọi API lấy token

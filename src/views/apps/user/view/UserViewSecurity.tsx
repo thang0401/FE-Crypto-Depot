@@ -285,7 +285,7 @@ const UserViewSecurity = () => {
             <DialogContent>
               <Typography sx={{ mb: 4, fontWeight: 500 }}>Verify Your Mobile Number for SMS</Typography>
               <Typography sx={{ mb: 6, color: 'text.secondary' }}>
-                Enter your mobile phone number with country code and we will send you a verification code.
+                Enter your mobile Số điện thoại with country code and we will send you a verification code.
               </Typography>
               <form onSubmit={e => e.preventDefault()}>
                 <TextField

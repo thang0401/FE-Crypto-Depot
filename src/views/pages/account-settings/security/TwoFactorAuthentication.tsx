@@ -94,13 +94,13 @@ const TwoFactorAuthenticationCard = () => {
 
           <Typography sx={{ fontWeight: 500 }}>Verify Your Mobile Number for SMS</Typography>
           <Typography sx={{ mt: 4, mb: 6, color: 'text.secondary' }}>
-            Enter your mobile phone number with country code and we will send you a verification code.
+            Enter your mobile Số điện thoại with country code and we will send you a verification code.
           </Typography>
 
           <form onSubmit={handleSubmit(on2FAFormSubmit)}>
             <FormControl fullWidth sx={{ mb: 4 }}>
               <InputLabel htmlFor='opt-phone-number' error={Boolean(errors.phoneNumber)}>
-                Phone Number
+                Số điện thoại
               </InputLabel>
               <Controller
                 name='phoneNumber'
@@ -111,7 +111,7 @@ const TwoFactorAuthenticationCard = () => {
                     type='number'
                     value={value}
                     onChange={onChange}
-                    label='Phone Number'
+                    label='Số điện thoại'
                     id='opt-phone-number'
                     placeholder='202 555 0111'
                     error={Boolean(errors.phoneNumber)}
@@ -120,7 +120,7 @@ const TwoFactorAuthenticationCard = () => {
                 )}
               />
               {errors.phoneNumber && (
-                <FormHelperText sx={{ color: 'error.main' }}>Please enter a valid phone number</FormHelperText>
+                <FormHelperText sx={{ color: 'error.main' }}>Please enter a valid Số điện thoại</FormHelperText>
               )}
             </FormControl>
             <div>

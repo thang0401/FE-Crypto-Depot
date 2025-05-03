@@ -237,36 +237,6 @@ const InvoicePrint = ({ id }: InvoiceLayoutProps) => {
             </Table>
           </TableContainer>
         </Table>
-
-        {/* <Grid container>
-          <Grid item xs={8} sm={7} lg={9}>
-            <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
-              <Typography sx={{ mr: 2, fontWeight: 600, color: 'text.secondary' }}>Salesperson:</Typography>
-              <Typography sx={{ color: 'text.secondary' }}>Tommy Shelby</Typography>
-            </Box>
-
-            <Typography sx={{ color: 'text.secondary' }}>Thanks for your business</Typography>
-          </Grid>
-          <Grid item xs={4} sm={5} lg={3}>
-            <CalcWrapper>
-              <Typography sx={{ color: 'text.secondary' }}>Subtotal:</Typography>
-              <Typography sx={{ fontWeight: 600, color: 'text.secondary' }}>$154.25</Typography>
-            </CalcWrapper>
-            <CalcWrapper>
-              <Typography sx={{ color: 'text.secondary' }}>Discount:</Typography>
-              <Typography sx={{ fontWeight: 600, color: 'text.secondary' }}>$00.00</Typography>
-            </CalcWrapper>
-            <CalcWrapper>
-              <Typography sx={{ color: 'text.secondary' }}>Tax:</Typography>
-              <Typography sx={{ fontWeight: 600, color: 'text.secondary' }}>$50.00</Typography>
-            </CalcWrapper>
-            <CalcWrapper>
-              <Typography sx={{ color: 'text.secondary' }}>Total:</Typography>
-              <Typography sx={{ fontWeight: 600, color: 'text.secondary' }}>$204.25</Typography>
-            </CalcWrapper>
-          </Grid>
-        </Grid> */}
-
         <Divider sx={{ color: 'text.secondary', my: `${theme.spacing(6)} !important` }} />
         <Typography sx={{ color: 'text.secondary' }}>
           <strong>Note:</strong> Nguyễn Cao Thang Deposit to you

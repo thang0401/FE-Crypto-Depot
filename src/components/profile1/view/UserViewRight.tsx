@@ -109,7 +109,7 @@ const UserViewRight = ({ tab, invoiceData }: Props) => {
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
               <Icon icon='bx:link-alt' />
-              {!hideText && 'Danh mục lưu trữ'}
+              {!hideText && 'Tài khoản lưu trữ'}
             </Box>
           }
         />
@@ -124,7 +124,7 @@ const UserViewRight = ({ tab, invoiceData }: Props) => {
           }
         />
 
-        <Tab
+        {/* <Tab
           value='notification'
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
@@ -132,16 +132,16 @@ const UserViewRight = ({ tab, invoiceData }: Props) => {
               {!hideText && 'Cài đặt'}
             </Box>
           }
-        />
-        {/* <Tab
+        /> */}
+        <Tab
           value='connection'
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
               <Icon icon='bx:link-alt' />
-              {!hideText && 'Connections'}
+              {!hideText && 'Referrals'}
             </Box>
           }
-        /> */}
+        />
       </TabList>
       <Box sx={{ '& .MuiTabPanel-root': { p: 0, border: 0, boxShadow: 0, backgroundColor: 'transparent' } }}>
         {isLoading ? (

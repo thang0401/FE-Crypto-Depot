@@ -28,6 +28,8 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 import themeConfig from 'src/configs/themeConfig'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import OtpForm from './VerifyOtpForm'
+import RegisterDialog from './RegisterDialog'
+
 
 const LoginIllustration = styled('img')({
   height: 'auto',
@@ -53,7 +55,7 @@ const RightWrapper = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const LinkStyled = styled(Link)(({ theme }) => ({
-  fontSize: '0.875rem',
+  fontSize: '0. Mulder875rem',
   textDecoration: 'none',
   color: theme.palette.primary.main
 }))
@@ -79,6 +81,7 @@ const LoginPage = () => {
   const [showOtpForm, setShowOtpForm] = useState<boolean>(false)
   const [idToken, setIdToken] = useState<string | null>(null)
   const [email, setEmail] = useState<string | null>(null)
+  const [openRegisterDialog, setOpenRegisterDialog] = useState<boolean>(false)
 
   const auth = useAuth()
   const theme = useTheme()
@@ -145,6 +148,15 @@ const LoginPage = () => {
     }
   }
 
+  const handleOpenRegisterDialog = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    setOpenRegisterDialog(true)
+  }
+
+  const handleCloseRegisterDialog = () => {
+    setOpenRegisterDialog(false)
+  }
+
   return (
     <Box className='content-right'>
       {!hidden ? (
@@ -205,21 +217,18 @@ const LoginPage = () => {
               <Typography sx={{ mb: 6, color: 'text.secondary' }}>
                 Please sign-in to your account and start the adventure
               </Typography>
-
-
-            <Typography variant='caption' sx={{  display: 'block', color: 'primary.main' }}>
-            acc test api và điểu hướng KYC,Thêm bank account,mã giới thiệu
-            </Typography>
-            <Typography variant='caption' sx={{mb: 2, display: 'block', color: 'primary.main' }}>
-              Account: <strong>khongbietthang0@gmail.com</strong> / Pass: <strong>admin</strong>
-            </Typography>
-            <Typography variant='caption' sx={{ mt: 2, display: 'block', color: 'primary.main' }}>
-            acc test api những page còn lại
-            </Typography>
-            <Typography variant='caption' sx={{ display: 'block', color: 'primary.main' }}>
-              Account: <strong>thanhtdps36968@fpt.edu.vn</strong> / Pass: <strong>admin</strong>
-            </Typography>
-
+              <Typography variant='caption' sx={{ display: 'block', color: 'primary.main' }}>
+                acc test api và điều hướng KYC, Thêm bank account, mã giới thiệu
+              </Typography>
+              <Typography variant='caption' sx={{ mb: 2, display: 'block', color: 'primary.main' }}>
+                Account: <strong>khongbietthang0@gmail.com</strong> / Pass: <strong>admin</strong>
+              </Typography>
+              <Typography variant='caption' sx={{ mt: 2, display: 'block', color: 'primary.main' }}>
+                acc test api những page còn lại
+              </Typography>
+              <Typography variant='caption' sx={{ display: 'block', color: 'primary.main' }}>
+                Account: <strong>thanhtdps36968@fpt.edu.vn</strong> / Pass: <strong>admin</strong>
+              </Typography>
               <form noValidate autoComplete='off' onSubmit={handleLoginSubmit(onLoginSubmit)}>
                 <FormControl fullWidth sx={{ mb: 4 }}>
                   <Controller
@@ -303,7 +312,9 @@ const LoginPage = () => {
                     New on our platform?
                   </Typography>
                   <Typography>
-                    <LinkStyled href='/register'>Create an account</LinkStyled>
+                    <LinkStyled href='/register' onClick={handleOpenRegisterDialog}>
+                      Create an account
+                    </LinkStyled>
                   </Typography>
                 </Box>
                 <Divider sx={{ my: `${theme.spacing(6)} !important` }}>or</Divider>
@@ -318,6 +329,7 @@ const LoginPage = () => {
               </form>
             </>
           )}
+          <RegisterDialog open={openRegisterDialog} onClose={handleCloseRegisterDialog} />
         </Box>
       </RightWrapper>
     </Box>

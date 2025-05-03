@@ -94,7 +94,7 @@ const BillingAddressCard = () => {
               <TextField
                 fullWidth
                 type='number'
-                label='Phone Number'
+                label='Số điện thoại'
                 placeholder='202 555 0111'
                 InputProps={{ startAdornment: <InputAdornment position='start'>US (+1)</InputAdornment> }}
               />

@@ -274,7 +274,7 @@ const NewSupportRequest = () => {
               <FormControl fullWidth required disabled={!formData.type}>
                 <TextField
                   select
-                  label="Danh mục"
+                  label="Tài khoản"
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
@@ -489,7 +489,7 @@ const NewSupportRequest = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
-                    Danh mục
+                    Tài khoản
                   </Typography>
                   <Typography variant="body1">
                     {}

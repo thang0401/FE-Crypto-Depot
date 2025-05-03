@@ -1,27 +1,12 @@
-// ** Next Import
 import Link from 'next/link'
-
-// ** MUI Imports
 import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import CardContent from '@mui/material/CardContent'
-import { UnsafeBurnerWalletAdapter } from '@solana/wallet-adapter-wallets'
-import {
-  WalletModalProvider,
-  WalletDisconnectButton,
-  WalletMultiButton,
-  useWalletModal
-} from '@solana/wallet-adapter-react-ui'
-// ** Icon Imports
+import { useEffect, useState } from 'react'
+import { ethers } from 'ethers'
 import Icon from 'src/@core/components/icon'
-import '@solana/wallet-adapter-react-ui/styles.css'
-import { Grid } from '@mui/material'
-import { css } from '@emotion/react'
-import { PublicKey, TokenAccountsFilter } from '@solana/web3.js'
-import { useCallback, useEffect, useState } from 'react'
-import { useConnection, useWallet } from '@solana/wallet-adapter-react'
-import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
-import { log } from 'console'
+import { Box, Typography } from '@mui/material'
+
 interface Props {
   toggleAddPaymentDrawer: () => void
   toggleSendInvoiceDrawer: () => void
@@ -29,113 +14,139 @@ interface Props {
   setTokenData: (tokenData: any) => void
 }
 
-const DepositActions = ({ toggleSendInvoiceDrawer, toggleAddPaymentDrawer,setTokenData, setWalletPubkey }: Props) => {
-  const CryptoDepotPubkey = new PublicKey('9d5jmHCZT3hqDmjtLsdYnJoktdnF77pxDbEWkGmMi9gG')
-  const memoProgramm = new PublicKey('MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr')
-  // Token Metadata Program ID (Metaplex) trên Solana
-  const TOKEN_METADATA_PROGRAM_ID = new PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s')
-  const wallet = useWallet()
-  const { setVisible } = useWalletModal()
-  const { publicKey, connected } = useWallet()
-  const connectionStage = useConnection()
-  const [publickeyToBase58, setPublickeyToBase58] = useState('')
-  //const [tokenData, setTokenData] = useState<{ mintAddressString: string }[]>([])
-  //const [tokenData, setTokenData] = useState<{ mintAddressString: string }[]>([]);
+const DepositActions = ({ toggleSendInvoiceDrawer, toggleAddPaymentDrawer, setWalletPubkey, setTokenData }: Props) => {
+  const [account, setAccount] = useState<string | null>(null)
+  const [isConnected, setIsConnected] = useState(false)
 
-  const fetchAllAssetOfWallet = useCallback(async () => {
-    if (!publicKey) {
-      throw new Error('Wallet not connected')
+  // Kết nối với MetaMask
+  const connectWallet = async () => {
+    if (window.ethereum) {
+      try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        const accounts: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+        const address: string = accounts[0]
+        setAccount(address)
+        setIsConnected(true)
+        setWalletPubkey(address)
+        setTokenData([]) // Reset token data (có thể tùy chỉnh nếu cần)
+      } catch (error) {
+        console.error('Kết nối thất bại:', error)
+      }
+    } else {
+      alert('Vui lòng cài đặt MetaMask!')
     }
+  }
 
-    const tokenFilt: TokenAccountsFilter = {
-      programId: TOKEN_PROGRAM_ID // SPL Token Program ID
+  // Ngắt kết nối ví
+  const disconnectWallet = () => {
+    setAccount(null)
+    setIsConnected(false)
+    setWalletPubkey('')
+    setTokenData([])
+  }
+
+  // Sao chép địa chỉ ví
+  const copyAddress = () => {
+    if (account) {
+      navigator.clipboard.writeText(account)
+
     }
+  }
 
-    // Lấy tất cả token accounts thuộc về ví
-    const tokenAcc = await connectionStage.connection.getParsedTokenAccountsByOwner(publicKey, tokenFilt)
-    const walletpubkey =publicKey.toBase58()
-    console.log('walletpubkey',walletpubkey)
-    // setPublickeyToBase58(walletpubkey)
-    setWalletPubkey(walletpubkey)
-    // const temp = setPublickeyToBase58
-    // console.log('temp', temp)
+  // Thay đổi ví (yêu cầu kết nối lại)
+  const changeWallet = async () => {
+    await connectWallet()
+  }
 
-
-    // Duyệt qua danh sách và lấy balance và metadata của từng token account
-    const tokenNameAndSymbol = await Promise.all(
-      tokenAcc.value.map(async accountInfo => {
-        const publicKeyToken = accountInfo.pubkey
-        console.log('publicKeyToken', publicKeyToken.toBase58())
-        // Lấy mint address của token
-        const mintAddress = new PublicKey(accountInfo.account.data.parsed.info.mint)
-        const mintAddressString = mintAddress.toBase58()
-        console.log('Mint address:', mintAddressString)
-        return {
-          // tokenName,
-          // tokenSymbol,
-          mintAddressString
+  // Kiểm tra trạng thái kết nối khi tải trang
+  useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', (accounts: string[]) => {
+        if (accounts.length > 0) {
+          setAccount(accounts[0])
+          setIsConnected(true)
+          setWalletPubkey(accounts[0])
+        } else {
+          disconnectWallet()
         }
       })
-    )
-    setTokenData(tokenNameAndSymbol)
-    console.log('Danh sách token và metadata: ', tokenNameAndSymbol)
-    console.log('Danh sách token và metadata by usetate', setTokenData)
-  }, [connectionStage.connection, publicKey, setTokenData,setWalletPubkey])
-
-  useEffect(() => {
-    if (connected) {
-      fetchAllAssetOfWallet()
-    } else {
-      setVisible(true)
     }
-  }, [connectionStage.connection, fetchAllAssetOfWallet, setVisible, connected, publicKey])
+  }, [setWalletPubkey])
+
+  // Rút gọn địa chỉ ví để hiển thị
+  const shortenAddress = (address: string | null) => {
+    if (!address) return ''
+    return `${address.slice(0, 6)}...${address.slice(-4)}`
+  }
+
   return (
     <Card>
       <CardContent>
-        <div style={{ width: '100%', marginBottom: '16px' }}>
-          <WalletMultiButton style={{ width: '100%', height: '42px' }} />
-        </div>
+        {!isConnected ? (
+          <>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mb: 4, backgroundColor: '#F6851B' }} // Màu nhận diện của MetaMask
+              onClick={connectWallet}
+            >
+              Kết nối ví
+            </Button>
+            {/* <Button
+              fullWidth
+              variant="contained"
+              sx={{ mb: 4, backgroundColor: '#343A40' }}
+              disabled
+            >
+              Ngắt kết nối ví
+            </Button> */}
+          </>
+        ) : (
+          <>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, backgroundColor: '#F6851B', color: 'white', padding: 2, borderRadius: 1 }}>
+              <Icon icon="mdi:wallet"  />
+              <Typography>{shortenAddress(account)}</Typography>
+            </Box>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mb: 2, backgroundColor: '#343A40' }}
+              onClick={copyAddress}
+            >
+              Sao chép địa chỉ
+            </Button>
 
-        <div style={{ width: '100% !important', marginBottom: '16px' }}>
-          <WalletDisconnectButton style={{ width: '100%', height: '42px' }} />
-        </div>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mb: 4, backgroundColor: '#343A40' }}
+              onClick={disconnectWallet}
+            >
+              Ngắt kết nối
+            </Button>
+          </>
+        )}
 
         <Button
           fullWidth
           sx={{ mb: 4 }}
-          variant='contained'
+          variant="contained"
           onClick={toggleSendInvoiceDrawer}
-          startIcon={<Icon icon='bx:paper-plane' />}
+          startIcon={<Icon icon="bx:paper-plane" />}
         >
           Nhấn để nạp
         </Button>
-        <Button fullWidth sx={{ mb: 4 }} variant='outlined' color='secondary'>
+        <Button fullWidth sx={{ mb: 4 }} variant="outlined" color="secondary">
           Tải xuống PDF
         </Button>
         <Button
           fullWidth
           sx={{ mb: 4 }}
-          // target='_blank'
-          // component={Link}
-          color='secondary'
-          variant='outlined'
-          // href={`#`}
+          color="secondary"
+          variant="outlined"
         >
           In hoá đơn
         </Button>
-        {/* <Button
-          fullWidth
-          sx={{ mb: 4 }}
-          component={Link}
-          color='secondary'
-          variant='outlined'
-          href={`/apps/invoice/edit/${id}`}
-        >
-          Edit Invoice
-        </Button> */}
-        {/* <Button fullWidth variant='contained' onClick={toggleAddPaymentDrawer} startIcon={<Icon icon='bx:dollar' />}>
-          Add Payment
-        </Button> */}
       </CardContent>
     </Card>
   )

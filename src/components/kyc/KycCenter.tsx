@@ -114,59 +114,59 @@ const KycCenter: React.FC = () => {
   }, [kycData.district])
 
   const validateForm = (): boolean => {
-    const newErrors: Errors = {}
-
+    const newErrors: Errors = {};
+  
     if (!kycData.nationalId.trim()) {
-      newErrors.nationalId = "Số CMND/CCCD là bắt buộc"
+      newErrors.nationalId = "Số CMND/CCCD là bắt buộc";
     } else if (!/^\d{9,12}$/.test(kycData.nationalId)) {
-      newErrors.nationalId = "Số CMND/CCCD phải có 9-12 chữ số"
+      newErrors.nationalId = "Số CMND/CCCD phải có 9-12 chữ số";
     }
-
+  
     if (!kycData.firstName.trim()) {
-      newErrors.firstName = "Tên là bắt buộc"
-    } else if (!/^[a-zA-Z\s]+$/.test(kycData.firstName)) {
-      newErrors.firstName = "Tên chỉ được chứa chữ cái"
+      newErrors.firstName = "Tên là bắt buộc";
+    } else if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(kycData.firstName)) {
+      newErrors.firstName = "Tên chỉ được chứa chữ cái và khoảng trắng";
     }
-
+  
     if (!kycData.middleName.trim()) {
-      newErrors.middleName = "Tên đệm là bắt buộc"
-    } else if (!/^[a-zA-Z\s]+$/.test(kycData.middleName)) {
-      newErrors.middleName = "Tên đệm chỉ được chứa chữ cái"
+      newErrors.middleName = "Tên đệm là bắt buộc";
+    } else if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(kycData.middleName)) {
+      newErrors.middleName = "Tên đệm chỉ được chứa chữ cái và khoảng trắng";
     }
-
+  
     if (!kycData.lastName.trim()) {
-      newErrors.lastName = "Họ là bắt buộc"
-    } else if (!/^[a-zA-Z\s]+$/.test(kycData.lastName)) {
-      newErrors.lastName = "Họ chỉ được chứa chữ cái"
+      newErrors.lastName = "Họ là bắt buộc";
+    } else if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(kycData.lastName)) {
+      newErrors.lastName = "Họ chỉ được chứa chữ cái và khoảng trắng";
     }
-
-    if (!kycData.gender) newErrors.gender = "Giới tính là bắt buộc"
-
+  
+    if (!kycData.gender) newErrors.gender = "Giới tính là bắt buộc";
+  
     if (!kycData.phone.trim()) {
-      newErrors.phone = "Số điện thoại là bắt buộc"
+      newErrors.phone = "Số điện thoại là bắt buộc";
     } else if (!/^\d{10,11}$/.test(kycData.phone)) {
-      newErrors.phone = "Số điện thoại phải có 10-11 chữ số"
+      newErrors.phone = "Số điện thoại phải có 10-11 chữ số";
     }
-
+  
     if (!kycData.birthday) {
-      newErrors.birthday = "Ngày sinh là bắt buộc"
+      newErrors.birthday = "Ngày sinh là bắt buộc";
     } else {
-      const birthDate = new Date(kycData.birthday)
-      const today = new Date()
-      const age = today.getFullYear() - birthDate.getFullYear()
-      if (age < 18) newErrors.birthday = "Phải ít nhất 18 tuổi"
+      const birthDate = new Date(kycData.birthday);
+      const today = new Date();
+      const age = today.getFullYear() - birthDate.getFullYear();
+      if (age < 18) newErrors.birthday = "Phải ít nhất 18 tuổi";
     }
-
-    if (!kycData.address.trim()) newErrors.address = "Địa chỉ là bắt buộc"
-    if (!kycData.province) newErrors.province = "Tỉnh/Thành phố là bắt buộc"
-    if (!kycData.district) newErrors.district = "Quận/Huyện là bắt buộc"
-    if (!kycData.ward) newErrors.ward = "Phường/Xã là bắt buộc"
-    if (!kycData.frontImage) newErrors.frontImage = "Ảnh mặt trước là bắt buộc"
-    if (!kycData.backImage) newErrors.backImage = "Ảnh mặt sau là bắt buộc"
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+  
+    if (!kycData.address.trim()) newErrors.address = "Địa chỉ là bắt buộc";
+    if (!kycData.province) newErrors.province = "Tỉnh/Thành phố là bắt buộc";
+    if (!kycData.district) newErrors.district = "Quận/Huyện là bắt buộc";
+    if (!kycData.ward) newErrors.ward = "Phường/Xã là bắt buộc";
+    if (!kycData.frontImage) newErrors.frontImage = "Ảnh mặt trước là bắt buộc";
+    if (!kycData.backImage) newErrors.backImage = "Ảnh mặt sau là bắt buộc";
+  
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   // Hàm chuyển đổi định dạng ngày từ dd/mm/yyyy sang ISO
   const formatDateToISO = (dateStr: string): string => {
@@ -176,34 +176,40 @@ const KycCenter: React.FC = () => {
   }
 
   const handleSubmit = async () => {
-    if (!validateForm()) return
-
-    setIsSubmitting(true)
-
+    if (!validateForm()) return;
+  
+    setIsSubmitting(true);
+  
     try {
-      // Chuyển file thành base64 để gửi lên server
+      // Retrieve userData from localStorage
+      const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+      const userId = userData.id; // Get userId from userData
+      if (!userId) {
+        throw new Error("User ID not found in localStorage");
+      }
+  
+      // Convert file to base64 for upload
       const toBase64 = (file: File): Promise<string> =>
         new Promise((resolve, reject) => {
-          const reader = new FileReader()
-          reader.readAsDataURL(file)
-          reader.onload = () => resolve(reader.result as string)
-          reader.onerror = (error) => reject(error)
-        })
-
-      const frontImageBase64 = kycData.frontImage ? await toBase64(kycData.frontImage) : null
-      const backImageBase64 = kycData.backImage ? await toBase64(kycData.backImage) : null
-
-      // Gửi request đến API route để upload ảnh
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = (error) => reject(error);
+        });
+  
+      const frontImageBase64 = kycData.frontImage ? await toBase64(kycData.frontImage) : null;
+      const backImageBase64 = kycData.backImage ? await toBase64(kycData.backImage) : null;
+  
+      // Send request to API route to upload images
       const uploadResponse = await axios.post("/api/upload-to-drive", {
         nationalId: kycData.nationalId,
         frontImage: frontImageBase64,
         backImage: backImageBase64,
-      })
-
-      const { frontImageUrl, backImageUrl } = uploadResponse.data
-
-      // Chuẩn bị dữ liệu cho API KYC
-      const userId = "d00u84k5ig8jm25nu6pg"
+      });
+  
+      const { frontImageUrl, backImageUrl } = uploadResponse.data;
+  
+      // Prepare payload for KYC API
       const kycPayload = {
         fullName: `${kycData.lastName} ${kycData.middleName} ${kycData.firstName}`.trim(),
         firstName: kycData.firstName,
@@ -220,24 +226,28 @@ const KycCenter: React.FC = () => {
         province: provinces.find((p) => p.id === kycData.province)?.full_name || kycData.province,
         nation: kycData.country,
         idNumber: kycData.nationalId,
-      }
-
-      // Gửi request đến API KYC
-      await axios.put(`https://be-crypto-depot.name.vn/api/Kyc/ventify/${userId}`, kycPayload)
-
-      alert("KYC đã hoàn tất. Hồ sơ của bạn sẽ được xem xét trong vòng 24 giờ!")
-      localStorage.setItem("userKycStatus", JSON.stringify(true))
-      router.push("/")
-    } catch (error) {
-      console.error("Lỗi khi gửi KYC:", error)
-      setErrors((prev) => ({
-        ...prev,
-        submit: "Gửi KYC thất bại. Vui lòng thử lại.",
-      }))
+      };
+  
+      // Send request to KYC API
+      await axios.put(`https://be-crypto-depot.name.vn/api/Kyc/ventify/${userId}`, kycPayload);
+  
+      // Update userData in localStorage with kycStatus: true
+      const updatedUserData = { ...userData, kycStatus: true };
+      localStorage.setItem("userData", JSON.stringify(updatedUserData));
+  
+      alert("KYC đã hoàn tất. Hồ sơ của bạn sẽ được xem xét trong vòng 24 giờ!");
+      router.push("/");
+    } catch (error: any) {
+      console.error("Lỗi khi gửi KYC:", error);
+      // Lấy thông báo lỗi từ API hoặc sử dụng thông báo mặc định
+      const errorMessage =
+        error.response?.data?.message ||
+        "Gửi KYC thất bại. Vui lòng kiểm tra thông tin và thử lại.";
+      setErrors((prev) => ({ ...prev, submit: errorMessage }));
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const handleChange = (field: keyof KycData, value: any) => {
     if (field === "frontImage" && value instanceof File) {
@@ -326,7 +336,7 @@ const KycCenter: React.FC = () => {
               </Button>
               {!kycData.frontImage && (
                 <Typography variant="caption" sx={{ mt: 10, display: "block", textAlign: "center", pt: 5 }}>
-                  Tải lên tối đa 50MB, định dạng: .jpg, .png, .pdf
+                  Tải lên tối đa 1.5MB, định dạng: .jpg, .png, .pdf
                 </Typography>
               )}
             </Box>
@@ -378,7 +388,7 @@ const KycCenter: React.FC = () => {
               </Button>
               {!kycData.backImage && (
                 <Typography variant="caption" sx={{ mt: 10, display: "block", textAlign: "center", pt: 5 }}>
-                  Tải lên tối đa 50MB, định dạng: .jpg, .png, .pdf
+                  Tải lên tối đa 1.5MB, định dạng: .jpg, .png, .pdf
                 </Typography>
               )}
             </Box>

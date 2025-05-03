@@ -75,7 +75,7 @@ const auth = useAuth()
             })
           }
 
-          const balanceResponse = await axios.post('/api/get-balance', { userId })
+          const balanceResponse = await axios.get(`https://be-crypto-depot.name.vn/api/TransactionHistory/GetUserDebitAmount/${userId}`)
           if (balanceResponse.data) {
             setBalance(balanceResponse.data.balance)
             setFrozenBalance(balanceResponse.data.frozenBalance)

@@ -1,5 +1,5 @@
-import { Box, Typography, Paper, Chip, Stack, List } from "@mui/material";
-import { ArrowUpward, ArrowDownward } from "@mui/icons-material";
+import { Box, Typography, Paper, Chip, Stack, List, Select, MenuItem, Button, FormControl, InputLabel } from "@mui/material";
+import { ArrowUpward, ArrowDownward, ArrowForward } from "@mui/icons-material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -17,7 +17,11 @@ interface Transaction {
 
 const TransactionHistory = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
   const [username, setUsername] = useState<string>("");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [dateFilter, setDateFilter] = useState<string>("all");
 
   useEffect(() => {
     // Fetch username from localStorage
@@ -25,12 +29,12 @@ const TransactionHistory = () => {
     if (userData) {
       const parsedData = JSON.parse(userData);
       setUsername(parsedData.username || "");
-      // Fetch transactions using userId from userData
       const userId = parsedData.id;
       axios
         .get(`https://be-crypto-depot.name.vn/api/payment/transactions/user/${userId}`)
         .then((response) => {
           setTransactions(response.data);
+          setFilteredTransactions(response.data);
         })
         .catch((error) => {
           console.error("Error fetching transactions:", error);
@@ -38,9 +42,56 @@ const TransactionHistory = () => {
     }
   }, []);
 
+  useEffect(() => {
+    let filtered = [...transactions];
+
+    // Filter by transaction type
+    if (typeFilter !== "all") {
+      filtered = filtered.filter((t) => t.transactionType === typeFilter);
+    }
+
+    // Filter by status
+    if (statusFilter !== "all") {
+      filtered = filtered.filter((t) => t.status === statusFilter);
+    }
+
+    // Filter by date
+    if (dateFilter !== "all") {
+      const now = new Date();
+      let days: number;
+      switch (dateFilter) {
+        case "3days":
+          days = 3;
+          break;
+        case "7days":
+          days = 7;
+          break;
+        case "15days":
+          days = 15;
+          break;
+        case "30days":
+          days = 30;
+          break;
+        default:
+          days = 0;
+      }
+      if (days > 0) {
+        const cutoffDate = new Date(now.setDate(now.getDate() - days));
+        filtered = filtered.filter((t) => new Date(t.createAt) >= cutoffDate);
+      }
+    }
+
+    setFilteredTransactions(filtered);
+  }, [typeFilter, statusFilter, dateFilter, transactions]);
+
+  const clearFilters = () => {
+    setTypeFilter("all");
+    setStatusFilter("all");
+    setDateFilter("all");
+  };
+
   const formatDate = (utcDate: string) => {
     const date = new Date(utcDate);
-    // Add 7 hours for UTC+7
     date.setHours(date.getHours() + 7);
     const day = date.getDate().toString().padStart(2, "0");
     const month = date.toLocaleString("default", { month: "short" });
@@ -77,16 +128,16 @@ const TransactionHistory = () => {
     switch (status) {
       case "Sucesss":
       case "Approved":
-        color = "#2e7d32"; // Green for Success/Approved
+        color = "#2e7d32";
         bgcolor = "#2e7d32";
         break;
       case "Pending":
-        color = "#ed6c02"; // Orange for Pending
+        color = "#ed6c02";
         bgcolor = "#ed6c02";
         break;
       case "Failed":
       case "Rejected":
-        color = "#d32f2f"; // Red for Failed/Rejected
+        color = "#d32f2f";
         bgcolor = "#d32f2f";
         break;
       default:
@@ -121,6 +172,7 @@ const TransactionHistory = () => {
         "& .MuiChip-label": {
           px: 1,
           fontSize: "0.75rem",
+          textTransform: "none",
         },
       }}
     />
@@ -132,8 +184,62 @@ const TransactionHistory = () => {
         Lịch sử giao dịch
       </Typography>
 
+      <Stack direction="row" spacing={2} sx={{ mb: 3 }} alignItems="center">
+        <FormControl size="small" sx={{ minWidth: 120 }}>
+          <InputLabel>Loại giao dịch</InputLabel>
+          <Select
+            value={typeFilter}
+            label="Loại giao dịch"
+            onChange={(e) => setTypeFilter(e.target.value)}
+          >
+            <MenuItem value="all">Tất cả</MenuItem>
+            <MenuItem value="DEPOSIT">Nạp tiền</MenuItem>
+            <MenuItem value="WITHDRAW">Rút tiền</MenuItem>
+          </Select>
+        </FormControl>
+
+        <FormControl size="small" sx={{ minWidth: 120 }}>
+          <InputLabel>Trạng thái</InputLabel>
+          <Select
+            value={statusFilter}
+            label="Trạng thái"
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <MenuItem value="all">Tất cả</MenuItem>
+            <MenuItem value="Sucesss">Thành công</MenuItem>
+            <MenuItem value="Approved">Đã duyệt</MenuItem>
+            <MenuItem value="Pending">Đang chờ</MenuItem>
+            <MenuItem value="Failed">Thất bại</MenuItem>
+            <MenuItem value="Rejected">Bị từ chối</MenuItem>
+          </Select>
+        </FormControl>
+
+        <FormControl size="small" sx={{ minWidth: 120 }}>
+          <InputLabel>Khoảng thời gian</InputLabel>
+          <Select
+            value={dateFilter}
+            label="Khoảng thời gian"
+            onChange={(e) => setDateFilter(e.target.value)}
+          >
+            <MenuItem value="all">Tất cả</MenuItem>
+            <MenuItem value="3days">3 ngày trước</MenuItem>
+            <MenuItem value="7days">7 ngày trước</MenuItem>
+            <MenuItem value="15days">15 ngày trước</MenuItem>
+            <MenuItem value="30days">30 ngày trước</MenuItem>
+          </Select>
+        </FormControl>
+
+        <Button
+          variant="outlined"
+          onClick={clearFilters}
+          disabled={typeFilter === "all" && statusFilter === "all" && dateFilter === "all"}
+        >
+          Xóa bộ lọc
+        </Button>
+      </Stack>
+
       <List sx={{ width: "100%", p: 0 }}>
-        {transactions.map((transaction) => (
+        {filteredTransactions.map((transaction) => (
           <Paper
             key={transaction.transactionId}
             elevation={0}
@@ -177,14 +283,14 @@ const TransactionHistory = () => {
                     <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 1 }}>
                       {transaction.transactionType === "DEPOSIT" ? (
                         <>
-                          <AccountChip label="QR bank" />
-                          <ArrowDownward fontSize="small" sx={{ color: "grey.500" }} />
+                          <AccountChip label="VietQR Bank" />
+                          <ArrowForward fontSize="small" sx={{ color: "grey.500" }} />
                           <AccountChip label={username} />
                         </>
                       ) : (
                         <>
                           <AccountChip label={username} />
-                          <ArrowUpward fontSize="small" sx={{ color: "grey.500" }} />
+                          <ArrowForward fontSize="small" sx={{ color: "grey.500" }} />
                           <AccountChip label="Bank Transfer" />
                         </>
                       )}

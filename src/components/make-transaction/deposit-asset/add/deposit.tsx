@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
@@ -5,7 +6,7 @@ import DepositAddCard from './depositAddCard';
 import DepositActions from './depositAction';
 import SendCryptoDrawer from '../shared-drawer/send-crypto-drawer';
 
-const DepositAdd = (): JSX.Element => {
+const DepositAdd = (): JSX.Element | null => {
   const [error, setError] = useState<boolean>(false);
   const [data, setData] = useState<any>(null);
   const [addPaymentOpen, setAddPaymentOpen] = useState<boolean>(false);

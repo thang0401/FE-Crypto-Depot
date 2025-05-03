@@ -54,6 +54,9 @@ const auth = useAuth()
   const router = useRouter()
   const { logout } = useAuth()
 
+  const [balance, setBalance] = useState<number>(0) // State để lưu balance
+  const [frozenBalance, setFrozenBalance] = useState<number>(0)
+
   // ** Vars
   const { direction } = settings
   useEffect(() => {
@@ -70,6 +73,12 @@ const auth = useAuth()
               fullName: response.data.fullName,
               avatar: response.data.avatar
             })
+          }
+
+          const balanceResponse = await axios.get(`https://be-crypto-depot.name.vn/api/TransactionHistory/GetUserDebitAmount/${userId}`)
+          if (balanceResponse.data) {
+            setBalance(balanceResponse.data.balance)
+            setFrozenBalance(balanceResponse.data.frozenBalance)
           }
         }
       } catch (error){
@@ -161,8 +170,11 @@ const auth = useAuth()
               <Typography sx={{ fontWeight: 500 }}>
                 {userName}
               </Typography>
-              <Typography variant='body2' sx={{ color: 'text.secondary' }}>
+              {/* <Typography variant='body2' sx={{ color: 'text.secondary' }}>
                 {auth.user?.role}
+              </Typography> */}
+              <Typography variant='body2' sx={{ color: 'text.secondary' }}>
+                 Số dư: <strong>{balance.toFixed(2)}</strong> USDC
               </Typography>
             </Box>
           </Box>

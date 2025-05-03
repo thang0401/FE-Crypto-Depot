@@ -1,9 +1,10 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef } from "react"
+import { useEffect,useState, useRef } from "react"
 import { useRouter } from "next/router"
 import Head from "next/head"
+
 import {
   Container,
   Typography,
@@ -46,54 +47,19 @@ interface SupportRequest {
   phone: string
   files: File[]
 }
-
-// Define complaint types
-const complaintTypes = [
-  { value: "product", label: "Vấn đề về sản phẩm" },
-  { value: "service", label: "Vấn đề về dịch vụ" },
-  { value: "billing", label: "Vấn đề về thanh toán" },
-  { value: "delivery", label: "Vấn đề về giao hàng" },
-  { value: "technical", label: "Hỗ trợ kỹ thuật" },
-  { value: "feedback", label: "Phản hồi chung" },
-  { value: "other", label: "Khác" },
-]
-
-// Define categories based on type
-const categoryOptions = {
-  product: [
-    { value: "defective", label: "Sản phẩm lỗi" },
-    { value: "damaged", label: "Hư hỏng trong quá trình vận chuyển" },
-    { value: "wrong_item", label: "Nhận sai sản phẩm" },
-    { value: "missing_parts", label: "Thiếu bộ phận" },
-  ],
-  service: [
-    { value: "poor_service", label: "Dịch vụ kém chất lượng" },
-    { value: "delayed_response", label: "Phản hồi chậm trễ" },
-    { value: "incorrect_info", label: "Cung cấp thông tin sai" },
-  ],
-  billing: [
-    { value: "overcharged", label: "Tính phí quá cao" },
-    { value: "double_charged", label: "Tính phí trùng lặp" },
-    { value: "refund_issue", label: "Vấn đề hoàn tiền" },
-    { value: "subscription", label: "Vấn đề về gói đăng ký" },
-  ],
-  delivery: [
-    { value: "late", label: "Giao hàng trễ" },
-    { value: "missing", label: "Mất hàng" },
-    { value: "wrong_address", label: "Giao sai địa chỉ" },
-  ],
-  technical: [
-    { value: "website", label: "Vấn đề về website" },
-    { value: "app", label: "Vấn đề về ứng dụng di động" },
-    { value: "account", label: "Vấn đề truy cập tài khoản" },
-  ],
-  feedback: [
-    { value: "suggestion", label: "Đề xuất" },
-    { value: "compliment", label: "Khen ngợi" },
-    { value: "complaint", label: "Khiếu nại chung" },
-  ],
-  other: [{ value: "other", label: "Vấn đề khác" }],
+//Define report detail request
+interface ReportItem {
+  id: string;
+  name: string;
 }
+
+// Define the interface for the entire JSON object
+interface ReportCategories {
+  [category: string] : ReportItem[];
+}
+
+
+
 
 // Define priority levels
 const priorityLevels = [
@@ -114,6 +80,8 @@ const contactTimeOptions = [
 // Define steps for the stepper
 const steps = ["Chi tiết yêu cầu", "Thông tin liên hệ", "Xem xét & Gửi"]
 
+
+
 const NewSupportRequest = () => {
   const theme = useTheme()
   const router = useRouter()
@@ -121,8 +89,26 @@ const NewSupportRequest = () => {
 
   // State for form data
   const [activeStep, setActiveStep] = useState(0)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false) 
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const [reportsDetail, setReportDetail] = useState<ReportCategories | null>(null)
+  useEffect(() => {
+    const fetchReportDetail = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/api/CustomerReport/initNewReqForm');
+            if (!response.ok) {
+                throw new Error('Failed to fetch interest rates');
+            }
+            const data: ReportCategories = await response.json();
+            console.log(data);
+            setReportDetail(data);
+            setLoading(false);
+        } catch (err) {
+            setLoading(false);
+        }
+    };
+    fetchReportDetail();
+}, []);
   const [formData, setFormData] = useState<SupportRequest>({
     type: "",
     category: "",
@@ -161,7 +147,7 @@ const NewSupportRequest = () => {
   }
 
   // Handle file upload
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files)
       setFormData((prev) => ({
@@ -200,7 +186,7 @@ const NewSupportRequest = () => {
   const isStepValid = () => {
     if (activeStep === 0) {
       return (
-        formData.type !== "" &&
+        formData.type !== null &&
         formData.category !== "" &&
         formData.subject.trim() !== "" &&
         formData.description.trim() !== ""
@@ -222,18 +208,44 @@ const NewSupportRequest = () => {
 
   // Handle form submission
   const handleSubmit = async () => {
+
     setLoading(true)
-
+    const data=new FormData();
+    //Append data
+    data.append('type', formData.type);
+    data.append('category', formData.category);
+    data.append('priority', formData.priority);
+    data.append('subject', formData.subject);
+    data.append('description', formData.description);
+    data.append('orderId', formData.orderId);
+    data.append('contactMethod', formData.contactMethod);
+    data.append('contactTime', formData.contactTime);
+    data.append('email', formData.email);
+    data.append('phone', formData.phone);
+    //Append file data 
+    console.log(formData.files)
+    formData.files.forEach((file, index) => {
+      data.append(`files`, file); 
+    });
+    console.log(data.get("files"))
+    //
     try {
-      // Mock API call
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
+      const response = await fetch(`http://localhost:8000/api/CustomerReport/IssueReport`, {
+        method: "POST",
+        body: data,
+        });
       setSubmitStatus("success")
 
       // Redirect to success page after a delay
-      setTimeout(() => {
-        router.push("/support/request-submitted?id=SR" + Math.floor(Math.random() * 1000000))
-      }, 2000)
+      
+      if(response.status===500){
+        console.error("Lỗi khi gửi biểu mẫu:")
+        setSubmitStatus("error")
+      }else{
+        setTimeout(() => {
+          router.push("/support/request-submitted?id=SR" + Math.floor(Math.random() * 1000000))
+        }, 2000)
+      }
     } catch (error) {
       console.error("Lỗi khi gửi biểu mẫu:", error)
       setSubmitStatus("error")
@@ -252,6 +264,9 @@ const NewSupportRequest = () => {
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
+        if (!reportsDetail) {
+          return <div>Loading...</div>;
+        }
         return (
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
@@ -265,11 +280,12 @@ const NewSupportRequest = () => {
                   required
                   helperText="Chọn loại yêu cầu hoặc vấn đề"
                 >
-                  {complaintTypes.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
+                  {Object.keys(reportsDetail).map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
                     </MenuItem>
                   ))}
+          
                 </TextField>
               </FormControl>
             </Grid>
@@ -283,14 +299,13 @@ const NewSupportRequest = () => {
                   value={formData.category}
                   onChange={handleChange}
                   required
-                  helperText="Chọn Tài khoản cụ thể cho yêu cầu của bạn"
-                >
-                  {formData.type &&
-                    categoryOptions[formData.type as keyof typeof categoryOptions]?.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
+                  helperText="Chọn danh mục cụ thể cho yêu cầu của bạn"
+                > 
+                  {reportsDetail[formData.type]?.map((option) => (
+                      <MenuItem key={option.id} value={option.id}>
+                        {option.name}
                     </MenuItem>
-                  ))}
+                  ))||""}
                 </TextField>
               </FormControl>
             </Grid>
@@ -483,12 +498,12 @@ const NewSupportRequest = () => {
 
             <Paper variant="outlined" sx={{ p: 3, mb: 3 }}>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6}> 
                   <Typography variant="subtitle2" color="text.secondary">
                     Loại yêu cầu
                   </Typography>
                   <Typography variant="body1">
-                    {complaintTypes.find((t) => t.value === formData.type)?.label || ""}
+                     {}
                   </Typography>
                 </Grid>
 
@@ -497,11 +512,7 @@ const NewSupportRequest = () => {
                     Tài khoản
                   </Typography>
                   <Typography variant="body1">
-                    {(formData.type &&
-                      categoryOptions[formData.type as keyof typeof categoryOptions]?.find(
-                        (c) => c.value === formData.category,
-                      )?.label) ||
-                      ""}
+                    {}
                   </Typography>
                 </Grid>
 

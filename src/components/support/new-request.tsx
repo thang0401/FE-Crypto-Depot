@@ -213,7 +213,13 @@ const NewSupportRequest = () => {
     try {
       // Mock API call
       await new Promise((resolve) => setTimeout(resolve, 1500))
-
+      const response = await fetch(`http://localhost:8000/api/CustomerReport/IssueReport`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+        });
       setSubmitStatus("success")
 
       // Redirect to success page after a delay

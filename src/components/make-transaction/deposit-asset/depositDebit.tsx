@@ -23,7 +23,10 @@ import HistoryIcon from '@mui/icons-material/History';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SendIcon from '@mui/icons-material/Send';
 import { StyledCard, SearchBar, RecentUserItem } from './styled-components';
-import router from 'next/router'
+import router from 'next/router';
+import Web3 from 'web3';
+import { deposit_abi } from './contractABI/ContractABI.js';
+
 // Types
 interface User {
   id: string;
@@ -31,6 +34,16 @@ interface User {
   phone: string;
   avatar?: string;
   lastTransaction?: string;
+  debitAccountId?: string;
+}
+
+interface Transaction {
+  id: string;
+  amount: string;
+  transactionType: string;
+  transactionHash: string;
+  status: string;
+  timestamp: string;
 }
 
 interface DialogState {
@@ -39,7 +52,7 @@ interface DialogState {
 }
 
 // EmptyState Component
-function EmptyState() {
+function EmptyState(): JSX.Element {
   return (
     <StyledCard>
       <CardContent
@@ -68,7 +81,7 @@ function EmptyState() {
 interface RecipientSearchProps {
   phoneFilter: string;
   selectedUser: User | null;
-  recentUsers: User[];
+  recentUsers: Transaction[];
   onPhoneFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onUserSelect: (user: User) => void;
   onSearch: () => void;
@@ -85,7 +98,7 @@ function RecipientSearch({
   onSearch,
   dialog,
   onCloseDialog,
-}: RecipientSearchProps) {
+}: RecipientSearchProps): JSX.Element {
   return (
     <StyledCard>
       <CardContent>
@@ -117,35 +130,38 @@ function RecipientSearch({
             Giao dịch gần đây
           </Typography>
           <List sx={{ py: 0 }}>
-            {recentUsers.map((user) => (
-              <RecentUserItem
-                key={user.id}
-                onClick={() => onUserSelect(user)}
-                selected={selectedUser?.id === user.id}
-                sx={{
-                  bgcolor: selectedUser?.id === user.id ? 'rgba(25, 118, 210, 0.08)' : 'transparent',
-                }}
-              >
-                <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: selectedUser?.id === user.id ? 'primary.main' : 'grey.400' }}>
-                    {user.avatar}
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={user.name}
-                  secondary={
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography variant="body2" component="span">
-                        {user.phone}
-                      </Typography>
-                      <Typography variant="caption" component="span" sx={{ ml: 1, opacity: 0.7 }}>
-                        {user.lastTransaction}
-                      </Typography>
-                    </Box>
-                  }
-                />
-              </RecentUserItem>
-            ))}
+            {Array.isArray(recentUsers) && recentUsers.length > 0 ? (
+              recentUsers.map((tx) => (
+                <RecentUserItem
+                  key={tx.id}
+                  onClick={() => onUserSelect({ id: tx.id, name: '', phone: '', lastTransaction: tx.timestamp })}
+                  sx={{ bgcolor: 'transparent' }}
+                >
+                  <ListItemAvatar>
+                    <Avatar sx={{ bgcolor: 'grey.400' }}>
+                      {tx.transactionType.charAt(0)}
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={`Giao dịch ${tx.transactionType}`}
+                    secondary={
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2" component="span">
+                          {tx.amount} USDC
+                        </Typography>
+                        <Typography variant="caption" component="span" sx={{ ml: 1, opacity: 0.7 }}>
+                          {new Date(tx.timestamp).toLocaleDateString()}
+                        </Typography>
+                      </Box>
+                    }
+                  />
+                </RecentUserItem>
+              ))
+            ) : (
+              <Typography variant="body2" color="text.secondary">
+                Không có giao dịch gần đây.
+              </Typography>
+            )}
           </List>
         </Box>
         <Dialog open={dialog.open} onClose={onCloseDialog}>
@@ -169,10 +185,13 @@ interface UserDetailsProps {
   selectedUser: User;
   onConfirm: () => void;
 }
-const handleComfirmButton = () => {
-  router.push('/make-transaction/deposit-asset/add')
-}
-function UserDetails({ selectedUser, onConfirm }: UserDetailsProps) {
+
+function UserDetails({ selectedUser, onConfirm }: UserDetailsProps): JSX.Element {
+  const handleConfirmButton = () => {
+    localStorage.setItem('selectedUser', JSON.stringify(selectedUser));
+    router.push('/make-transaction/deposit-asset/add');
+  };
+
   return (
     <StyledCard>
       <CardContent>
@@ -206,7 +225,7 @@ function UserDetails({ selectedUser, onConfirm }: UserDetailsProps) {
               variant="contained"
               color="primary"
               size="large"
-              onClick={handleComfirmButton}
+              onClick={handleConfirmButton}
               startIcon={<SendIcon />}
               sx={{ borderRadius: '28px', px: 3 }}
             >
@@ -220,53 +239,105 @@ function UserDetails({ selectedUser, onConfirm }: UserDetailsProps) {
 }
 
 // TransferDebit Component
-export default function TransferDebit() {
-  const [phoneFilter, setPhoneFilter] = useState('');
+export default function TransferDebit(): JSX.Element {
+  const [phoneFilter, setPhoneFilter] = useState<string>('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [recentUsers, setRecentUsers] = useState<User[]>([]);
+  const [recentUsers, setRecentUsers] = useState<Transaction[]>([]);
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [dialog, setDialog] = useState<DialogState>({
     open: false,
     message: '',
   });
 
+  // Bước 0: Fetch 5 giao dịch gần đây (real-time từ blockchain và BE)
   useEffect(() => {
-    const mockRecentUsers: User[] = [
-      { id: 'user1', name: 'Nguyen Van An', phone: '0901234567', lastTransaction: 'Today', avatar: 'A' },
-      { id: 'user2', name: 'Tran Thi Mai', phone: '0912345678', lastTransaction: 'Yesterday', avatar: 'M' },
-      { id: 'user3', name: 'Le Hoang Bao', phone: '0923456789', lastTransaction: '3 days ago', avatar: 'B' },
-      { id: 'user4', name: 'Pham Minh Tuan', phone: '0934567890', lastTransaction: '1 week ago', avatar: 'T' },
-      { id: 'user5', name: 'Hoang Thi Ngoc', phone: '0945678901', lastTransaction: '2 weeks ago', avatar: 'N' },
-    ];
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    const userId = userData.id; // "d0250rm199kgpknaiko0"
 
-    const mockAllUsers: User[] = [
-      ...mockRecentUsers,
-      { id: 'user6', name: 'Do Van Hung', phone: '0911111111', avatar: 'H' },
-    ];
+    // Lấy giao dịch từ BE
+    const fetchRecentTransactions = async () => {
+      try {
+        const response = await fetch('/api/debitAccount/recent-transactions', {
+          method: 'GET',
+        });
+        const transactions = await response.json();
+        setRecentUsers(Array.isArray(transactions) ? transactions : []);
+      } catch (error) {
+        console.error('Error fetching recent transactions:', error);
+        setRecentUsers([]);
+      }
+    };
 
-    setRecentUsers(mockRecentUsers);
-    setAllUsers(mockAllUsers);
+    fetchRecentTransactions();
+
+    // Lắng nghe sự kiện từ blockchain
+    const web3 = new Web3(process.env.NEXT_PUBLIC_WEB3_PROVIDER_URL || '');
+    const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || '';
+    const contract = new web3.eth.Contract(deposit_abi, contractAddress);
+
+    contract.events.Deposit({
+      filter: { userId }, // Lọc theo userId
+      fromBlock: 'latest',
+    })
+      .on('data', (event: any) => {
+        const { user, debitAccountId, amount, transactionHash, timestamp } = event.returnValues;
+        const transaction: Transaction = {
+          id: transactionHash,
+          amount: web3.utils.fromWei(amount, 'ether'),
+          transactionType: 'DEPOSIT',
+          transactionHash,
+          status: 'Thành công',
+          timestamp: new Date(timestamp * 1000).toISOString(),
+        };
+        setRecentUsers((prev) => [transaction, ...prev].slice(0, 5));
+      })
+      // .on('error', (error: Error) => {
+      //   console.error('Error listening to Deposit event:', error);
+      // });
   }, []);
 
   const handlePhoneFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPhoneFilter(value);
-    // Do not automatically search here; wait for the "Tìm kiếm" button click
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (selectedUser) {
       setSelectedUser(null);
     }
 
     if (phoneFilter.length === 10) {
-      const foundUser = allUsers.find((user) => user.phone === phoneFilter);
-      if (foundUser) {
-        setSelectedUser(foundUser);
-      } else {
+      try {
+        const response = await fetch(`http://localhost:8000/api/debitAccount/search?phoneNumber=${phoneFilter}`, {
+          method: 'GET',
+        });
+        const users = await response.json();
+        if (users.length > 0) {
+          const user = users[0];
+          setSelectedUser({
+            id: user.id,
+            name: user.fullName,
+            phone: user.phoneNumber,
+            avatar: user.fullName.charAt(0),
+            lastTransaction: '',
+            debitAccountId: user.debitAccountId,
+          });
+          setAllUsers(users.map((u: any) => ({
+            id: u.id,
+            name: u.fullName,
+            phone: u.phoneNumber,
+            avatar: u.fullName.charAt(0),
+          })));
+        } else {
+          setDialog({
+            open: true,
+            message: 'Người dùng không tồn tại.',
+          });
+        }
+      } catch (error) {
         setDialog({
           open: true,
-          message: 'Người dùng không tồn tại.',
+          message: 'Lỗi khi tìm kiếm người dùng.',
         });
       }
     } else {

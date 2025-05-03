@@ -1,0 +1,1 @@
+const CONTRACT_ABI = [/* ABI của smart contract */];

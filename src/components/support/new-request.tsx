@@ -147,7 +147,7 @@ const NewSupportRequest = () => {
   }
 
   // Handle file upload
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files)
       setFormData((prev) => ({
@@ -208,24 +208,44 @@ const NewSupportRequest = () => {
 
   // Handle form submission
   const handleSubmit = async () => {
-    setLoading(true)
 
+    setLoading(true)
+    const data=new FormData();
+    //Append data
+    data.append('type', formData.type);
+    data.append('category', formData.category);
+    data.append('priority', formData.priority);
+    data.append('subject', formData.subject);
+    data.append('description', formData.description);
+    data.append('orderId', formData.orderId);
+    data.append('contactMethod', formData.contactMethod);
+    data.append('contactTime', formData.contactTime);
+    data.append('email', formData.email);
+    data.append('phone', formData.phone);
+    //Append file data 
+    console.log(formData.files)
+    formData.files.forEach((file, index) => {
+      data.append(`files`, file); 
+    });
+    console.log(data.get("files"))
+    //
     try {
-      // Mock API call
-      await new Promise((resolve) => setTimeout(resolve, 1500))
       const response = await fetch(`http://localhost:8000/api/CustomerReport/IssueReport`, {
         method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: data,
         });
       setSubmitStatus("success")
 
       // Redirect to success page after a delay
-      setTimeout(() => {
-        router.push("/support/request-submitted?id=SR" + Math.floor(Math.random() * 1000000))
-      }, 2000)
+      
+      if(response.status===500){
+        console.error("Lỗi khi gửi biểu mẫu:")
+        setSubmitStatus("error")
+      }else{
+        setTimeout(() => {
+          router.push("/support/request-submitted?id=SR" + Math.floor(Math.random() * 1000000))
+        }, 2000)
+      }
     } catch (error) {
       console.error("Lỗi khi gửi biểu mẫu:", error)
       setSubmitStatus("error")
@@ -282,7 +302,7 @@ const NewSupportRequest = () => {
                   helperText="Chọn danh mục cụ thể cho yêu cầu của bạn"
                 > 
                   {reportsDetail[formData.type]?.map((option) => (
-                      <MenuItem key={option.id} value={option.name}>
+                      <MenuItem key={option.id} value={option.id}>
                         {option.name}
                     </MenuItem>
                   ))||""}

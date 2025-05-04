@@ -58,14 +58,14 @@ const DepositAddCard = ({ customerData }: Props): JSX.Element => {
         };
         setTransactions((prev) => [transaction, ...prev].slice(0, 5));
       })
-      .on ('error', (error: Error) => {
-        console.error('Error listening to Deposit event:', error);
-      });
+      // .on ('error', (error: Error) => {
+      //   console.error('Error listening to Deposit event:', error);
+      // });
 
     // Cleanup subscription on component unmount
-    return () => {
-      eventSubscription.removeAllListeners(); // Unsubscribe from all listeners
-    };
+    // return () => {
+    //   eventSubscription.removeAllListeners(); // Unsubscribe from all listeners
+    // };
   }, [customerData.id]);
   return (
     <Card>

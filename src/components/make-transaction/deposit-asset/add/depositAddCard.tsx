@@ -1,49 +1,64 @@
-// ** MUI Imports
-import Grid from '@mui/material/Grid'
-import Card from '@mui/material/Card'
-import Table from '@mui/material/Table'
-import Divider from '@mui/material/Divider'
-import TableRow from '@mui/material/TableRow'
-import TableHead from '@mui/material/TableHead'
-import TableBody from '@mui/material/TableBody'
-import Typography from '@mui/material/Typography'
-import Box, { BoxProps } from '@mui/material/Box'
-import CardContent from '@mui/material/CardContent'
-import { styled, useTheme } from '@mui/material/styles'
-import TableContainer from '@mui/material/TableContainer'
-import TableCell, { TableCellBaseProps } from '@mui/material/TableCell'
-
-// ** Configs
-import themeConfig from 'src/configs/themeConfig'
-
-// ** Types
-import { SingleInvoiceType } from 'src/types/apps/invoiceTypes'
-import { Accordion, AccordionDetails, AccordionSummary, Icon } from '@mui/material'
+import { useState, useEffect } from 'react';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import Table from '@mui/material/Table';
+import Divider from '@mui/material/Divider';
+import TableRow from '@mui/material/TableRow';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import CardContent from '@mui/material/CardContent';
+import { styled, useTheme } from '@mui/material/styles';
+import TableContainer from '@mui/material/TableContainer';
+import TableCell from '@mui/material/TableCell';
+import { Accordion, AccordionDetails, AccordionSummary, Icon } from '@mui/material';
+import themeConfig from 'src/configs/themeConfig';
+import Web3 from 'web3';
+import { deposit_abi } from '../contractABI/ContractABI.js';
 
 interface Props {
-  data: SingleInvoiceType
+  customerData: { id: string; name: string; phone: string; debitAccountId: string };
 }
 
-const MUITableCell = styled(TableCell)<TableCellBaseProps>(({ theme }) => ({
+const MUITableCell = styled(TableCell)(({ theme }) => ({
   borderBottom: 0,
   paddingLeft: '0 !important',
   paddingRight: '0 !important',
   paddingTop: `${theme.spacing(1)} !important`,
-  paddingBottom: `${theme.spacing(2)} !important`
-}))
+  paddingBottom: `${theme.spacing(2)} !important`,
+}));
 
-const CalcWrapper = styled(Box)<BoxProps>(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  '&:not(:last-of-type)': {
-    marginBottom: theme.spacing(2)
-  }
-}))
+const DepositAddCard = ({ customerData }: Props): JSX.Element => {
+  const theme = useTheme();
+  const [transactions, setTransactions] = useState<any[]>([]);
 
-const DepositAddCard = () => {
-  // ** Hook
-  const theme = useTheme()
+  // Bước 6: Hiển thị giao dịch từ blockchain (real-time)
+  useEffect(() => {
+    const web3 = new Web3(process.env.NEXT_PUBLIC_WEB3_PROVIDER_URL || '');
+    const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || '';
+    const contract = new web3.eth.Contract(deposit_abi, contractAddress);
+
+    contract.events.Deposit({
+      filter: { userId: customerData.id },
+      fromBlock: 'latest',
+    })
+      .on('data', (event: any) => {
+        const { user, debitAccountId, amount, transactionHash, timestamp } = event.returnValues;
+        const transaction = {
+          id: transactionHash,
+          amount: web3.utils.fromWei(amount, 'ether'),
+          transactionType: 'DEPOSIT',
+          transactionHash,
+          status: 'Thành công',
+          timestamp: new Date(timestamp * 1000).toISOString(),
+        };
+        setTransactions((prev) => [transaction, ...prev].slice(0, 5));
+      })
+      // .on('error', (error: Error) => {
+      //   console.error('Error listening to Deposit event:', error);
+      // });
+  }, [customerData.id]);
 
   return (
     <Card>
@@ -110,42 +125,28 @@ const DepositAddCard = () => {
 
       <Grid display={'flex'} width={'100%'}>
         <Grid width={'60%'}>
-          {/* </Grid> */}
           <CardContent>
-            <Grid
-              container
-              display={'grid'}
-              sx={{ p: { sm: 4, xs: 0 }, pb: theme => `${theme.spacing(1)} !important` }}
-            >
+            <Grid container display={'grid'} sx={{ p: { sm: 4, xs: 0 }, pb: theme => `${theme.spacing(1)} !important` }}>
               <Grid item sx={{ mb: { lg: 0, xs: 5 } }}>
                 <Typography sx={{ mb: 4, fontWeight: 500 }}>Nạp đến</Typography>
-
                 <Table>
                   <TableBody>
-
                     <TableRow>
                       <MUITableCell sx={{ pb: '0 !important' }}>Tên khách hàng:</MUITableCell>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Nguyen Cao Thang</MUITableCell>
-                    </TableRow>
-                    <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Email:</MUITableCell>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Thangnc0401@gmail.com</MUITableCell>
-                    </TableRow>
-                    <TableRow>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Số điện thoại:</MUITableCell>
-                      <MUITableCell sx={{ pb: '0 !important' }}>0123456789</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>{customerData.name}</MUITableCell>
                     </TableRow>
                     {/* <TableRow>
-                      <MUITableCell>Quốc gia:</MUITableCell>
-                      <MUITableCell>Vietnam</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>Email:</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>{customerData.email}</MUITableCell>
                     </TableRow> */}
+                    <TableRow>
+                      <MUITableCell sx={{ pb: '0 !important' }}>Số điện thoại:</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>{customerData.phone}</MUITableCell>
+                    </TableRow>
                   </TableBody>
                 </Table>
               </Grid>
 
-              {/* <Divider sx={{ mb: '0 !important' }} /> */}
-
-              {/* <TableContainer> */}
               <Grid width={'100%'} item xs={12} sm={6} sx={{ mb: { lg: 0, xs: 5 } }}>
                 <Typography sx={{ mt: 8, mb: 4, fontWeight: 500 }}>Lịch sử nạp tài sản vừa xong:</Typography>
                 <Table>
@@ -158,37 +159,21 @@ const DepositAddCard = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <TableRow>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>1</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>4.8</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Thành công</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>2</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>2.2</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Thành công</TableCell>{' '}
-                    </TableRow>
-                    <TableRow>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>3</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>460</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Thành công</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>4</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>70</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Thành công</TableCell>
-                    </TableRow>
+                    {transactions.map((tx, index) => (
+                      <TableRow key={tx.transactionHash}>
+                        <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>{index + 1}</TableCell>
+                        <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
+                        <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>{tx.amount}</TableCell>
+                        <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>{tx.status}</TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </Grid>
             </Grid>
           </CardContent>
         </Grid>
-        <Grid width={'40%'} item xs={12} sm={6} sx={{ mb: { lg: 0, xs: 5 } }}>
+        <Grid width={'40%'}>
           <Typography sx={{ mb: 4, fontWeight: 500 }}>FAQ?</Typography>
           <Accordion>
             <AccordionSummary>
@@ -242,17 +227,8 @@ const DepositAddCard = () => {
           </Accordion>
         </Grid>
       </Grid>
-      {/* <Divider
-        sx={{ mt: theme => `${theme.spacing(2)} !important`, mb: theme => `${theme.spacing(0.5)} !important` }}
-      />
-
-      <CardContent>
-        <Typography sx={{ color: 'text.secondary' }}>
-          <strong>Note:</strong> Nguyễn Cao Thang transfer to you
-        </Typography>
-      </CardContent> */}
     </Card>
-  )
-}
+  );
+};
 
-export default DepositAddCard
+export default DepositAddCard;

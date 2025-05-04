@@ -540,15 +540,14 @@ const SavingsPortfolioForm = () => {
         }),
       });
 
+      setOpenDialog(true);
+      setTimeout(() => {
+        setOpenDialog(false);
+        router.push('/saving/my-portfolios');
+      }, 5000);
       if (!response.ok) {
         throw new Error('Failed to submit data');
       }
-
-      const result = await response.json();
-      console.log('Submit success:', result);
-
-      // Chuyển hướng hoặc hiển thị thông báo thành công
-      router.push('/success');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {

@@ -158,13 +158,13 @@ const Step1 = React.memo(
                   onChange={handleSelectChange("sourceAccount")}
                   label="Chọn tài khoản"
                 >
-                  
+
                   {account != null && (
                       <MenuItem key={account.id} value={account.id}>
                         {account.id}
                       </MenuItem>
                   )}
-                  
+
                 </Select>
                 {errors.sourceAccount && (
                   <Typography color="error" variant="caption" sx={{ mt: 1, ml: 2 }}>
@@ -406,9 +406,9 @@ interface Account{
   balance: number
 }
 
-interface SubmitResponse{
-  
-}
+// interface SubmitResponse{
+
+// }
 
 // Main Component
 const SavingsPortfolioForm = () => {
@@ -423,7 +423,7 @@ const SavingsPortfolioForm = () => {
   const [usdcBalance, setUsdcBalance] = useState("0")
   const [ethBalance, setEthBalance] = useState("0")
   const [hideBalance, setHideBalance] = useState(false)
-  
+
 
     const [account, setAccount] = React.useState<Account>()
     const [loading, setLoading] = React.useState(true)
@@ -451,7 +451,7 @@ const SavingsPortfolioForm = () => {
           if (!response.ok) throw new Error('Failed to fetch accounts');
           const data = await response.json();
           // Ánh xạ walletAddress thành Account
-          
+
           const fetchedAccount = data.walletAdress
             ? {
                 id: data.walletAdress.id,
@@ -473,7 +473,7 @@ const SavingsPortfolioForm = () => {
       fetchAccounts();
     }, []);
     console.log(account)
-    
+
   // const { ready, authenticated, user, login } = usePrivy();
   // const { sendTransaction } = useSendTransaction();
 
@@ -533,7 +533,7 @@ const SavingsPortfolioForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           amount:formData.amount,
           termId:formData.term,
           OTP:123456

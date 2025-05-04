@@ -1,10 +1,13 @@
+import { Home } from 'lucide-react'
+import { NextPage } from 'next'
 import React from 'react'
 import Blog from 'src/components/blog'
 
-export default function index() {
+const BlogPage : NextPage = () => {
   return (
-    <div>
-      <Blog />
-    </div>
+    <Blog/>
   )
 }
+BlogPage.guestGuard = true
+BlogPage.authGuard = false
+export default BlogPage

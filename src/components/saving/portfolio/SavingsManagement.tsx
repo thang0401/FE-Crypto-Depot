@@ -100,6 +100,41 @@ const SavingsManagement: React.FC = () => {
     ownerName: "",
   })
   const [filteredAccounts, setFilteredAccounts] = useState<SavingsAccount[]>([])
+  const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
+  const [error, setError] = useState<string | null>(null); // Trạng thái lỗi
+  useEffect(() => {
+  const fetchAccounts = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('http://localhost:8000/user/saving/get-savings?userId=d00u7ak5ig8jm25nu6mg'); // Thay bằng URL API thực tế
+      if (!response.ok) throw new Error('Failed to fetch accounts');
+      const data = await response.json();
+      const accounts: SavingsAccount[] = data.map((item: any) => ({
+        id: item.accountId,
+        status: item.status, // Giả định hoặc lấy từ BE nếu có
+        heirStatus: item.isHeir ? 'has_heir' : 'no_heir',
+        owner: {
+          id: item.userId,
+          name: item.userName,
+          email: item.userEmail,
+          phone: item.userPhone,
+        },
+        term: `${item.term} tháng`,
+        startDate: item.startDate,
+        endDate: item.endDate,
+        balance: item.balance.toString(),
+      }));
+      console.log(accounts)
+      setFilteredAccounts(accounts); // Lưu dữ liệu từ BE
+    } catch (err) {
+      setError('Không thể tải dữ liệu từ server');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };fetchAccounts();
+}, []);
 
   const handleFilterChange = (field: keyof Filters, value: any) => {
     setFilters((prev) => ({ ...prev, [field]: value }))
@@ -160,7 +195,7 @@ const SavingsManagement: React.FC = () => {
     ]
     const savedAccounts: SavingsAccount[] = JSON.parse(localStorage.getItem("savingsAccounts") || "[]")
 
-    let filtered = [...savedAccounts]
+    let filtered = [...filteredAccounts]
 
     if (filters.userId) {
       filtered = filtered.filter((account) =>

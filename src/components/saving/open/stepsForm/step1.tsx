@@ -34,14 +34,35 @@ interface Step1Props {
 export const Step1 = React.memo(
   ({
     formData,
-    accounts,
-    terms,
     onFieldChange,
     showValidation = false,
     onValidationChange,
     hideBalance,
     toggleHideBalance,
   }: Step1Props) => {
+    const [accounts, setAccounts] = React.useState<Array<{ id: string; label: string; balance: string }>>([])
+    const [loading, setLoading] = React.useState(true)
+    const [error, setError] = React.useState<string | null>(null)
+    const [terms, setTerms] = React.useState<Array<{ value: string; label: string; interest: string }>>([])
+    // Fetch dữ liệu tài khoản từ server khi component mount
+    React.useEffect(() => {
+      const fetchAccounts = async () => {
+        try {
+          const response = await fetch('http://localhost:8000/user/saving/add-saving-asset?userId=d00u7ak5ig8jm25nu6mg') // API endpoint để lấy danh sách tài khoản
+          if (!response.ok) throw new Error('Failed to fetch accounts')
+          const data = await response.json()
+          setAccounts(data.walletAdress||[])
+          setTerms(data.terms || [])
+          console.log(accounts)
+          console.log(terms)
+        } catch (err) {
+          setError(err instanceof Error ? err.message : 'Unknown error')
+        } finally {
+          setLoading(false)
+        }
+      }
+      fetchAccounts()
+    }, [])
     const errors = React.useMemo(
       () => ({
         sourceAccount: !formData.sourceAccount && showValidation,

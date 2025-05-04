@@ -66,7 +66,9 @@ export default async function handler(req, res) {
 
       // Tăng frozenBalance và đặt TTL 24 giờ
       await client.incrByFloat(frozenBalanceKey, amount);
-      await client.expire(frozenBalanceKey, 900);
+      // 15m
+      // await client.expire(frozenBalanceKey, 900); 
+      await client.expire(frozenBalanceKey, 86400); 
 
       // Forward yêu cầu tới backend gốc
       const response = await axios.post(`${BACKEND_API_URL}/payment/withdraw`, {

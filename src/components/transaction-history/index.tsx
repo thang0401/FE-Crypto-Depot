@@ -44,17 +44,17 @@ const TransactionHistory = () => {
 
   useEffect(() => {
     let filtered = [...transactions];
-
+  
     // Filter by transaction type
     if (typeFilter !== "all") {
       filtered = filtered.filter((t) => t.transactionType === typeFilter);
     }
-
+  
     // Filter by status
     if (statusFilter !== "all") {
       filtered = filtered.filter((t) => t.status === statusFilter);
     }
-
+  
     // Filter by date
     if (dateFilter !== "all") {
       const now = new Date();
@@ -80,7 +80,10 @@ const TransactionHistory = () => {
         filtered = filtered.filter((t) => new Date(t.createAt) >= cutoffDate);
       }
     }
-
+  
+    // Sort by createAt date in descending order (newest to oldest)
+    filtered.sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
+  
     setFilteredTransactions(filtered);
   }, [typeFilter, statusFilter, dateFilter, transactions]);
 

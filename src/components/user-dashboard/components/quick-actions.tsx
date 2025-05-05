@@ -15,7 +15,7 @@ export default function QuickActions() {
               Gửi tiền
             </QuickActionButton>
           </Grid>
-          <Grid item xs={6}>
+          {/* <Grid item xs={6}>
             <QuickActionButton variant="outlined" fullWidth startIcon={<QrCode />} sx={{ mb: 2 }}>
               Quét QR
             </QuickActionButton>
@@ -24,7 +24,7 @@ export default function QuickActions() {
             <QuickActionButton variant="outlined" fullWidth startIcon={<Payment />}>
               Thanh toán hóa đơn
             </QuickActionButton>
-          </Grid>
+          </Grid> */}
           <Grid item xs={6}>
             <QuickActionButton variant="outlined" fullWidth startIcon={<History />}>
               Lịch sử

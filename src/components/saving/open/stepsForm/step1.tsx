@@ -48,7 +48,7 @@ export const Step1 = React.memo(
     React.useEffect(() => {
       const fetchAccounts = async () => {
         try {
-          const response = await fetch('http://localhost:8000/user/saving/add-saving-asset?userId=d00u7ak5ig8jm25nu6mg') // API endpoint để lấy danh sách tài khoản
+          const response = await fetch('https://be-crypto-depot.name.vn/user/saving/add-saving-asset?userId=d00u7ak5ig8jm25nu6mg') // API endpoint để lấy danh sách tài khoản
           if (!response.ok) throw new Error('Failed to fetch accounts')
           const data = await response.json()
           setAccounts(data.walletAdress||[])

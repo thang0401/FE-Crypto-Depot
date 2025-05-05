@@ -445,20 +445,12 @@ const SavingsPortfolioForm = () => {
     })
     // Fetch dữ liệu tài khoản từ server khi component mount
     useEffect(() => {
-      const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      try {
-        const decoded = jwtDecode<{ id: string }>(accessToken);
-        setUserId(decoded.id);
-      } catch (error) {
-        console.error('Error decoding JWT:', error);
-      }
-    }
-    console.log(userId)
-      const fetchAccounts = async () => {
+      
+      const fetchAccounts = async (id: string) => {
         try {
+          console.log(id)
           const response = await fetch(
-            'https://be-crypto-depot.name.vn/user/saving/add-saving-asset?userId=d00u7ak5ig8jm25nu6mg'
+            `https://be-crypto-depot.name.vn/user/saving/add-saving-asset?userId=${id}`
           );
           if (!response.ok) throw new Error('Failed to fetch accounts');
           const data = await response.json();
@@ -482,9 +474,17 @@ const SavingsPortfolioForm = () => {
           setLoading(false);
         }
       };
-      fetchAccounts();
+      const accessToken = localStorage.getItem('accessToken');
+      if (accessToken) {
+      try {
+        const decoded = jwtDecode<{ id: string }>(accessToken);
+        setUserId(decoded.id);
+        fetchAccounts(decoded.id);
+      } catch (error) {
+        console.error('Error decoding JWT:', error);
+      }
+      }
     }, []);
-    console.log(account)
     
   // const { ready, authenticated, user, login } = usePrivy();
   // const { sendTransaction } = useSendTransaction();

@@ -184,7 +184,7 @@ const UserViewLeft = () => {
         const mappedUserData = {
           ...response.data,
           gender: displayGender,
-          status: response.data.kycStatus ? 'active' : 'pending',
+          status: response.data.status,
           role: 'user',
           contact: response.data.phoneNumber || '',
           avatarColor: 'primary' as ThemeColor
@@ -430,9 +430,21 @@ const UserViewLeft = () => {
                   rounded
                   skin='light'
                   size='small'
-                  label={userData.kycStatus ? 'Đã xác thực' : 'Chưa xác thực'}
+                  label={
+                    userData.status === 'Active'
+                      ? 'ĐÃ XÁC THỰC'
+                      : userData.status === 'Reject'
+                      ? 'BỊ TỪ CHỐI'
+                      : 'ĐANG CHỜ DUYỆT'
+                  }
                   sx={{ fontWeight: 500 }}
-                  color={userData.kycStatus ? 'success' : 'warning'}
+                  color={
+                    userData.status === 'Active'
+                      ? 'success'
+                      : userData.status === 'Reject'
+                      ? 'error'
+                      : 'warning'
+                  }
                 />
               </Box>
               <Box sx={{ display: 'flex', mb: 4 }}>

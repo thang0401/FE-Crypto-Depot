@@ -128,7 +128,7 @@ const navigation = (isAuthenticated: boolean): VerticalNavItemsType => {
         {
           title: 'Nhân thưởng',
           icon: 'bx:bell',
-          path: '/user-profile/notification/',
+          path: '/user-profile/connection/',
         },
       ],
     },

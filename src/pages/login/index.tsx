@@ -29,7 +29,9 @@ import themeConfig from 'src/configs/themeConfig'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import OtpForm from './VerifyOtpForm'
 import RegisterDialog from './RegisterDialog'
-
+import { Container, Grid, Paper } from '@mui/material'
+import { Rocket, ScrollText, Shield, Users } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 const LoginIllustration = styled('img')({
   height: 'auto',
@@ -160,17 +162,131 @@ const LoginPage = () => {
   return (
     <Box className='content-right'>
       {!hidden ? (
-        <Box sx={{ p: 12, flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <LoginIllustration
-            width={700}
-            alt={idToken && showOtpForm ? 'otp-illustration' : 'login-illustration'}
-            src={`/images/pages/${
-              idToken && showOtpForm
-                ? `auth-v2-verify-email-illustration-${theme.palette.mode}`
-                : `boy-with-rocket-${theme.palette.mode}`
-            }.png`}
-          />
-        </Box>
+        <Container maxWidth='lg'>
+          <Grid container spacing={8} alignItems='center'>
+            <Typography
+              variant='h3'
+              component='h2'
+              gutterBottom
+              sx={{
+                fontWeight: 'bold',
+                color: theme.palette.primary.main,
+                whiteSpace: 'nowrap', // Ngăn ngắt dòng cho "GÌ"
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                mt: 10,
+                ml: 6
+              }}
+            >
+              CRYPTOBANK LÀ GÌ?
+            </Typography>
+            <Typography
+              variant='body1'
+              sx={{
+                color: 'text.secondary',
+                lineHeight: 1.8,
+                width: '100%', // Kéo dài text hết chiều rộng
+                textAlign: 'justify', // Căn đều text
+                ml: 7
+              }}
+            >
+              CryptoBank là nền tảng giúp bạn quản lý USDC an toàn, lưu trữ để thao tác tại bất kì đâu.
+            </Typography>
+            <Grid item xs={12} md={6}>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <Box sx={{ mt: 1 }}>
+                  {[
+                    {
+                      icon: <Shield className='w-8 h-8' />,
+                      title: 'Riêng tư & Ẩn danh',
+                      description:
+                        'Dữ liệu tài khoản tiết kiệm của bạn hoàn toàn riêng tư, không bị theo dõi, không bị phơi bày, mang lại tự do tài chính thực sự.',
+                    },
+                    {
+                      icon: <ScrollText className='w-8 h-8' />,
+                      title: 'Lập kế hoạch thừa kế tiền mã hóa',
+                      description:
+                        'Thiết lập kế hoạch thừa kế để chuyển giao tài sản số của bạn trong trường hợp xảy ra sự cố bất ngờ.',
+                    },
+                    {
+                      icon: <Users className='w-8 h-8' />,
+                      title: 'Ví có thể khôi phục',
+                      description:
+                        'Mất quyền truy cập vào ví của bạn? Đừng lo. Chúng tôi sẽ giữ tài sản của bạn an toàn và có thể khôi phục.',
+                    },
+                    {
+                      icon: <Rocket className='w-8 h-8' />,
+                      title: 'Hoàn hảo cho người mới bắt đầu với tiền mã hóa',
+                      description:
+                        'CryptoBank giúp bạn đầu tư và lưu trữ tài sản an toàn, bảo vệ bạn khỏi các thất bại từ sàn giao dịch.',
+                    },
+                  ].map((benefit, index) => (
+                    <Box key={index} sx={{ display: 'flex', alignItems: 'flex-start', mb: 4 }}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          mr: 3,
+                          borderRadius: '12px',
+                          backgroundColor: theme.palette.primary.light,
+                          color: theme.palette.primary.contrastText,
+                          boxShadow: theme.shadows[2],
+                          transition: 'transform 0.3s ease-in-out',
+                          '&:hover': { transform: 'scale(1.1)' },
+                        }}
+                      >
+                        {benefit.icon}
+                      </Paper>
+                      <Box>
+                        <Typography variant='h6' gutterBottom sx={{ fontWeight: 'bold', color: theme.palette.text.primary }}>
+                          {benefit.title}
+                        </Typography>
+                        <Typography sx={{ color: 'text.secondary' }}>{benefit.description}</Typography>
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+              </motion.div>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8 }}
+              >
+                <Box sx={{ position: 'relative' }}>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      inset: '-10%',
+                      background: `linear-gradient(45deg, ${theme.palette.primary.main}20, ${theme.palette.secondary.main}20)`,
+                      opacity: 0.3,
+                      filter: 'blur(40px)',
+                    }}
+                  />
+                  <Paper
+                    elevation={24}
+                    sx={{
+                      position: 'relative',
+                      borderRadius: '20px',
+                      overflow: 'hidden',
+                      boxShadow: theme.shadows[10],
+                    }}
+                  >
+                    <img
+                      src='/images/pages/homepage-second-image.png'
+                      alt='Hình ảnh minh họa CryptoBank'
+                      style={{ width: '110%', height: 520, display: 'block' }}
+                    />
+                  </Paper>
+                </Box>
+              </motion.div>
+            </Grid>
+          </Grid>
+        </Container>
       ) : null}
       <RightWrapper
         sx={{ ...(skin === 'bordered' && !hidden && { borderLeft: `1px solid ${theme.palette.divider}` }) }}

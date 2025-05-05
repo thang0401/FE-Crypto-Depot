@@ -118,6 +118,7 @@ const UserViewLeft = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
+    middleName: '',
     phoneNumber: '',
     gender: '',
     dateOfBirth: '',
@@ -135,6 +136,7 @@ const UserViewLeft = () => {
     const errors: { [key: string]: string } = {}
     if (!data.firstName.trim()) errors.firstName = 'Họ là bắt buộc'
     if (!data.lastName.trim()) errors.lastName = 'Tên là bắt buộc'
+    if (!data.middleName.trim()) errors.middleName = 'Tên là bắt buộc'
     if (!data.phoneNumber.trim()) errors.phoneNumber = 'Số điện thoại là bắt buộc'
     else if (!/^\+?\d{10,15}$/.test(data.phoneNumber)) errors.phoneNumber = 'Số điện thoại không hợp lệ'
     if (!data.gender) errors.gender = 'Giới tính là bắt buộc'
@@ -194,6 +196,7 @@ const UserViewLeft = () => {
         setFormData({
           firstName: response.data.firstName || '',
           lastName: response.data.lastName || '',
+          middleName: response.data.middleName || '',
           phoneNumber: response.data.phoneNumber || '',
           gender: displayGender,
           dateOfBirth: response.data.dateOfBirth ? response.data.dateOfBirth.split('T')[0] : '',
@@ -310,6 +313,7 @@ const UserViewLeft = () => {
       const updateData = {
         firstName: formData.firstName,
         lastName: formData.lastName,
+        middleName: formData.middleName,
         phoneNumber: formData.phoneNumber,
         gender: (genderMap[formData.gender] || 'other').toUpperCase(),
         dateOfBirth: formData.dateOfBirth ? new Date(formData.dateOfBirth).toISOString() : '',
@@ -329,7 +333,7 @@ const UserViewLeft = () => {
         ...prev,
         ...updateData,
         gender: formData.gender,
-        fullName: `${formData.firstName} ${formData.lastName}`.trim()
+        fullName: `${formData.firstName} ${formData.middleName} ${formData.lastName}`.trim()
       } : prev)
       setOpenEdit(false)
       setSnackbarMessage('Cập nhật thông tin thành công!')
@@ -565,11 +569,21 @@ const UserViewLeft = () => {
                   <Grid item xs={12} sm={4}>
                     <TextField
                       fullWidth
+                      label='Họ'
+                      value={formData.middleName}
+                      onChange={(e) => handleFormChange('lastName', e.target.value)}
+                      error={!!formErrors.middleName}
+                      helperText={formErrors.middleName}
+                    />
+                  </Grid>
+                  {/* <Grid item xs={12} sm={4}>
+                    <TextField
+                      fullWidth
                       label='Tên đệm'
                       value={userData.middleName}
                       disabled
                     />
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12} sm={4}>
                     <TextField
                       fullWidth

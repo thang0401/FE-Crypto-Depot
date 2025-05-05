@@ -486,7 +486,7 @@ export default function TransferDebit(): JSX.Element {
     // Fetch recent transactions
     const fetchRecentTransactions = async () => {
       try {
-        const response = await fetch("https://be-crypto-depot.name.vn/debitAccount/recent-transactions", {
+        const response = await fetch("https://be-crypto-depot.name.vn/api/debitAccount/recent-transactions", {
           method: "GET",
         });
         const transactions = await response.json();
@@ -542,7 +542,7 @@ export default function TransferDebit(): JSX.Element {
     }
 
     try {
-      const response = await fetch(`https://be-crypto-depot.name.vn/debitAccount/search?phoneNumber=${phoneFilter}`, {
+      const response = await fetch(`https://be-crypto-depot.name.vn/api/debitAccount/search?phoneNumber=${phoneFilter}`, {
         method: "GET",
       });
       const users = await response.json();

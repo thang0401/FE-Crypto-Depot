@@ -17,20 +17,22 @@ const AuthGuard = (props: AuthGuardProps) => {
   const auth = useAuth()
   const router = useRouter()
 
-  useEffect(() => {
-    if (!router.isReady) {
-      return;
-    }
-  
-    if (auth.user === null && !window.localStorage.getItem('userData')) {
-      // Chỉ chuyển hướng nếu không phải trang gốc hoặc trang đăng nhập
-      if (router.asPath !== '/' && router.asPath !== '/login') {
-        router.replace({
-          pathname: '/login',
-          query: { returnUrl: router.asPath },
-        });
+  useEffect(
+    () => {
+      if (!router.isReady) {
+        return
       }
-    }
+
+      if (auth.user === null && !window.localStorage.getItem('userData')) {
+        if (router.asPath !== '/') {
+          router.replace({
+            pathname: '/login',
+            query: { returnUrl: router.asPath }
+          })
+        } else {
+          router.replace('/myDashboard')
+        }
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [router.route]

@@ -39,7 +39,7 @@ const WithdrawCryptoDrawer = ({ open, toggle, userData, walletPubkey, tokenData 
   useEffect(() => {
     const fetchDebitAccount = async () => {
       try {
-        const response = await fetch(`https://be-crypto-depot.name.vn/debitAccount/search?phoneNumber=${userData.phoneNumber}`, {
+        const response = await fetch(`https://be-crypto-depot.name.vn/api/debitAccount/search?phoneNumber=${userData.phoneNumber}`, {
           method: 'GET',
         });
         const users = await response.json();
@@ -58,7 +58,7 @@ const WithdrawCryptoDrawer = ({ open, toggle, userData, walletPubkey, tokenData 
 
   const maxAmountOfAsset = async () => {
     try {
-      const response = await fetch(`https://be-crypto-depot.name.vn/debitAccount/balance/${userData.id}`, {
+      const response = await fetch(`https://be-crypto-depot.name.vn/api/debitAccount/balance/${userData.id}`, {
         method: 'GET',
       });
       const balance = await response.json();
@@ -89,7 +89,7 @@ const WithdrawCryptoDrawer = ({ open, toggle, userData, walletPubkey, tokenData 
 
       console.log('Payload gửi lên:', payload);
 
-      const response = await fetch('https://be-crypto-depot.name.vn/debitAccount/withdraw', {
+      const response = await fetch('https://be-crypto-depot.name.vn/api/debitAccount/withdraw', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

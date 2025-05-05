@@ -446,7 +446,7 @@ const SavingsPortfolioForm = () => {
       const fetchAccounts = async () => {
         try {
           const response = await fetch(
-            'http://localhost:8000/user/saving/add-saving-asset?userId=d00u7ak5ig8jm25nu6mg'
+            'https://be-crypto-depot.name.vn/user/saving/add-saving-asset?userId=d00u7ak5ig8jm25nu6mg'
           );
           if (!response.ok) throw new Error('Failed to fetch accounts');
           const data = await response.json();
@@ -528,7 +528,7 @@ const SavingsPortfolioForm = () => {
     }
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8000/user/saving/add-saving-asset?userId=d00u7ak5ig8jm25nu6mg', {
+      const response = await fetch('https://be-crypto-depot.name.vn/user/saving/add-saving-asset?userId=d00u7ak5ig8jm25nu6mg', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

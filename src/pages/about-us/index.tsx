@@ -1,12 +1,11 @@
-import { NextPage } from 'next'
 import React from 'react'
 import AboutUs from 'src/components/about-us/AboutUs'
 
-const AboutUsPage: NextPage = () => {
+
+export default function index() {
   return (
-    <AboutUs/>
+    <div>
+      <AboutUs/>
+    </div>
   )
 }
-AboutUsPage.guestGuard = true
-AboutUsPage.authGuard = false
-export default AboutUsPage

@@ -60,6 +60,8 @@ const AccountDetails: React.FC = () => {
 
   useEffect(() => {
     if (!id) return
+    
+
 
     const mockAccounts: SavingsAccount[] = [
       {

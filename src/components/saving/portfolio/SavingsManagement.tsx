@@ -107,7 +107,7 @@ const SavingsManagement: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:8000/user/saving/get-savings?userId=d00u7ak5ig8jm25nu6mg'); // Thay bằng URL API thực tế
+      const response = await fetch('http://localhost:8000/user/saving/get-savings?userId=d00u7ak5ig8jm25nu6mg'); 
       if (!response.ok) throw new Error('Failed to fetch accounts');
       const data = await response.json();
       const accounts: SavingsAccount[] = data.map((item: any) => ({

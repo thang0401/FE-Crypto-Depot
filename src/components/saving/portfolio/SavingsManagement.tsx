@@ -2,9 +2,14 @@
 
 import React, { useState, useCallback, useEffect } from "react"
 import { jwtDecode } from 'jwt-decode';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import {
   Box,
   Card,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   CardContent,
   Typography,
   Grid,
@@ -34,6 +39,8 @@ const StyledCard = styled(Card)(({ theme }) => ({
   marginBottom: theme.spacing(2),
   boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 }))
+
+var count=1
 
 interface SavingsAccount {
   id: string
@@ -104,6 +111,19 @@ const SavingsManagement: React.FC = () => {
   const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
   const [error, setError] = useState<string | null>(null); // Trạng thái lỗi
   const [userId,setUserId]=useState<string|null>(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedAccountId, setSelectedAccountId] = useState<string|null>(null);
+  const [otp, setOtp] = useState('');
+  const [openManyTriesDialog, setOpenManyTriesDialog] = useState(false)
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [otpMessage, setOtpMessage] = useState('');
+  const handleWithdraw = (accountId:string) => {
+    setSelectedAccountId(accountId);
+    setOpenDialog(true);
+    setOtp('');
+    setError('');
+  };
+
   useEffect(() => {
   const fetchAccounts = async (id:string) => {
     setLoading(true);
@@ -156,6 +176,42 @@ const SavingsManagement: React.FC = () => {
     router.push(`/saving/my-portfolios/detail/${id}`)
   }
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setOtp('');
+    setError('');
+    setSelectedAccountId(null);
+  };
+
+  const handleGetOtp = async () => {
+    setIsSendingOtp(true);
+    setError('');
+    setOtpMessage('');
+    try {
+      const account:SavingsAccount|undefined=filteredAccounts.find((account) => account.id === selectedAccountId);
+      const userEmail=account?.owner.email
+
+      // Replace with your backend API endpoint for sending OTP
+      const response = await fetch('https://be-crypto-depot.name.vn/api/otpTransaction/sendOtpCode', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, userEmail}),
+      });
+      if (!response.ok) {
+        setError('Không thể gửi OTP. Vui lòng thử lại.');
+      } else {
+        setOtpMessage('OTP đã được gửi đến số điện thoại hoặc email của bạn.');
+      }
+    } catch (err) {
+      setError('Đã xảy ra lỗi khi gửi OTP. Vui lòng thử lại.');
+      console.error('Send OTP error:', err);
+    } finally {
+      setIsSendingOtp(false);
+    }
+  };
+
   const handleClearFilters = () => {
     setFilters({
       userId: "",
@@ -165,6 +221,62 @@ const SavingsManagement: React.FC = () => {
       ownerName: "",
     })
   }
+  const handleOtpChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOtp(event.target.value);
+    setError('');
+  };
+
+  // Verify OTP and process withdrawal
+  const handleVerifyOtp = async () => {
+      // Replace with your backend API endpoint
+      try{
+        setLoading(true);
+        const response = await fetch('https://be-crypto-depot.name.vn/api/otpTransaction/CheckOtp', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ "userId":userId, "otpCode": otp }),
+        });
+        if(!response.ok){
+          console.log("Không đúng")
+          count++
+          console.log(count)
+          if(count>=5){
+            count=1
+            setOpenManyTriesDialog(true);
+            setTimeout(() => {
+            setOpenManyTriesDialog(false);
+            router.push(`https://client-crypto-bank.vercel.app/saving/my-portfolios/`)
+          }, 5000);
+          }
+          return;
+        }else{
+          handleSubmit()
+          // router.push(`https://client-crypto-bank.vercel.app/saving/my-portfolios/`)
+          // setTimeout(() => {
+          //   setOpenManyTriesDialog(false);
+          //   router.push(`https://client-crypto-bank.vercel.app/saving/my-portfolios/`)
+          // }, 5000);
+        }
+      }catch(err){
+        setError(err instanceof Error ? err.message : 'Unknown error');
+      }
+  };
+
+  // Handle withdrawal submission
+  const handleSubmit = async () => {
+    const response=await fetch('https://be-crypto-depot.name.vn/user/saving/withdraw-saving', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain',
+      },
+      body: JSON.stringify(selectedAccountId),
+    });
+    if(!response.ok){
+      console.log("There is an error")
+    }
+  };
 
   const applyFilters = useCallback(() => {
     const mockAccounts: SavingsAccount[] = [
@@ -349,6 +461,9 @@ const SavingsManagement: React.FC = () => {
                       <IconButton onClick={() => handleAccountSelect(account.id)}>
                         <VisibilityIcon />
                       </IconButton>
+                      <IconButton onClick={() => handleWithdraw(account.id)}>
+                        <AccountBalanceWalletIcon/>
+                        </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -357,6 +472,55 @@ const SavingsManagement: React.FC = () => {
           </TableContainer>
         </CardContent>
       </StyledCard>
+      {/* OTP Dialog */}
+      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="xs" fullWidth>
+        <DialogTitle>Nhập OTP để rút tiền</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" color="textSecondary" gutterBottom>
+            Vui lòng nhập OTP được gửi đến số điện thoại hoặc email đã đăng ký của bạn.
+          </Typography>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="OTP"
+            type="text"
+            fullWidth
+            value={otp}
+            onChange={handleOtpChange}
+            error={!!error}
+            helperText={error || otpMessage}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleGetOtp} color="primary" disabled={isSendingOtp}>
+            {isSendingOtp ? 'Đang gửi...' : 'Lấy OTP'}
+          </Button>
+          <Button onClick={handleCloseDialog} color="secondary">
+            Hủy
+          </Button>
+          <Button onClick={handleVerifyOtp} color="primary" disabled={!otp}>
+            Xác nhận OTP
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openManyTriesDialog}
+        onClose={() => setOpenManyTriesDialog(false)}
+        PaperProps={{ sx: { borderRadius: "16px", padding: "24px", maxWidth: "360px", textAlign: "center" } }}
+      >
+        {/* <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <CircleCheckBig size={56} />
+        </Box> */}
+        <DialogTitle sx={{ fontSize: "20px", fontWeight: "bold" }}>Bạn thử quá nhiều lần!</DialogTitle>
+        <DialogContent sx={{ px: 2 }}>
+          <Typography sx={{ fontSize: "15px" }}>Chuyển hướng về trang gốc</Typography>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "center", mt: 2 }}>
+          <Button onClick={() => setOpenManyTriesDialog(false)} variant="contained">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   )
 }

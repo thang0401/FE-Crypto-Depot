@@ -95,7 +95,7 @@ const NewSupportRequest = () => {
   useEffect(() => {
     const fetchReportDetail = async () => {
         try {
-            const response = await fetch('http://localhost:8000/api/CustomerReport/initNewReqForm');
+            const response = await fetch('https://be-crypto-depot.name.vn/api/CustomerReport/initNewReqForm');
             if (!response.ok) {
                 throw new Error('Failed to fetch interest rates');
             }
@@ -230,7 +230,7 @@ const NewSupportRequest = () => {
     console.log(data.get("files"))
     //
     try {
-      const response = await fetch(`http://localhost:8000/api/CustomerReport/IssueReport`, {
+      const response = await fetch(`https://be-crypto-depot.name.vn/api/CustomerReport/IssueReport`, {
         method: "POST",
         body: data,
         });

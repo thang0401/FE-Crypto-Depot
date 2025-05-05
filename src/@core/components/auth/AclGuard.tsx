@@ -47,10 +47,10 @@ const AclGuard = (props: AclGuardProps) => {
 
   useEffect(() => {
     if (auth.user && auth.user.role && !guestGuard && router.route === '/') {
-      const homeRoute = getHomeRoute(auth.user.role);
-      router.replace(homeRoute);
+      const homeRoute = getHomeRoute(auth.user.role)
+      router.replace(homeRoute)
     }
-  }, [auth.user, guestGuard, router]);
+  }, [auth.user, guestGuard, router])
 
   // User is logged in, build ability for the user based on his role
   if (auth.user && !ability) {
@@ -62,15 +62,16 @@ const AclGuard = (props: AclGuardProps) => {
   }
 
   // If guest guard or no guard is true or any error page
-  if (guestGuard || router.route === '/404' || router.route === '/500' || !authGuard) {
-    // Nếu user đã đăng nhập và ability được tạo
+  if (guestGuard || router.route === '/404' || router.route === '/500' ||  !authGuard) {
+    // If user is logged in and his ability is built
     if (auth.user && ability) {
-      return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>;
+      return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
     } else {
-      // Nếu user chưa đăng nhập (guest), hiển thị trang
-      return <>{children}</>;
+      // If user is not logged in (render pages like login, register etc..)
+      return <>{children}</>
     }
   }
+
   // Check the access of current user and render pages
   if (ability && auth.user && ability.can(aclAbilities.action, aclAbilities.subject)) {
     if (router.route === '/') {

@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useCallback, useEffect } from "react"
+import { jwtDecode } from 'jwt-decode';
 import {
   Box,
   Card,
@@ -102,12 +103,23 @@ const SavingsManagement: React.FC = () => {
   const [filteredAccounts, setFilteredAccounts] = useState<SavingsAccount[]>([])
   const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
   const [error, setError] = useState<string | null>(null); // Trạng thái lỗi
+  const [userId,setUserId]=useState<string|null>(null);
   useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      try {
+        const decoded = jwtDecode<{ id: string }>(accessToken);
+        setUserId(decoded.id);
+      } catch (error) {
+        console.error('Error decoding JWT:', error);
+      }
+    }
+    console.log(userId)
   const fetchAccounts = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:8000/user/saving/get-savings?userId=d00u7ak5ig8jm25nu6mg'); 
+      const response = await fetch(`https://be-crypto-depot.name.vn/user/saving/get-savings?userId=${userId}`); // Thay bằng URL API thực tế
       if (!response.ok) throw new Error('Failed to fetch accounts');
       const data = await response.json();
       const accounts: SavingsAccount[] = data.map((item: any) => ({

@@ -1,160 +1,126 @@
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types';
 
-const navigation = (isAuthenticated: boolean): VerticalNavItemsType => {
-  // Các mục công khai dành cho guest
-  const publicNavItems: VerticalNavItemsType = [
+const navigation = (): VerticalNavItemsType => {
+  return [
     {
-      icon: 'bx:home-circle',
-      title: 'Trang chủ',
-      path: '/',
-      auth: false
-    },
-    {
-      title: 'Blog',
-      icon: 'bx:book',
-      path: '/blog',
-      auth: false
-    },
-    {
-      icon: 'bx:info-circle',
-      title: 'Về chúng tôi',
-      path: '/about-us',
-      auth: false
-    },    
-    {
-      icon: 'bx:log-in',
-      title: 'Đăng nhập/Đăng ký',
-      path: '/login',
-      auth: false
-    },
-  ];
-
-  // Các mục yêu cầu đăng nhập
-  const privateNavItems: VerticalNavItemsType = [   
-    {
-      icon: 'bx:home-circle',
-      title: 'Trang chủ',
-      path: '/homepage',
-      auth: false,
-    },
-    {
-      icon: 'bx:data',
+      icon: 'bx:dashboard', // Icon bảng điều khiển cho Dashboard
       title: 'Dashboard',
       path: '/myDashboard',
     },
     {
-      icon: 'bx:transfer',
+      icon: 'bx:home-circle', // Giữ nguyên icon nhà cho Trang chủ
+      title: 'Trang chủ',
+      path: '/dashboard',
+    },
+    {
+      icon: 'bx:transfer', // Icon giao dịch cho Giao dịch nhanh
       title: 'Giao dịch nhanh',
       children: [
         {
           title: 'Nạp USDC vào TK',
-          icon: 'bx:plus-circle',
+          icon: 'bx:plus-circle', // Icon thêm/nạp
           path: '/make-transaction/deposit-asset',
         },
         {
           title: 'Chuyển USDC trong System',
-          icon: 'bx:transfer-alt',
+          icon: 'bx:transfer-alt', // Icon chuyển khoản
           path: '/make-transaction/transfer-debit',
         },
         {
           title: 'Rút USDC ra',
-          icon: 'bx:plus-circle',
+          icon: 'bx:plus-circle', // Icon thêm/nạp
           path: '/make-transaction/withdraw-asset/add',
-        },
+        }
       ],
     },
     {
-      icon: 'bx:cart',
-      title: 'Mua bán USDC',
-      path: '/buy-sell',
-    },
-    {
-      icon: 'bx:coin-stack',
+      icon: 'bx:coin-stack', // Icon tiền/tiết kiệm cho Tiết kiệm
       title: 'Tiết kiệm',
       children: [
         {
           title: 'Tài khoản tiết kiệm của tôi',
-          icon: 'bx:folder',
+          icon: 'bx:folder', // Icon Tài khoản
           path: '/saving/my-portfolios',
         },
         {
           title: 'Tạo Tài khoản tiết kiệm',
-          icon: 'bx:plus-circle',
+          icon: 'bx:plus-circle', // Icon thêm/tạo
           path: '/saving/add-saving-asset/open',
         },
         {
           title: 'Tính lãi suất',
-          icon: 'bx:calculator',
+          icon: 'bx:calculator', // Icon máy tính
           path: '/saving/caculator',
         },
       ],
     },
     {
-      icon: 'bx:history',
+      icon: 'bx:history', // Icon lịch sử cho Lịch sử giao dịch
       title: 'Lịch sử giao dịch',
       path: '/transaction-history',
     },
-    
     {
-      icon: 'bx:link',
+      icon: 'bx:cart', // Icon mua bán cho Mua bán USDC
+      title: 'Mua bán USDC',
+      path: '/buy-sell',
+    },
+    {
+      icon: 'bx:link', // Icon liên kết cho Mã giới thiệu
       title: 'Mã giới thiệu',
       path: '/referral-code',
     },
     {
-      icon: 'bx:support',
+      icon: 'bx:support', // Icon hỗ trợ cho Hỗ trợ/Khiếu nại
       title: 'Hỗ trợ/Khiếu nại',
       path: '/support',
     },
     {
-      icon: 'bx:user',
+      icon: 'bx:user', // Icon người dùng cho Trang cá nhân
       title: 'Trang cá nhân',
       children: [
         {
           title: 'Bảo mật',
-          icon: 'bx:shield',
+          icon: 'bx:shield', // Icon bảo mật
           path: '/user-profile/security',
         },
         {
           title: 'Tài khoản',
-          icon: 'bx:user-circle',
+          icon: 'bx:user-circle', // Icon tài khoản
           path: '/user-profile/account',
         },
         {
           title: 'Lịch sử thanh toán',
-          icon: 'bx:history',
+          icon: 'bx:history', // Icon lịch sử
           path: '/user-profile/billing-plan/',
         },
         {
           title: 'Nhân thưởng',
           icon: 'bx:bell',
-          path: '/user-profile/notification/',
+          path: '/user-profile/connection/',
+
         },
       ],
     },
     {
       title: 'Blog',
-      icon: 'bx:book',
+      icon: 'bx:book', // Icon sách/bài viết cho Blog
       path: '/blog',
-      auth: false,
     },
     {
-      icon: 'bx:info-circle',
+      icon: 'bx:info-circle', // Icon thông tin cho Về chúng tôi
       title: 'Về chúng tôi',
       path: '/about-us',
-      auth: false,
     },
     {
-      icon: 'bx:log-out',
+      icon: 'bx:log-out', // Icon đăng xuất cho Đăng xuất
       title: 'Đăng xuất',
     },
     {
-      icon: 'bx:cog',
+      icon: 'bx:cog', // Icon cài đặt cho Cài đặt
       title: 'Cài đặt',
     },
   ];
-
-  return isAuthenticated ? privateNavItems : publicNavItems;
 };
 
 export default navigation;

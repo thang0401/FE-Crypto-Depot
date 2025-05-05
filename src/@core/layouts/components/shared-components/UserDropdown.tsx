@@ -180,7 +180,7 @@ const auth = useAuth()
           </Box>
         </Box>
         <Divider sx={{ mt: '0 !important' }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/user-profile/profile')}>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/user-profile/account')}>
           <Box sx={styles}>
             <Icon icon='bx:user' />
             Profile
@@ -198,7 +198,7 @@ const auth = useAuth()
             Chat
           </Box>
         </MenuItem>
-        <Divider sx={{ my: theme => `${theme.spacing(2)} !important` }} />
+        {/* <Divider sx={{ my: theme => `${theme.spacing(2)} !important` }} />
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/account-settings/account')}>
           <Box sx={styles}>
             <Icon icon='bx:cog' />
@@ -217,7 +217,7 @@ const auth = useAuth()
             FAQ
           </Box>
         </MenuItem>
-        <Divider />
+        <Divider /> */}
         <MenuItem
           onClick={handleLogout}
           sx={{

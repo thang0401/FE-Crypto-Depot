@@ -29,7 +29,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 }))
 
-interface SavingsAccount {
+interface SavingAccount {
   id: string
   status: "active" | "pending" | "completed"
   heirStatus: "no_heir" | "has_heir" | "in_process"
@@ -51,7 +51,7 @@ const AccountDetails: React.FC = () => {
   const router = useRouter()
   const { id } = router.query
 
-  const [editedAccount, setEditedAccount] = useState<SavingsAccount | null>(null)
+  const [editedAccount, setEditedAccount] = useState<SavingAccount | null>(null)
   const [uploadProgress, setUploadProgress] = useState<number>(0)
   const [isUploadDialogOpen, setUploadDialogOpen] = useState(false)
   const [isConfirmDialogOpen, setConfirmDialogOpen] = useState(false)
@@ -60,10 +60,25 @@ const AccountDetails: React.FC = () => {
 
   useEffect(() => {
     if (!id) return
-    
+    const fetchAccounts = async () => {
+      try {
+        const response = await fetch(
+          `https://be-crypto-depot.name.vn/user/saving/get-saving?id=${id}`
+        );
+        if (!response.ok) throw new Error('Failed to fetch account');
+        const data = await response.json();
+        // Ánh xạ walletAddress thành Account
+        const account:SavingAccount=data.map((item:any)=>({
+
+        }))
+      } catch (err) {
+
+      }
+    };
+    fetchAccounts();
 
 
-    const mockAccounts: SavingsAccount[] = [
+    const mockAccounts: SavingAccount[] = [
       {
         id: "SAV001",
         status: "active",

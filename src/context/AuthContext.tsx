@@ -43,7 +43,7 @@ const AuthProvider = ({ children }: Props) => {
           setUser(null);
         }
       } catch (error) {
-        console.error('initAuth error:', error);
+        console.error("initAuth error:", error);
         localStorage.removeItem('userData');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('accessToken');

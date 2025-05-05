@@ -29,7 +29,7 @@ import {
 import { styled } from "@mui/material/styles"
 import { useRouter } from "next/navigation"
 // import { usePrivy, useSendTransaction } from '@privy-io/react-auth';
-import Web3 from "web3"
+import Web3, { FMT_BYTES } from "web3"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
 
@@ -354,7 +354,7 @@ const Step3 = React.memo(({ formData, account, terms }: Step3Props) => {
             </Typography>
             <Grid container spacing={2} sx={{ px: 2, pb: 2 }}>
               <Grid item xs={12}>
-                <Typography>Xác minh bằng dấu vân tay của bạn ở bước tiếp theo.</Typography>
+                <Typography>Xác minh bằng OTP được gửi đến bạn ở bước tiếp theo.</Typography>
               </Grid>
             </Grid>
           </StyledCard>
@@ -395,6 +395,96 @@ const Step3 = React.memo(({ formData, account, terms }: Step3Props) => {
   )
 })
 
+interface Step4Props {
+  formData: {
+    sourceAccount: string;
+    amount: string;
+    term: string;
+  };
+  account: any;
+  terms: { id: string; amountMonth: string; interestRate: string }[];
+  onOtpChange: (otp: string) => void; // Callback để gửi OTP lên cha
+  otpError?: string; // Lỗi OTP từ cha
+}
+
+const Step4 = React.memo(({ formData, account, terms ,onOtpChange, otpError}: Step4Props) => {
+  const [otp, setOtp] = useState('null');
+  // State để lưu giá trị OTP
+  // Hàm xử lý khi người dùng nhập OTP
+  const handleOtpChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newOtp = event.target.value;
+    setOtp(newOtp);
+    onOtpChange(newOtp); // Gửi OTP lên component cha
+  };
+  
+  return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <StyledCard>
+            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", p: 2 }}>
+              Xác minh giao dịch
+            </Typography>
+            <Grid container spacing={2} sx={{ px: 2, pb: 2 }}>
+              <Grid item xs={12}>
+                <Typography>Vui lòng nhập mã OTP được gửi đến số điện thoại hoặc email của bạn.</Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Mã OTP"
+                  variant="outlined"
+                  value={otp}
+                  onChange={handleOtpChange}
+                  inputProps={{ maxLength: 6 }}
+                  sx={{ mt: 1 }}
+                />
+              </Grid>
+            </Grid>
+          </StyledCard>
+        </Grid>
+        <Grid item xs={12}>
+          <StyledCard>
+            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", p: 2 }}>
+              Thông tin giao dịch
+            </Typography>
+            <Grid container spacing={2} sx={{ px: 2, pb: 2 }}>
+              {[
+                {
+                  label: "Tài khoản nguồn",
+                  value: formData.sourceAccount,
+                },
+                {
+                  label: "Số tiền gửi",
+                  value: `${formData.amount} USDC`,
+                  style: { fontWeight: "bold", color: "red", fontSize: 14 },
+                },
+                {
+                  label: "Kỳ hạn",
+                  value: terms.find((t) => t.id === formData.term)?.amountMonth,
+                },
+                {
+                  label: "Lãi suất",
+                  value: terms.find((t) => t.id === formData.term)?.interestRate + "%",
+                },
+              ].map((item, index) => (
+                <React.Fragment key={index}>
+                  <Grid item xs={6}>
+                    <Typography sx={{ fontWeight: "medium" }}>{item.label}:</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography sx={item.style}>{item.value}</Typography>
+                  </Grid>
+                </React.Fragment>
+              ))}
+            </Grid>
+          </StyledCard>
+        </Grid>
+      </Grid>
+    </motion.div>
+  );
+});
+
 interface Term{
   amountMonth: string,
   id: string,
@@ -410,7 +500,7 @@ interface Account{
 interface SubmitResponse{
   
 }
-
+var count=1
 // Main Component
 const SavingsPortfolioForm = () => {
   const router = useRouter()
@@ -419,7 +509,10 @@ const SavingsPortfolioForm = () => {
   const [isStep1Valid, setIsStep1Valid] = useState(false)
   const [isStep2Valid] = useState(true)
   const [isStep3Valid] = useState(true)
+  const [isStep4Valid,setIsStep4Valid] = useState(true)
   const [openDialog, setOpenDialog] = useState(false)
+  const [openReInputDialog, setOpenReInputDialog] = useState(false)
+  const [openManyTriesDialog, setOpenManyTriesDialog] = useState(false)
   const [walletAddress, setWalletAddress] = useState("")
   const [usdcBalance, setUsdcBalance] = useState("0")
   const [ethBalance, setEthBalance] = useState("0")
@@ -427,11 +520,14 @@ const SavingsPortfolioForm = () => {
   
 
     const [account, setAccount] = React.useState<Account>()
+    const [otpError, setOtpError] = useState('');
     const [loading, setLoading] = React.useState(true)
     const [error, setError] = React.useState<string | null>(null)
     const [terms, setTerms] = React.useState<Array<Term>>([])
     const [selectedTerm, setSelectedTerm] = React.useState<Term>()
     const [userId,setUserId]=useState<string|null>(null);
+    const [userEmail,setUserEmail]=useState<string|null>(null);
+    const [userOTP,setUserOTP]=useState<string|null>(null);
     const [formData, setFormData] = useState({
       sourceAccount: '',
       balance: "",
@@ -466,8 +562,10 @@ const SavingsPortfolioForm = () => {
             : undefined;
             console.log(fetchedAccount)
           const fetchedTerms = data.terms || [];
+          const fetchedEmail=data.email;
           setAccount(fetchedAccount);
           setTerms(fetchedTerms);
+          setUserEmail(fetchedEmail)
         } catch (err) {
           setError(err instanceof Error ? err.message : 'Unknown error');
         } finally {
@@ -516,6 +614,13 @@ const SavingsPortfolioForm = () => {
   //   }
   // }
 
+  const handleOtpChange = (newOtp: string) => {
+    setUserOTP(newOtp);
+    setOtpError('');
+    // Kiểm tra tính hợp lệ của OTP (ví dụ: 6 chữ số)
+    setIsStep4Valid(newOtp.length === 6 && /^\d+$/.test(newOtp));
+  };
+
   const handleFieldChange = (field: string, value: string | boolean) =>
     setFormData((prev) => ({ ...prev, [field]: value }))
 
@@ -528,43 +633,105 @@ const SavingsPortfolioForm = () => {
     setShowValidation(false)
   }
 
-  const handleBack = () => {
-    setCurrentStep((prev) => prev - 1)
-    setShowValidation(false)
-  }
-
-  const handleSubmit = async ()=>{
-    if (!isStep1Valid || !isStep2Valid || !isStep3Valid) {
-      setShowValidation(true);
-      return;
-    }
+  const handleNextAndSendOTP = async (userId: string|null) => {
     try {
+      // Placeholder API call to send OTP email
       setLoading(true);
-      const response = await fetch('https://be-crypto-depot.name.vn/user/saving/add-saving-asset?userId=d00u7ak5ig8jm25nu6mg', {
+      const response = await fetch('https://be-crypto-depot.name.vn/api/otpTransaction/sendOtpCode', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          amount:formData.amount,
-          termId:formData.term,
-          OTP:123456
-        }),
+        body: JSON.stringify({ userId, userEmail }),
       });
-
-      setOpenDialog(true);
-      setTimeout(() => {
-        setOpenDialog(false);
-        router.push('/saving/my-portfolios');
-      }, 5000);
+      const data=await response.json()
+      setUserOTP(data)
+      console.log(data)
       if (!response.ok) {
-        throw new Error('Failed to submit data');
+        throw new Error('Failed to send OTP email');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      
+      // Advance to the next step after successful OTP send
+      setCurrentStep((prev: number) => prev + 1);
+      setShowValidation(false);
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      // Optionally show error to user
+      alert('Không thể gửi mã OTP. Vui lòng thử lại.');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleBack = () => {
+    setCurrentStep((prev) => prev - 1)
+    setShowValidation(false)
+  }
+ 
+  const handleSubmit = async ()=>{
+    if (!isStep1Valid || !isStep2Valid || !isStep3Valid||!isStep4Valid) {
+      setShowValidation(true);
+      return;
+    }
+    console.log("try1")
+    
+    try{
+      console.log(userOTP)
+      console.log(userId)
+      setLoading(true);
+      const response = await fetch('https://be-crypto-depot.name.vn/api/otpTransaction/CheckOtp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ "userId":userId, "otpCode": userOTP }),
+      });
+      if(!response.ok){
+        console.log("Không đúng")
+        setLoading(false)
+        setOpenReInputDialog(true)
+        count++
+        console.log(count)
+        if(count>=5){
+          count=1
+          setOpenManyTriesDialog(true);
+          setTimeout(() => {
+          setOpenManyTriesDialog(false);
+          router.push(`http://localhost:3000/saving/my-portfolios/`)
+        }, 5000);
+          
+        }
+        return;
+      }
+    }catch(err){
+      setError(err instanceof Error ? err.message : 'Unknown error');
+    }
+    console.log("try2")
+    // try {
+    //   const response = await fetch(`https://be-crypto-depot.name.vn/user/saving/add-saving-asset?userId=${userId}`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ 
+    //       amount:formData.amount,
+    //       termId:formData.term,
+    //     }),
+    //   });
+
+    //   setOpenDialog(true);
+    //   setTimeout(() => {
+    //     setOpenDialog(false);
+    //     router.push('/saving/my-portfolios');
+    //   }, 5000);
+    //   if (!response.ok) {
+    //     throw new Error('Failed to submit data');
+    //   }
+    // } catch (err) {
+    //   setError(err instanceof Error ? err.message : 'Unknown error');
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
 
@@ -611,6 +778,26 @@ const SavingsPortfolioForm = () => {
   //     handleNext();
   //   }
   // };
+  const handleButtonNext=(currentStep:number)=>{
+    switch(currentStep){
+      case 1:{
+        handleNext()
+        break
+      }
+      case 2:{
+        handleNext()
+        break
+      }
+      case 3:{
+        handleNextAndSendOTP(userId)
+        break
+      }
+      case 4:{
+        handleSubmit()
+        break
+      }
+    }
+  }
 
   const renderStep = () => {
     const props = {
@@ -618,6 +805,7 @@ const SavingsPortfolioForm = () => {
       account,
       terms,
       onFieldChange: handleFieldChange,
+      onOtpChange: handleOtpChange,
       showValidation,
       hideBalance,
       toggleHideBalance: () => setHideBalance((prev) => !prev),
@@ -638,6 +826,8 @@ const SavingsPortfolioForm = () => {
         return <Step2 {...props} />
       case 3:
         return <Step3 {...props} />
+      case 4:
+        return <Step4 {...props} />
       default:
         return null
     }
@@ -703,11 +893,12 @@ const SavingsPortfolioForm = () => {
             </StyledButton>
             <StyledButton
               variant="contained"
-              onClick={currentStep===3?handleSubmit:handleNext}
+              // onClick={currentStep===4?handleSubmit:handleNext}
+              onClick={()=>handleButtonNext(currentStep)}
               endIcon={currentStep !== 3 && <ArrowRight />}
               sx={{ "&:hover": { bgcolor: "inherit" }, boxShadow: "none" }}
             >
-              {currentStep === 3 ? "Hoàn tất" : "Tiếp tục"}
+              {currentStep === 4 ? "Hoàn tất" : "Tiếp tục"}
             </StyledButton>
           </Box>
         </Paper>
@@ -726,6 +917,42 @@ const SavingsPortfolioForm = () => {
         </DialogContent>
         <DialogActions sx={{ justifyContent: "center", mt: 2 }}>
           <Button onClick={() => router.push("/saving/my-portfolios")} variant="contained">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openReInputDialog}
+        onClose={() => setOpenReInputDialog(false)}
+        PaperProps={{ sx: { borderRadius: "16px", padding: "24px", maxWidth: "360px", textAlign: "center" } }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <CircleCheckBig size={56} />
+        </Box>
+        <DialogTitle sx={{ fontSize: "20px", fontWeight: "bold" }}>Không chính xác!</DialogTitle>
+        <DialogContent sx={{ px: 2 }}>
+          <Typography sx={{ fontSize: "15px" }}>Vui lòng kiểm tra và nhập lại OTP</Typography>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "center", mt: 2 }}>
+          <Button onClick={() => setOpenReInputDialog(false)} variant="contained">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openManyTriesDialog}
+        onClose={() => setOpenManyTriesDialog(false)}
+        PaperProps={{ sx: { borderRadius: "16px", padding: "24px", maxWidth: "360px", textAlign: "center" } }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <CircleCheckBig size={56} />
+        </Box>
+        <DialogTitle sx={{ fontSize: "20px", fontWeight: "bold" }}>Bạn thử quá nhiều lần!</DialogTitle>
+        <DialogContent sx={{ px: 2 }}>
+          <Typography sx={{ fontSize: "15px" }}>Chuyển hướng về trang gốc</Typography>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "center", mt: 2 }}>
+          <Button onClick={() => setOpenReInputDialog(false)} variant="contained">
             OK
           </Button>
         </DialogActions>

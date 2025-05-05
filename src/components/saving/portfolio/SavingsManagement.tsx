@@ -105,21 +105,11 @@ const SavingsManagement: React.FC = () => {
   const [error, setError] = useState<string | null>(null); // Trạng thái lỗi
   const [userId,setUserId]=useState<string|null>(null);
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      try {
-        const decoded = jwtDecode<{ id: string }>(accessToken);
-        setUserId(decoded.id);
-      } catch (error) {
-        console.error('Error decoding JWT:', error);
-      }
-    }
-    console.log(userId)
-  const fetchAccounts = async () => {
+  const fetchAccounts = async (id:string) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`https://be-crypto-depot.name.vn/user/saving/get-savings?userId=${userId}`); // Thay bằng URL API thực tế
+      const response = await fetch(`https://be-crypto-depot.name.vn/user/saving/get-savings?userId=${id}`); // Thay bằng URL API thực tế
       if (!response.ok) throw new Error('Failed to fetch accounts');
       const data = await response.json();
       const accounts: SavingsAccount[] = data.map((item: any) => ({
@@ -145,7 +135,17 @@ const SavingsManagement: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };fetchAccounts();
+  };
+  const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      try {
+        const decoded = jwtDecode<{ id: string }>(accessToken);
+        setUserId(decoded.id);
+        fetchAccounts(decoded.id);
+      } catch (error) {
+        console.error('Error decoding JWT:', error);
+      }
+    }
 }, []);
 
   const handleFilterChange = (field: keyof Filters, value: any) => {

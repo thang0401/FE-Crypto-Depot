@@ -34,13 +34,14 @@ import ClearIcon from "@mui/icons-material/Clear"
 import { styled } from "@mui/material/styles"
 import { useRouter } from "next/router"
 import { format } from "date-fns"
+import { LegendToggleTwoTone } from "@mui/icons-material";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   marginBottom: theme.spacing(2),
   boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 }))
 
-var count=1
+let count=1
 
 interface SavingsAccount {
   id: string

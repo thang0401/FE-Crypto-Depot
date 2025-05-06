@@ -497,10 +497,7 @@ interface Account{
   balance: number
 }
 
-interface SubmitResponse{
-  
-}
-var count=1
+let count=1
 // Main Component
 const SavingsPortfolioForm = () => {
   const router = useRouter()

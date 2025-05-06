@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react'
 import CryptoExchangeForm from 'src/components/buy-sell/CryptoExchangeForm'
 
-const index = () => {
+const Index = () => {
   const router = useRouter();
   
     useEffect(() => {
@@ -23,4 +23,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Index

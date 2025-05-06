@@ -35,26 +35,31 @@ const TransactionHistory = () => {
         .then((response) => {
           setTransactions(response.data);
           setFilteredTransactions(response.data);
+          // Kiểm tra nếu response.data rỗng
+          if (response.data.length === 0) {
+            setFilteredTransactions([]); // Đảm bảo filteredTransactions là mảng rỗng
+          }
         })
         .catch((error) => {
           console.error("Error fetching transactions:", error);
+          setFilteredTransactions([]); // Đặt mảng rỗng nếu có lỗi
         });
     }
   }, []);
 
   useEffect(() => {
     let filtered = [...transactions];
-  
+
     // Filter by transaction type
     if (typeFilter !== "all") {
       filtered = filtered.filter((t) => t.transactionType === typeFilter);
     }
-  
+
     // Filter by status
     if (statusFilter !== "all") {
       filtered = filtered.filter((t) => t.status === statusFilter);
     }
-  
+
     // Filter by date
     if (dateFilter !== "all") {
       const now = new Date();
@@ -80,10 +85,10 @@ const TransactionHistory = () => {
         filtered = filtered.filter((t) => new Date(t.createAt) >= cutoffDate);
       }
     }
-  
+
     // Sort by createAt date in descending order (newest to oldest)
     filtered.sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
-  
+
     setFilteredTransactions(filtered);
   }, [typeFilter, statusFilter, dateFilter, transactions]);
 
@@ -242,80 +247,83 @@ const TransactionHistory = () => {
       </Stack>
 
       <List sx={{ width: "100%", p: 0 }}>
-        {filteredTransactions.map((transaction) => (
-          <Paper
-            key={transaction.transactionId}
-            elevation={0}
-            sx={{
-              p: 2,
-              mb: 2,
-              border: "1px solid",
-              borderColor: "grey.200",
-              borderRadius: 2,
-            }}
-          >
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box
-                sx={{
-                  p: 1,
-                  borderRadius: "50%",
-                  border: "1px solid",
-                  borderColor: "grey.300",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {getTransactionIcon(transaction.transactionType)}
-              </Box>
+        {Array.isArray(filteredTransactions) && filteredTransactions.length > 0 ? (
+          filteredTransactions.map((transaction) => (
+            <Paper
+              key={transaction.transactionId}
+              elevation={0}
+              sx={{
+                p: 2,
+                mb: 2,
+                border: "1px solid",
+                borderColor: "grey.200",
+                borderRadius: 2,
+              }}
+            >
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Box
+                  sx={{
+                    p: 1,
+                    borderRadius: "50%",
+                    border: "1px solid",
+                    borderColor: "grey.300",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {getTransactionIcon(transaction.transactionType)}
+                </Box>
 
-              <Box sx={{ flexGrow: 1 }}>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                  <Box>
-                    <Typography variant="subtitle1" fontWeight="medium">
-                      {getTransactionLabel(transaction.transactionType)}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {formatDate(transaction.createAt)}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 0.5 }}>
-                      Mã giao dịch: {transaction.transactionId.split("-")[0]}
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 1 }}>
-                      {transaction.transactionType === "DEPOSIT" ? (
-                        <>
-                          <AccountChip label="VietQR Bank" />
-                          <ArrowForward fontSize="small" sx={{ color: "grey.500" }} />
-                          <AccountChip label={username} />
-                        </>
-                      ) : (
-                        <>
-                          <AccountChip label={username} />
-                          <ArrowForward fontSize="small" sx={{ color: "grey.500" }} />
-                          <AccountChip label="Bank Transfer" />
-                        </>
-                      )}
-                    </Stack>
-                  </Box>
-                  <Box sx={{ textAlign: "center" }}>{getStatusChip(transaction.status)}</Box>
-                  <Box sx={{ textAlign: "right", minWidth: 100 }}>
-                    <Typography
-                      variant="subtitle1"
-                      fontWeight="medium"
-                    >
-                      {transaction.transactionType === "DEPOSIT" ? "+ " : "- "}
-                      {transaction.transactionType === "DEPOSIT"
-                        ? `${transaction.vndAmount.toLocaleString()} VND`
-                        : `${transaction.usdcAmount.toFixed(2)} USDC`}
-                    </Typography>
-                  </Box>
-                </Stack>
-              </Box>
-            </Stack>
-          </Paper>
-        ))}
+                <Box sx={{ flexGrow: 1 }}>
+                  <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <Box>
+                      <Typography variant="subtitle1" fontWeight="medium">
+                        {getTransactionLabel(transaction.transactionType)}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {formatDate(transaction.createAt)}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 0.5 }}>
+                        Mã giao dịch: {transaction.transactionId.split("-")[0]}
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 1 }}>
+                        {transaction.transactionType === "DEPOSIT" ? (
+                          <>
+                            <AccountChip label="VietQR Bank" />
+                            <ArrowForward fontSize="small" sx={{ color: "grey.500" }} />
+                            <AccountChip label={username} />
+                          </>
+                        ) : (
+                          <>
+                            <AccountChip label={username} />
+                            <ArrowForward fontSize="small" sx={{ color: "grey.500" }} />
+                            <AccountChip label="Bank Transfer" />
+                          </>
+                        )}
+                      </Stack>
+                    </Box>
+                    <Box sx={{ textAlign: "center" }}>{getStatusChip(transaction.status)}</Box>
+                    <Box sx={{ textAlign: "right", minWidth: 100 }}>
+                      <Typography variant="subtitle1" fontWeight="medium">
+                        {transaction.transactionType === "DEPOSIT" ? "+ " : "- "}
+                        {transaction.transactionType === "DEPOSIT"
+                          ? `${transaction.vndAmount.toLocaleString()} VND`
+                          : `${transaction.usdcAmount.toFixed(2)} USDC`}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Box>
+              </Stack>
+            </Paper>
+          ))
+        ) : (
+          <Typography variant="body1" color="text.secondary" align="center">
+            Bạn không có giao dịch
+          </Typography>
+        )}
       </List>
     </Box>
   );

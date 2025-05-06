@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react'
 import WithdrawAdd from 'src/components/make-transaction/withdraw-asset/add/withdraw'
 
-export default function index() {
+export default function Index() {
   const router = useRouter();
   
     useEffect(() => {

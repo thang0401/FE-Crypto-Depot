@@ -171,7 +171,7 @@ const CryptoExchangeForm = () => {
   // Tỷ giá cố định
   const buyExchangeRate = 0.0000383; // 1 VND = 0.0000383 USDC
   const sellExchangeRate = 25850; // 1 USDC = 25,850 VND
-  const MIN_ORDER = 30000; 
+  const MIN_ORDER = 30000;
   const MAX_ORDER = 200000000;
 
   // Hàm định dạng số
@@ -302,7 +302,7 @@ const CryptoExchangeForm = () => {
         const userData = localStorage.getItem('userData');
         if (userData) {
           const parsedData = JSON.parse(userData);
-          if (!parsedData.isBankAccount) {
+          if (!parsedData.bankAccount) {
             setOpenBankAccountDialog(true);
             setLoading(false);
             return;

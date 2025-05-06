@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import { useRouter } from "next/router"
 import Head from "next/head"
 import {
@@ -21,8 +21,22 @@ import {
 import { MessageSquare, Phone, Mail, FileText, HelpCircle, Clock, CheckCircle, AlertTriangle, Plus } from "lucide-react"
 
 const SupportPage = () => {
+  const router = useRouter();
+  
+    useEffect(() => {
+      try {
+        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+        const kycStatus = userData.kycStatus;
+  
+        if (kycStatus === null || kycStatus === false) {
+          router.push('/kyc-center');
+        }
+      } catch (error) {
+        // Handle parsing error by redirecting to kyc-center
+        router.push('/kyc-center');
+      }
+    }, [router]);
   const theme = useTheme()
-  const router = useRouter()
 
   // Mock recent requests
   const recentRequests = [

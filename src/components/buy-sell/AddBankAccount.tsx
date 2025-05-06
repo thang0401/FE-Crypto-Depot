@@ -108,7 +108,7 @@ const AddBankAccount = ({ open, onOpenChange, onSuccess }: AddBankAccountProps) 
         })
 
         // Update localStorage to indicate user has a bank account
-        parsedData.isBankAccount = true
+        parsedData.bankAccount = true
         localStorage.setItem("userData", JSON.stringify(parsedData))
 
         // Reset form and close dialog
@@ -139,7 +139,7 @@ const AddBankAccount = ({ open, onOpenChange, onSuccess }: AddBankAccountProps) 
       <DialogTitle sx={{ fontSize: "1.25rem", fontWeight: 600 }}>
         Thêm tài khoản ngân hàng
       </DialogTitle>
-      
+
       <DialogContent>
         {error && (
           <Alert severity="error" sx={{ mb: 2, mt: 1 }}>
@@ -206,26 +206,26 @@ const AddBankAccount = ({ open, onOpenChange, onSuccess }: AddBankAccountProps) 
             </Typography>
           )}
 
-          <Paper 
-            elevation={0} 
-            sx={{ 
-              bgcolor: "rgba(255, 235, 59, 0.1)", 
-              p: 2, 
-              mt: 2, 
-              borderRadius: 1 
+          <Paper
+            elevation={0}
+            sx={{
+              bgcolor: "rgba(255, 235, 59, 0.1)",
+              p: 2,
+              mt: 2,
+              borderRadius: 1
             }}
           >
             <Typography variant="subtitle2" sx={{ mb: 1 }}>Lưu ý:</Typography>
             <List dense disablePadding sx={{ pl: 5}}>
               <ListItem sx={{ display: "list-item", listStyleType: "disc", py: 0.5 }}>
-                <ListItemText 
-                  primary="Kiểm tra để đảm bảo thông tin tài khoản là chính xác" 
+                <ListItemText
+                  primary="Kiểm tra để đảm bảo thông tin tài khoản là chính xác"
                   primaryTypographyProps={{ fontSize: "0.875rem" }}
                 />
               </ListItem>
               <ListItem sx={{ display: "list-item", listStyleType: "disc", py: 0.5 }}>
-                <ListItemText 
-                  primary="Giao dịch sẽ gặp lỗi nếu thông tin tài khoản không chính xác" 
+                <ListItemText
+                  primary="Giao dịch sẽ gặp lỗi nếu thông tin tài khoản không chính xác"
                   primaryTypographyProps={{ fontSize: "0.875rem" }}
                 />
               </ListItem>
@@ -238,8 +238,8 @@ const AddBankAccount = ({ open, onOpenChange, onSuccess }: AddBankAccountProps) 
         <Button onClick={handleClose} variant="outlined">
           Hủy
         </Button>
-        <Button 
-          onClick={handleSubmit} 
+        <Button
+          onClick={handleSubmit}
           variant="contained"
           disabled={isSubmitting}
         >

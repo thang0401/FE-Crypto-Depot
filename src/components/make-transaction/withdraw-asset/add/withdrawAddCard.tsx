@@ -1,49 +1,96 @@
-// ** MUI Imports
-import Grid from '@mui/material/Grid'
-import Card from '@mui/material/Card'
-import Table from '@mui/material/Table'
-import Divider from '@mui/material/Divider'
-import TableRow from '@mui/material/TableRow'
-import TableHead from '@mui/material/TableHead'
-import TableBody from '@mui/material/TableBody'
-import Typography from '@mui/material/Typography'
-import Box, { BoxProps } from '@mui/material/Box'
-import CardContent from '@mui/material/CardContent'
-import { styled, useTheme } from '@mui/material/styles'
-import TableContainer from '@mui/material/TableContainer'
-import TableCell, { TableCellBaseProps } from '@mui/material/TableCell'
+'use client';
 
-// ** Configs
-import themeConfig from 'src/configs/themeConfig'
-
-// ** Types
-import { SingleInvoiceType } from 'src/types/apps/invoiceTypes'
-import { Accordion, AccordionDetails, AccordionSummary, Icon } from '@mui/material'
+import { useState, useEffect } from 'react';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import Table from '@mui/material/Table';
+import Divider from '@mui/material/Divider';
+import TableRow from '@mui/material/TableRow';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import CardContent from '@mui/material/CardContent';
+import { styled, useTheme } from '@mui/material/styles';
+import TableContainer from '@mui/material/TableContainer';
+import TableCell from '@mui/material/TableCell';
+import { Accordion, AccordionDetails, AccordionSummary, Icon } from '@mui/material';
+import themeConfig from 'src/configs/themeConfig';
+import Web3 from 'web3';
+import { deposit_abi } from '../../deposit-asset/contractABI/ContractABI';
 
 interface Props {
-  data: SingleInvoiceType
+  userData: { id: string; fullName: string; email: string; phoneNumber: string };
 }
 
-const MUITableCell = styled(TableCell)<TableCellBaseProps>(({ theme }) => ({
+interface Transaction {
+  id: string;
+  amount: string;
+  transactionType: string;
+  transactionHash: string;
+  status: string;
+  timestamp: string;
+}
+
+const MUITableCell = styled(TableCell)(({ theme }) => ({
   borderBottom: 0,
   paddingLeft: '0 !important',
   paddingRight: '0 !important',
   paddingTop: `${theme.spacing(1)} !important`,
-  paddingBottom: `${theme.spacing(2)} !important`
-}))
+  paddingBottom: `${theme.spacing(2)} !important`,
+}));
 
-const CalcWrapper = styled(Box)<BoxProps>(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  '&:not(:last-of-type)': {
-    marginBottom: theme.spacing(2)
-  }
-}))
+const WithdrawAddCard = ({ userData }: Props) => {
+  const theme = useTheme();
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-const WithdrawAddCard = () => {
-  // ** Hook
-  const theme = useTheme()
+  useEffect(() => {
+    const web3 = new Web3(process.env.NEXT_PUBLIC_WEB3_PROVIDER_URL || '');
+    const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || '';
+    const contract = new web3.eth.Contract(deposit_abi, contractAddress);
+
+    const fetchRecentTransactions = async () => {
+      try {
+        const response = await fetch('/api/debitAccount/recent-transactions', {
+          method: 'GET',
+        });
+        const transactionsData = await response.json();
+        const withdrawTxs = transactionsData.filter((tx: Transaction) => tx.transactionType === 'WITHDRAW');
+        setTransactions(withdrawTxs.slice(0, 5));
+      } catch (error) {
+        console.error('Error fetching recent transactions:', error);
+        setTransactions([]);
+      }
+    };
+
+    fetchRecentTransactions();
+
+    const eventSubscription = contract.events
+      .Withdraw({
+        filter: { userId: userData.id },
+        fromBlock: 0,
+      })
+      .on('data', (event: any) => {
+        console.log('Received Withdraw event:', event);
+        const { user, userId, amount, transactionHash, timestamp } = event.returnValues;
+        const transaction: Transaction = {
+          id: transactionHash,
+          amount: web3.utils.fromWei(amount, 'ether'),
+          transactionType: 'WITHDRAW',
+          transactionHash,
+          status: 'Thành công',
+          timestamp: new Date(timestamp * 1000).toISOString(),
+        };
+        setTransactions((prev) => [transaction, ...prev].slice(0, 5));
+      })
+      // .on('error', (error: Error) => {
+      //   console.error('Error listening to Withdraw event:', error);
+      // });
+
+    // return () => {
+    //   eventSubscription.removeAllListeners();
+    // };
+  }, [userData.id]);
 
   return (
     <Card>
@@ -69,14 +116,14 @@ const WithdrawAddCard = () => {
                   />
                 </svg>
                 <Typography
-                  variant='h5'
+                  variant="h5"
                   sx={{
                     ml: 2,
                     lineHeight: 1,
                     fontWeight: 700,
                     letterSpacing: '-0.45px',
                     textTransform: 'lowercase',
-                    fontSize: '1.75rem !important'
+                    fontSize: '1.75rem !important',
                   }}
                 >
                   {themeConfig.templateName}
@@ -90,7 +137,7 @@ const WithdrawAddCard = () => {
                 <TableBody>
                   <TableRow>
                     <MUITableCell>
-                      <Typography variant='h5'>WithdrawID</Typography>
+                      <Typography variant="h5">WithdrawID</Typography>
                     </MUITableCell>
                   </TableRow>
                   <TableRow>
@@ -110,39 +157,28 @@ const WithdrawAddCard = () => {
 
       <Grid display={'flex'} width={'100%'}>
         <Grid width={'60%'}>
-          {/* </Grid> */}
           <CardContent>
-            <Grid
-              container
-              display={'grid'}
-              sx={{ p: { sm: 4, xs: 0 }, pb: theme => `${theme.spacing(1)} !important` }}
-            >
+            <Grid container display={'grid'} sx={{ p: { sm: 4, xs: 0 }, pb: (theme) => `${theme.spacing(1)} !important` }}>
               <Grid item sx={{ mb: { lg: 0, xs: 5 } }}>
                 <Typography sx={{ mb: 4, fontWeight: 500 }}>Rút từ Tài khoản mục</Typography>
-
                 <Table>
                   <TableBody>
-
                     <TableRow>
                       <MUITableCell sx={{ pb: '0 !important' }}>Tên Khách Hàng:</MUITableCell>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Nguyen Cao Thang</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>{userData.fullName}</MUITableCell>
                     </TableRow>
                     <TableRow>
                       <MUITableCell sx={{ pb: '0 !important' }}>Gmail:</MUITableCell>
-                      <MUITableCell sx={{ pb: '0 !important' }}>Thangnc0401@gmail.com</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>{userData.email}</MUITableCell>
                     </TableRow>
                     <TableRow>
                       <MUITableCell sx={{ pb: '0 !important' }}>Số điện thoại:</MUITableCell>
-                      <MUITableCell sx={{ pb: '0 !important' }}>0123456789</MUITableCell>
+                      <MUITableCell sx={{ pb: '0 !important' }}>{userData.phoneNumber}</MUITableCell>
                     </TableRow>
-
                   </TableBody>
                 </Table>
               </Grid>
 
-              {/* <Divider sx={{ mb: '0 !important' }} /> */}
-
-              {/* <TableContainer> */}
               <Grid width={'100%'} item xs={12} sm={6} sx={{ mb: { lg: 0, xs: 5 } }}>
                 <Typography sx={{ mt: 8, mb: 4, fontWeight: 500 }}>Lịch sử rút tiền vừa xong:</Typography>
                 <Table>
@@ -151,35 +187,26 @@ const WithdrawAddCard = () => {
                       <TableCell sx={{ py: 2 }}>index</TableCell>
                       <TableCell sx={{ py: 2 }}>Asset Type</TableCell>
                       <TableCell sx={{ py: 2 }}>Số lượng</TableCell>
-                      <TableCell sx={{ pu: 2 }}> Unit</TableCell>
                       <TableCell sx={{ py: 2 }}>Status</TableCell>
+                      <TableCell sx={{ py: 2 }}>Thời gian</TableCell>
+                      <TableCell sx={{ py: 2 }}>TX Hash</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <TableRow>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>1</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>4.8</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Success</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>2</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>2.2</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Success</TableCell>{' '}
-                    </TableRow>
-                    <TableRow>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>3</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>460</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Success</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>4</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>70</TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>Success</TableCell>
-                    </TableRow>
+                    {transactions.map((tx, index) => (
+                      <TableRow key={tx.transactionHash}>
+                        <TableCell sx={{ py: (theme) => `${theme.spacing(2.75)} !important` }}>{index + 1}</TableCell>
+                        <TableCell sx={{ py: (theme) => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
+                        <TableCell sx={{ py: (theme) => `${theme.spacing(2.75)} !important` }}>{tx.amount}</TableCell>
+                        <TableCell sx={{ py: (theme) => `${theme.spacing(2.75)} !important` }}>{tx.status}</TableCell>
+                        <TableCell sx={{ py: (theme) => `${theme.spacing(2.75)} !important` }}>
+                          {new Date(tx.timestamp).toLocaleString('vi-VN')}
+                        </TableCell>
+                        <TableCell sx={{ py: (theme) => `${theme.spacing(2.75)} !important` }}>
+                          {tx.transactionHash.substring(0, 10)}...
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </Grid>
@@ -214,7 +241,7 @@ const WithdrawAddCard = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời:Thời gian rút tiền phụ thuộc vào mạng blockchain mà bạn sử dụng. Thông thường, các giao dịch Ethereum có thể mất từ vài phút đến vài giờ để xác nhận tùy vào mức độ tắc nghẽn của mạng. Còn những giao dịch trên USDC sẽ nhanh hơn.
+                Trả lời: Thời gian rút tiền phụ thuộc vào mạng blockchain mà bạn sử dụng. Thông thường, các giao dịch Ethereum có thể mất từ vài phút đến vài giờ để xác nhận tùy vào mức độ tắc nghẽn của mạng. Còn những giao dịch trên USDC sẽ nhanh hơn.
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -240,17 +267,8 @@ const WithdrawAddCard = () => {
           </Accordion>
         </Grid>
       </Grid>
-      {/* <Divider
-        sx={{ mt: theme => `${theme.spacing(2)} !important`, mb: theme => `${theme.spacing(0.5)} !important` }}
-      />
-
-      <CardContent>
-        <Typography sx={{ color: 'text.secondary' }}>
-          <strong>Note:</strong> Nguyễn Cao Thang transfer to you
-        </Typography>
-      </CardContent> */}
     </Card>
-  )
-}
+  );
+};
 
-export default WithdrawAddCard
+export default WithdrawAddCard;

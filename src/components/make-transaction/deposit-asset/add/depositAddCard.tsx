@@ -1,24 +1,24 @@
-import { useState, useEffect } from 'react';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import Table from '@mui/material/Table';
-import Divider from '@mui/material/Divider';
-import TableRow from '@mui/material/TableRow';
-import TableHead from '@mui/material/TableHead';
-import TableBody from '@mui/material/TableBody';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import CardContent from '@mui/material/CardContent';
-import { styled, useTheme } from '@mui/material/styles';
-import TableContainer from '@mui/material/TableContainer';
-import TableCell from '@mui/material/TableCell';
-import { Accordion, AccordionDetails, AccordionSummary, Icon } from '@mui/material';
-import themeConfig from 'src/configs/themeConfig';
-import Web3 from 'web3';
-import { deposit_abi } from '../contractABI/ContractABI.js';
+import { useState, useEffect } from 'react'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import Table from '@mui/material/Table'
+import Divider from '@mui/material/Divider'
+import TableRow from '@mui/material/TableRow'
+import TableHead from '@mui/material/TableHead'
+import TableBody from '@mui/material/TableBody'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+import CardContent from '@mui/material/CardContent'
+import { styled, useTheme } from '@mui/material/styles'
+import TableContainer from '@mui/material/TableContainer'
+import TableCell from '@mui/material/TableCell'
+import { Accordion, AccordionDetails, AccordionSummary, Icon } from '@mui/material'
+import themeConfig from 'src/configs/themeConfig'
+import Web3 from 'web3'
+import { deposit_abi } from '../contractABI/ContractABI.js'
 
 interface Props {
-  customerData: { id: string; name: string; phone: string; debitAccountId: string };
+  customerData: { id: string; name: string; phone: string; debitAccountId: string }
 }
 
 const MUITableCell = styled(TableCell)(({ theme }) => ({
@@ -26,12 +26,12 @@ const MUITableCell = styled(TableCell)(({ theme }) => ({
   paddingLeft: '0 !important',
   paddingRight: '0 !important',
   paddingTop: `${theme.spacing(1)} !important`,
-  paddingBottom: `${theme.spacing(2)} !important`,
-}));
+  paddingBottom: `${theme.spacing(2)} !important`
+}))
 
 const DepositAddCard = ({ customerData }: Props): JSX.Element => {
-  const theme = useTheme();
-  const [transactions, setTransactions] = useState<any[]>([]);
+  const theme = useTheme()
+  const [transactions, setTransactions] = useState<any[]>([])
 
   // Bước 6: Hiển thị giao dịch từ blockchain (real-time)
   useEffect(() => {
@@ -39,11 +39,14 @@ const DepositAddCard = ({ customerData }: Props): JSX.Element => {
     const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || '';
     const contract = new web3.eth.Contract(deposit_abi, contractAddress);
 
-    contract.events.Deposit({
-      filter: { userId: customerData.id },
-      fromBlock: 'latest',
-    })
+    // Subscribe to the Deposit event
+    const eventSubscription = contract.events
+      .Deposit({
+        filter: { userId: customerData.id },
+        fromBlock: 0,
+      })
       .on('data', (event: any) => {
+        console.log('Received Deposit event:', event);
         const { user, debitAccountId, amount, transactionHash, timestamp } = event.returnValues;
         const transaction = {
           id: transactionHash,
@@ -55,11 +58,15 @@ const DepositAddCard = ({ customerData }: Props): JSX.Element => {
         };
         setTransactions((prev) => [transaction, ...prev].slice(0, 5));
       })
-      // .on('error', (error: Error) => {
+      // .on ('error', (error: Error) => {
       //   console.error('Error listening to Deposit event:', error);
       // });
-  }, [customerData.id]);
 
+    // Cleanup subscription on component unmount
+    // return () => {
+    //   eventSubscription.removeAllListeners(); // Unsubscribe from all listeners
+    // };
+  }, [customerData.id]);
   return (
     <Card>
       <CardContent>
@@ -126,7 +133,11 @@ const DepositAddCard = ({ customerData }: Props): JSX.Element => {
       <Grid display={'flex'} width={'100%'}>
         <Grid width={'60%'}>
           <CardContent>
-            <Grid container display={'grid'} sx={{ p: { sm: 4, xs: 0 }, pb: theme => `${theme.spacing(1)} !important` }}>
+            <Grid
+              container
+              display={'grid'}
+              sx={{ p: { sm: 4, xs: 0 }, pb: theme => `${theme.spacing(1)} !important` }}
+            >
               <Grid item sx={{ mb: { lg: 0, xs: 5 } }}>
                 <Typography sx={{ mb: 4, fontWeight: 500 }}>Nạp đến</Typography>
                 <Table>
@@ -153,9 +164,11 @@ const DepositAddCard = ({ customerData }: Props): JSX.Element => {
                   <TableHead>
                     <TableRow>
                       <TableCell sx={{ py: 2 }}>STT</TableCell>
-                      <TableCell sx={{ py: 2 }}>Loại tài sản</TableCell>
-                      <TableCell sx={{ py: 2 }}>Số lượng</TableCell>
-                      <TableCell sx={{ py: 2 }}>Trạng thái</TableCell>
+                      <TableCell sx={{ py: 2 }}>LOẠI TÀI SẢN</TableCell>
+                      <TableCell sx={{ py: 2 }}>SỐ LƯỢNG</TableCell>
+                      <TableCell sx={{ py: 2 }}>TRẠNG THÁI</TableCell>
+                      <TableCell sx={{ py: 2 }}>THỜI GIAN</TableCell>
+                      <TableCell sx={{ py: 2 }}>TX HASH</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -165,6 +178,12 @@ const DepositAddCard = ({ customerData }: Props): JSX.Element => {
                         <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>USDC</TableCell>
                         <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>{tx.amount}</TableCell>
                         <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>{tx.status}</TableCell>
+                        <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>
+                          {new Date(tx.timestamp).toLocaleString('vi-VN')}
+                        </TableCell>
+                        <TableCell sx={{ py: theme => `${theme.spacing(2.75)} !important` }}>
+                          {tx.transactionHash.substring(0, 10)}...
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -181,7 +200,8 @@ const DepositAddCard = ({ customerData }: Props): JSX.Element => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời: Deposit là quá trình người dùng nạp tiền hoặc tài sản tiền điện tử vào tài khoản CryptoDepot của mình từ các ví Web 3 bên ngoài.
+                Trả lời: Deposit là quá trình người dùng nạp tiền hoặc tài sản tiền điện tử vào tài khoản CryptoDepot
+                của mình từ các ví Web 3 bên ngoài.
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -191,7 +211,9 @@ const DepositAddCard = ({ customerData }: Props): JSX.Element => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời: Để nạp tiền vào tài khoản CryptoDepot, bạn chỉ cần kết nối ví Web 3, chọn tài sản, gõ số lượng và cung cấp ID Tài khoản nhận tài sản. Sau đó, ví Web 3 của bạn sẽ hiện lên giao dịch và bạn chỉ cần phê duyệt giao dịch đó thôi.
+                Trả lời: Để nạp tiền vào tài khoản CryptoDepot, bạn chỉ cần kết nối ví Web 3, chọn tài sản, gõ số lượng
+                và cung cấp ID Tài khoản nhận tài sản. Sau đó, ví Web 3 của bạn sẽ hiện lên giao dịch và bạn chỉ cần phê
+                duyệt giao dịch đó thôi.
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -201,7 +223,9 @@ const DepositAddCard = ({ customerData }: Props): JSX.Element => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời: CryptoDepot hỗ trợ nhiều loại tiền điện tử phổ biến như Ethereum, USDC và nhiều loại token ERC-20 và SPL-20 khác nhau. Danh sách đầy đủ các loại tài sản được hỗ trợ sẽ được cập nhật thường xuyên trên nền tảng.
+                Trả lời: CryptoDepot hỗ trợ nhiều loại tiền điện tử phổ biến như Ethereum, USDC và nhiều loại token
+                ERC-20 và SPL-20 khác nhau. Danh sách đầy đủ các loại tài sản được hỗ trợ sẽ được cập nhật thường xuyên
+                trên nền tảng.
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -211,7 +235,10 @@ const DepositAddCard = ({ customerData }: Props): JSX.Element => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời: Thời gian nạp tiền phụ thuộc vào loại blockchain mà bạn sử dụng. Các giao dịch trên Ethereum có thể mất từ vài phút đến vài giờ tùy thuộc vào trạng thái của mạng, trong khi giao dịch trên USDC sẽ nhanh chóng hơn. Tuy nhiên, CryptoDepot sẽ cập nhật số dư ngay khi giao dịch được xác nhận trên blockchain.
+                Trả lời: Thời gian nạp tiền phụ thuộc vào loại blockchain mà bạn sử dụng. Các giao dịch trên Ethereum có
+                thể mất từ vài phút đến vài giờ tùy thuộc vào trạng thái của mạng, trong khi giao dịch trên USDC sẽ
+                nhanh chóng hơn. Tuy nhiên, CryptoDepot sẽ cập nhật số dư ngay khi giao dịch được xác nhận trên
+                blockchain.
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -221,14 +248,15 @@ const DepositAddCard = ({ customerData }: Props): JSX.Element => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography sx={{ color: 'text.secondary' }}>
-                Trả lời: CryptoDepot không thu phí cho việc nạp tiền, nhưng bạn sẽ phải trả phí giao dịch blockchain (gas fee) khi gửi tiền từ ví Web 3 của mình đến CryptoDepot.
+                Trả lời: CryptoDepot không thu phí cho việc nạp tiền, nhưng bạn sẽ phải trả phí giao dịch blockchain
+                (gas fee) khi gửi tiền từ ví Web 3 của mình đến CryptoDepot.
               </Typography>
             </AccordionDetails>
           </Accordion>
         </Grid>
       </Grid>
     </Card>
-  );
-};
+  )
+}
 
-export default DepositAddCard;
+export default DepositAddCard

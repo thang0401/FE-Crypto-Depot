@@ -23,7 +23,7 @@ const users: UserDataType[] = [
     rememberMe : true,
     walletAddress : '0x6d9a981d5C4Df84f57856A2bb9588Cc9966a085C',
     firstName: 'Thăng',
-    isBankAccount : false,
+    bankAccount : false,
     isReferralCode : false
   },
   {
@@ -38,7 +38,7 @@ const users: UserDataType[] = [
     rememberMe : true,
     walletAddress : '0x6d9a981d5C4Df84f57856A2bb9588Cc9966a085C',
     firstName: 'Thành',
-    isBankAccount : true,
+    bankAccount : true,
     isReferralCode : true
   },
 ]

@@ -1,90 +1,71 @@
-// ** React Imports
-import { useState, useEffect } from 'react'
+'use client';
 
-// ** Next Import
-import Link from 'next/link'
+import { useState, useEffect } from 'react';
+import Grid from '@mui/material/Grid';
+import Alert from '@mui/material/Alert';
+import WithdrawAddCard from './withdrawAddCard';
+import WithdrawActions from './withdrawAction';
+import SendCryptoDrawer from '../shared-drawer/withdraw-crypto-drawer';
 
-// ** MUI Imports
-import Grid from '@mui/material/Grid'
-import Alert from '@mui/material/Alert'
+const WithdrawAdd = () => {
+  const [error, setError] = useState<boolean>(false);
+  const [userData, setUserData] = useState<any>(null);
+  const [addPaymentOpen, setAddPaymentOpen] = useState<boolean>(false);
+  const [sendInvoiceOpen, setSendInvoiceOpen] = useState<boolean>(false);
+  const [walletPubkey, setWalletPubkey] = useState<string>('');
+  const [tokenData, setTokenData] = useState<any[]>([]);
 
-// ** Third Party Components
-import axios from 'axios'
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('userData') || '{}');
+    if (user && user.id) {
+      setUserData(user);
+      setError(false);
+    } else {
+      setError(true);
+    }
+  }, []);
 
-// ** Types
-import { SingleInvoiceType, InvoiceLayoutProps } from 'src/types/apps/invoiceTypes'
+  const toggleSendInvoiceDrawer = () => setSendInvoiceOpen(!sendInvoiceOpen);
+  const toggleAddPaymentDrawer = () => setAddPaymentOpen(!addPaymentOpen);
 
-// ** Demo Components Imports
-import DepositAddCard from './withdrawAddCard'
-import DepositActions from './withdrawAction'
-// import AddPaymentDrawer from 'src/views/apps/invoice/shared-drawer/AddPaymentDrawer'
-import SendCryptoDrawer from '../shared-drawer/withdraw-crypto-drawer'
-
-const WithdrawAdd = () =>
-  // { id }: InvoiceLayoutProps
-  {
-    // ** State
-    const [error, setError] = useState<boolean>(false)
-    const [data, setData] = useState<null | SingleInvoiceType>(null)
-    const [addPaymentOpen, setAddPaymentOpen] = useState<boolean>(false)
-    const [sendInvoiceOpen, setSendInvoiceOpen] = useState<boolean>(false)
-
-    useEffect(
-      () => {
-        axios
-          .get(
-            '/apps/invoice/single-invoice'
-            // , { params: { id } }
-          )
-          .then(res => {
-            setData(res.data)
-            setError(false)
-          })
-          .catch(() => {
-            setData(null)
-            setError(true)
-          })
-      }
-      // [id]
-    )
-
-    const toggleSendInvoiceDrawer = () => setSendInvoiceOpen(!sendInvoiceOpen)
-    const toggleAddPaymentDrawer = () => setAddPaymentOpen(!addPaymentOpen)
-
-    // if (data) {
+  if (userData) {
     return (
       <>
         <Grid container spacing={6}>
           <Grid item xl={9} md={8} xs={12}>
-            <DepositAddCard />
+            <WithdrawAddCard userData={userData} />
           </Grid>
           <Grid item xl={3} md={4} xs={12}>
-            <DepositActions
-              // id={id}
+            <WithdrawActions
               toggleAddPaymentDrawer={toggleAddPaymentDrawer}
               toggleSendInvoiceDrawer={toggleSendInvoiceDrawer}
+              setWalletPubkey={setWalletPubkey}
+              setTokenData={setTokenData}
             />
           </Grid>
         </Grid>
-        <SendCryptoDrawer open={sendInvoiceOpen} toggle={toggleSendInvoiceDrawer} />
-        {/* <AddPaymentDrawer open={addPaymentOpen} toggle={toggleAddPaymentDrawer} /> */}
+        <SendCryptoDrawer
+          open={sendInvoiceOpen}
+          toggle={toggleSendInvoiceDrawer}
+          userData={userData}
+          walletPubkey={walletPubkey}
+          tokenData={tokenData}
+        />
       </>
-    )
-    // }
-    //  else if (error) {
-    //   return (
-    //     <Grid container spacing={6}>
-    //       <Grid item xs={12}>
-    //         <Alert severity='error'>
-    //           {/* Invoice with the id: {id} does not exist. Please check the list of invoices:{' '} */}
-    //           <Link href='/apps/invoice/list'>Invoice List</Link>
-    //         </Alert>
-    //       </Grid>
-    //     </Grid>
-    //   )
-    // } else {
-    //   return null
-    // }
+    );
+  } else if (error) {
+    return (
+      <Grid container spacing={6}>
+        <Grid item xs={12}>
+          <Alert severity="error">
+            User not found. Please go back to search.
+          </Alert>
+        </Grid>
+      </Grid>
+    );
+  } else {
+    return null;
   }
+};
 
-export default WithdrawAdd
+export default WithdrawAdd;

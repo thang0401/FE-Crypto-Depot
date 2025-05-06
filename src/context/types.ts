@@ -27,7 +27,7 @@ export type UserDataType = {
   firstName : string
   walletAddress : string
   isReferralCode?: boolean
-  isBankAccount? : boolean
+  bankAccount? : boolean
 }
 
 export type AuthValuesType = {

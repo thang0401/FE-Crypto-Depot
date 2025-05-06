@@ -140,7 +140,7 @@ const SendCryptoDrawer = ({ open, toggle, tokenData, walletPubkey, customerData 
 
       console.log('Payload gửi lên:', payload);
 
-      const response = await fetch('http://localhost:8000/api/debitAccount/deposit', {
+      const response = await fetch('https://be-crypto-depot.name.vn/api/debitAccount/deposit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

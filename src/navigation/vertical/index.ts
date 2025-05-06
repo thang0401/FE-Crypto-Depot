@@ -96,8 +96,9 @@ const navigation = (): VerticalNavItemsType => {
         },
         {
           title: 'Nhân thưởng',
-          icon: 'bx:bell', // Icon thông báo
-          path: '/user-profile/notification/',
+          icon: 'bx:bell',
+          path: '/user-profile/connection/',
+
         },
       ],
     },

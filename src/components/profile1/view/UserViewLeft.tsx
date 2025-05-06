@@ -53,7 +53,7 @@ interface UserDataType {
   kycStatus: boolean
   hasAcceptedTerms: boolean
   lastLoginAt: string
-  isBankAccount: boolean
+  bankAccount: boolean
   isReferralCode: boolean
   createdAt: string
   status?: string
@@ -469,9 +469,9 @@ const UserViewLeft = () => {
                   rounded
                   skin='light'
                   size='small'
-                  label={userData.isBankAccount ? 'Đã liên kết' : 'Chưa liên kết'}
+                  label={userData.bankAccount ? 'Đã liên kết' : 'Chưa liên kết'}
                   sx={{ fontWeight: 500 }}
-                  color={userData.isBankAccount ? 'success' : 'warning'}
+                  color={userData.bankAccount ? 'success' : 'warning'}
                 />
               </Box>
               <Box sx={{ display: 'flex', mb: 4 }}>

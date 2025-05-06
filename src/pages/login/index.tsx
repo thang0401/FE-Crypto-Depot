@@ -211,7 +211,7 @@ const LoginPage = () => {
             <OtpForm idToken={idToken} email={email} setIdToken={setIdToken} rememberMe={rememberMe} />
           ) : (
             <>
-              <Typography variant='h6' sx={{ mb: 1.5 }}>
+              {/* <Typography variant='h6' sx={{ mb: 1.5 }}>
                 Welcome to {themeConfig.templateName}! 👋🏻
               </Typography>
               <Typography sx={{ mb: 6, color: 'text.secondary' }}>
@@ -228,7 +228,7 @@ const LoginPage = () => {
               </Typography>
               <Typography variant='caption' sx={{ display: 'block', color: 'primary.main' }}>
                 Account: <strong>thanhtdps36968@fpt.edu.vn</strong> / Pass: <strong>admin</strong>
-              </Typography>
+              </Typography> */}
               <form noValidate autoComplete='off' onSubmit={handleLoginSubmit(onLoginSubmit)}>
                 <FormControl fullWidth sx={{ mb: 4 }}>
                   <Controller

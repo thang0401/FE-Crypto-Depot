@@ -16,6 +16,7 @@ import CustomAvatar from 'src/@core/components/mui/avatar'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import { useEffect, useState } from 'react'
 import { Tooltip } from '@mui/material'
+import axios from 'axios'
 
 const FacebookBtn = styled(IconButton)<IconButtonProps>(({ theme }) => ({
   color: theme.palette.common.white,
@@ -38,6 +39,7 @@ const LinkedInBtn = styled(IconButton)<IconButtonProps>(({ theme }) => ({
   
 const ReferEarnPage = () => {
   const [email, setEmail] = useState('');
+  const [referralCode, setReferralCode] = useState('');
 
   useEffect(() => {
     const userData = localStorage.getItem('userData')
@@ -56,6 +58,32 @@ const ReferEarnPage = () => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(email);
+  }
+
+  const handleAddCode = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setReferralCode(e.target.value);
+  }
+
+  const handleSubmitReferral = async () => {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      try {
+        const parsedData = JSON.parse(userData);
+        if(parsedData.id && referralCode){
+          const response = await axios.post("https://be-crypto-depot.name.vn/api/referral_bonus", {
+            "userReferralEmail": referralCode,
+            "userId": parsedData.id,
+            "bonus": 5,
+            "statusId": "d04sbnufbfnjccci4svg"
+          });
+          if (response.status !== 200) {
+            throw new Error("Failed to submit referral bonus");
+          }
+        }
+      }catch (err){
+        console.log('Error parsing userData from localStorage:', err);
+      }
+    }
   }
 
   return (
@@ -134,13 +162,17 @@ const ReferEarnPage = () => {
           </InputLabel>
           <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', flexWrap: { xs: 'wrap', sm: 'nowrap' } }}>
             <TextField
+              onChange={handleAddCode}
               fullWidth
               size="small"
               id="refer-email"
               sx={{ mr: { xs: 0, sm: 4 } }}
               placeholder= {email}
             />
-            <Button variant="contained" sx={{ mt: { xs: 2, sm: 0 }, width: { xs: '100%', sm: 'auto' } }}>
+            <Button 
+              onClick={handleSubmitReferral}
+              variant="contained" 
+              sx={{ mt: { xs: 2, sm: 0 }, width: { xs: '100%', sm: 'auto' } }}>
               Send
             </Button>
           </Box>
